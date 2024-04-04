@@ -1,14 +1,17 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
 class NodeBase(BaseModel):
-    pass
+    type: str
 
 
 class NodeCreate(NodeBase):
-    pass
+    workflow_id: int
 
 
 class Node(NodeBase):
-    model_config = ConfigDict(from_attributes=True)
     id: int
+    workflow_id: int
+
+    class Config:
+        orm_mode = True

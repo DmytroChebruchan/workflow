@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,8 +31,13 @@ async def create_node(
 
 
 async def delete_node_by_id(session: AsyncSession, node_id: int) -> None:
-    node = await get_node_by_id(session, node_id)
+    node = await get_node_by_id(session=session, node_id=node_id)
     if node:
         await session.delete(node)
         await session.commit()
-        await session.refresh(node)
+    if node is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Node with ID {node_id} not found",
+        )
+

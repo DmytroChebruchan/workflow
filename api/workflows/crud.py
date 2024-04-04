@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -35,3 +36,8 @@ async def delete_workflow_by_id(session: AsyncSession, workflow_id: int) -> None
         await session.delete(workflow)
         await session.commit()
         await session.refresh(workflow)
+    if workflow is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Workflow with ID {workflow_id} not found",
+        )
