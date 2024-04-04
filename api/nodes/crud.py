@@ -3,7 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.nodes.schemas import NodeCreate
+from api.nodes.schemas import NodeCreate, NodeType
 from core.models import Node
 
 
@@ -14,15 +14,16 @@ async def get_nodes(session: AsyncSession) -> list[Node]:
     return list(nodes)
 
 
-async def get_node_by_id(
-        session: AsyncSession, node_id: int
-) -> Node | None:
+async def get_node_by_id(session: AsyncSession, node_id: int) -> Node | None:
     return await session.get(Node, node_id)
 
 
-async def create_node(
-        session: AsyncSession, node_in: NodeCreate
-) -> Node:
+async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
+    if node_in.type not in NodeType:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Invalid node type provided",
+        )
     node = Node(**node_in.model_dump())
     session.add(node)
     await session.commit()
@@ -40,4 +41,3 @@ async def delete_node_by_id(session: AsyncSession, node_id: int) -> None:
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Node with ID {node_id} not found",
         )
-

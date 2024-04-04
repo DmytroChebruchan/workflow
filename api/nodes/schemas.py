@@ -1,8 +1,16 @@
 from pydantic import BaseModel
+from enum import Enum
+
+
+class NodeType(str, Enum):
+    START = "Start Node"
+    MESSAGE = "Message Node"
+    CONDITION = "Condition Node"
+    END = "End Node"
 
 
 class NodeBase(BaseModel):
-    type: str
+    type: NodeType
 
 
 class NodeCreate(NodeBase):
