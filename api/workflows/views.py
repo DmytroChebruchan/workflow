@@ -2,8 +2,9 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import db_helper
-from .schemas import Workflow, WorkflowCreate
+from .schemas import Workflow, WorkflowCreate, WorkflowUpdate
 from . import crud
+from .validator import workflow_validator
 
 router = APIRouter(tags=["Workflows"])
 
@@ -41,10 +42,25 @@ async def get_workflows(
     )
 
 
+@router.put("/{workflow_id}/", response_model=Workflow)
+async def update_workflow(
+    workflow_id: int,
+    workflow_update: WorkflowUpdate,
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    workflow = await workflow_validator(session, workflow_id)
+    updated_workflow = await crud.update_workflow(
+        session=session,
+        workflow=workflow,
+        workflow_update=workflow_update,
+    )
+    return updated_workflow
+
+
 @router.delete("/{workflow_id}/", response_model=None)
 async def delete_workflow(
     workflow_id: int,
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    await crud.delete_workflow_by_id(session=session, workflow_id=workflow_id)
-
+    workflow = await workflow_validator(session, workflow_id)
+    await crud.delete_workflow_by_id(session=session, workflow=workflow)
