@@ -14,16 +14,24 @@ async def get_workflows(session: AsyncSession) -> list[Workflow]:
 
 
 async def get_workflow_by_id(
-    session: AsyncSession, workflow_id: int
+        session: AsyncSession, workflow_id: int
 ) -> Workflow | None:
     return await session.get(Workflow, workflow_id)
 
 
 async def create_workflow(
-    session: AsyncSession, workflow_in: WorkflowCreate
+        session: AsyncSession, workflow_in: WorkflowCreate
 ) -> Workflow:
     workflow = Workflow(**workflow_in.model_dump())
     session.add(workflow)
     await session.commit()
     await session.refresh(workflow)
     return workflow
+
+
+async def delete_workflow_by_id(session: AsyncSession, workflow_id: int) -> None:
+    workflow = await get_workflow_by_id(session, workflow_id)
+    if workflow:
+        await session.delete(workflow)
+        await session.commit()
+        await session.refresh(workflow)

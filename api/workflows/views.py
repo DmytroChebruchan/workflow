@@ -41,11 +41,13 @@ async def get_workflows(
     )
 
 
+@router.delete("/{workflow_id}/", response_model=None)
+async def delete_workflow(
+    workflow_id: int,
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    await crud.delete_workflow_by_id(session=session, workflow_id=workflow_id)
+
 # @router.put("/update/")
 # async def update_workflow(workflow: Workflow):
 #     return {"message": f"Workflow with id {workflow.id} was updated."}
-#
-#
-# @router.delete("/delete/")
-# async def delete_workflow(workflow: Workflow):
-#     return {"message": f"Workflow with id {workflow.id}  has been deleted"}
