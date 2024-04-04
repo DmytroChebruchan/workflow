@@ -1,7 +1,6 @@
 from contextlib import asynccontextmanager
 
 import uvicorn
-from core.config import settings
 from fastapi import FastAPI
 from core.models import Base, db_helper
 from api import router

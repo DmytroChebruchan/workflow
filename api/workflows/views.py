@@ -48,6 +48,3 @@ async def delete_workflow(
 ):
     await crud.delete_workflow_by_id(session=session, workflow_id=workflow_id)
 
-# @router.put("/update/")
-# async def update_workflow(workflow: Workflow):
-#     return {"message": f"Workflow with id {workflow.id} was updated."}
