@@ -1,20 +1,8 @@
 from typing import Optional
 
 from pydantic import BaseModel
-from enum import Enum
 
-
-class MessageNodeStatus(str, Enum):
-    PENDING = "pending"
-    SENT = "sent"
-    OPENED = "opened"
-
-
-class NodeType(str, Enum):
-    START = "Start Node"
-    MESSAGE = "Message Node"
-    CONDITION = "Condition Node"
-    END = "End Node"
+from api.nodes.node_attr_values import NodeType
 
 
 class NodeBase(BaseModel):

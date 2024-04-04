@@ -1,7 +1,8 @@
 from fastapi import HTTPException
 from starlette import status
 
-from api.nodes.schemas import NodeCreate, NodeType
+from api.nodes.schemas import NodeCreate
+from api.nodes.node_attr_values import NodeType
 
 
 async def validate_node_type(node_in: NodeCreate) -> None:
