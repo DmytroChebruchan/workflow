@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from api.models.schemas import WorkflowBase
+from .schemas import WorkflowBase
 
 router = APIRouter()
 
