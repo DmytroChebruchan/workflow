@@ -3,7 +3,12 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.nodes.schemas import NodeCreate, NodeType
+from api.nodes.schemas import NodeCreate
+from api.nodes.validators import (
+    validate_status,
+    validate_node_type,
+    validate_message,
+)
 from core.models import Node
 
 
@@ -19,12 +24,11 @@ async def get_node_by_id(session: AsyncSession, node_id: int) -> Node | None:
 
 
 async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
-    if node_in.type not in NodeType:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid node type provided",
-        )
-    node = Node(**node_in.model_dump())
+    await validate_node_type(node_in)
+    await validate_status(node_in)
+    await validate_message(node_in)
+
+    node = Node(**node_in.dict())
     session.add(node)
     await session.commit()
     await session.refresh(node)
@@ -33,11 +37,11 @@ async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
 
 async def delete_node_by_id(session: AsyncSession, node_id: int) -> None:
     node = await get_node_by_id(session=session, node_id=node_id)
-    if node:
-        await session.delete(node)
-        await session.commit()
     if node is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Node with ID {node_id} not found",
         )
+
+    await session.delete(node)
+    await session.commit()
