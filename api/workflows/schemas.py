@@ -2,18 +2,17 @@ from pydantic import BaseModel, ConfigDict
 
 
 class WorkflowBase(BaseModel):
-    pass
+    title: str
 
 
 class WorkflowCreate(WorkflowBase):
-    title: str
+    pass
 
 
 class WorkflowUpdate(WorkflowBase):
-    title: str
+    id: int
 
 
 class Workflow(WorkflowBase):
-    model_config = ConfigDict(from_attributes=True)
     id: int
     title: str
