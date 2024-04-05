@@ -48,7 +48,10 @@ async def update_workflow(
     workflow_update: WorkflowUpdate,
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    workflow = await workflow_validator(session, workflow_id)
+    workflow = await workflow_validator(
+        session=session,
+        workflow_id=workflow_id,
+    )
     updated_workflow = await crud.update_workflow(
         session=session,
         workflow=workflow,
