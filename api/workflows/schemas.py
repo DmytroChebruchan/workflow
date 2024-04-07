@@ -19,3 +19,7 @@ class Workflow(WorkflowBase):
 
     class Config:
         orm_mode = True
+
+
+class WorkflowRunResponse(Workflow):
+    nodes: list
