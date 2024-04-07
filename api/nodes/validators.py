@@ -55,3 +55,9 @@ async def validate_node_for_update(node_update: NodeUpdate) -> None:
     await validate_status(node_update)
     await validate_message(node_update)
     await validate_existence_of_workflow(node_update)
+
+
+async def validate_node_for_creating(node_in: NodeCreate) -> None:
+    await validate_node_type(node_in)
+    await validate_status(node_in)
+    await validate_message(node_in)
