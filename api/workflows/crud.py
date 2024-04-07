@@ -44,9 +44,7 @@ async def update_workflow(
     return workflow
 
 
-async def delete_workflow_by_id(
-    session: AsyncSession, workflow: Workflow
-) -> None:
+async def delete_workflow_by_id(session: AsyncSession, workflow: Workflow) -> None:
     await session.delete(workflow)
     await session.commit()
     await session.refresh(workflow)
