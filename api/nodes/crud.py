@@ -5,8 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.nodes.schemas import NodeCreate, NodeUpdate
 from api.nodes.validators import (
     validate_existence_of_node,
-    validate_node_for_update,
     validate_node_for_creating,
+    validate_node_for_update,
 )
 from core.models import Node
 
