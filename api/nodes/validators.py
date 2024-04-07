@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 from starlette import status
 
-from api.nodes.schemas import NodeCreate, NodeUpdate
 from api.nodes.node_attr_values import NodeType
+from api.nodes.schemas import NodeCreate, NodeUpdate
 from core.models import Node, Workflow
 
 
