@@ -5,12 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.schemas import NodeCreate, NodeUpdate
 from api.nodes.validators import (
-    validate_status,
-    validate_node_type,
-    validate_message,
     validate_existence_of_node,
-    validate_existence_of_workflow,
     validate_node_for_update,
+    validate_node_for_creating,
 )
 from core.models import Node
 
@@ -27,9 +24,7 @@ async def get_node_by_id(session: AsyncSession, node_id: int) -> Node | None:
 
 
 async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
-    await validate_node_type(node_in)
-    await validate_status(node_in)
-    await validate_message(node_in)
+    await validate_node_for_creating(node_in)
 
     node = Node(**node_in.dict())
     session.add(node)
