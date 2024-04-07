@@ -8,8 +8,8 @@ from api.nodes.node_attr_values import NodeType
 class NodeBase(BaseModel):
     type: NodeType
     workflow_id: int
-    status: Optional[str]
-    message_text: Optional[str]
+    status: Optional[str] = None
+    message_text: Optional[str] = None
 
 
 class NodeCreate(NodeBase):
