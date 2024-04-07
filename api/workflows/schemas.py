@@ -16,3 +16,6 @@ class WorkflowUpdate(WorkflowBase):
 class Workflow(WorkflowBase):
     id: int
     title: str
+
+    class Config:
+        orm_mode = True

@@ -7,25 +7,21 @@ from api.nodes.node_attr_values import NodeType
 
 class NodeBase(BaseModel):
     type: NodeType
+    workflow_id: int
+    status: Optional[str]
+    message_text: Optional[str]
 
 
 class NodeCreate(NodeBase):
-    workflow_id: int
-    status: Optional[str]
-    message_text: Optional[str]
+    pass
 
 
 class NodeUpdate(NodeBase):
-    workflow_id: int
-    status: Optional[str]
-    message_text: Optional[str]
+    id: int
 
 
 class Node(NodeBase):
     id: int
-    workflow_id: int
-    status: Optional[str]
-    message_text: Optional[str]
 
     class Config:
         orm_mode = True
