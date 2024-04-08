@@ -11,7 +11,7 @@ class NodeBase(BaseModel):
     status: Optional[str] = None
     message_text: Optional[str] = None
 
-    model_config = ConfigDict(env_prefix="NODE_")
+    model_config = ConfigDict()
 
 
 class NodeCreate(NodeBase):
