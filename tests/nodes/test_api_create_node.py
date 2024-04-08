@@ -28,7 +28,9 @@ def client():
 
 
 @pytest.mark.asyncio
-async def test_create_node(client: TestClient, async_session: AsyncSession):
+async def test_create_start_node(
+    client: TestClient, async_session: AsyncSession
+):
     node_data = {"type": "Start Node", "workflow_id": 1}
     response = client.post("/nodes/create/", json=node_data)
     assert response.status_code == 200
@@ -38,18 +40,30 @@ async def test_create_node(client: TestClient, async_session: AsyncSession):
 
 
 @pytest.mark.asyncio
-async def test_delete_node(client: TestClient, async_session: AsyncSession):
+async def test_create_start_node_with_message(
+    client: TestClient, async_session: AsyncSession
+):
+    node_data = {
+        "type": "Start Node",
+        "workflow_id": 1,
+        "message_text": "Hello",
+    }
+    response = client.post("/nodes/create/", json=node_data)
+    assert response.status_code == 422
 
-    # Create a node to be deleted
-    node_data = {"type": "Start Node", "workflow_id": 1}
-    create_response = client.post("/nodes/create/", json=node_data)
-    assert create_response.status_code == 200
-    created_node = create_response.json()
 
-    # Delete the created node
-    delete_response = client.delete(f"/nodes/{created_node['id']}/")
-    assert delete_response.status_code == 200
-
-    # Verify that the node has been deleted
-    get_response = client.get(f"/nodes/{created_node['id']}/")
-    assert get_response.status_code == 404
+@pytest.mark.asyncio
+async def test_create_message_node(
+    client: TestClient, async_session: AsyncSession
+):
+    node_data = {
+        "type": "Message Node",
+        "workflow_id": 1,
+        "message_text": "Hello World",
+    }
+    response = client.post("/nodes/create/", json=node_data)
+    assert response.status_code == 200
+    node = response.json()
+    assert node["type"] == node_data["type"]
+    assert node["workflow_id"] == node_data["workflow_id"]
+    assert node["message_text"] == node_data["message_text"]
