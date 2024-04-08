@@ -6,8 +6,8 @@ from api.workflows.run_workflow import run_workflow
 from api.workflows.schemas import (
     Workflow,
     WorkflowCreate,
-    WorkflowUpdate,
     WorkflowRunResponse,
+    WorkflowUpdate,
 )
 from api.workflows.validator import workflow_validator
 from core.models import db_helper

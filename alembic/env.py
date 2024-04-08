@@ -1,7 +1,6 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config, create_engine
-from sqlalchemy import pool
+from sqlalchemy import create_engine, engine_from_config, pool
 
 from alembic import context
 
@@ -15,9 +14,10 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 from sqlalchemy import MetaData
-from core.models.workflow import Workflow
+
 from core.models.edge import Edge
 from core.models.node import Node
+from core.models.workflow import Workflow
 
 # Create a new MetaData object
 target_metadata = MetaData()

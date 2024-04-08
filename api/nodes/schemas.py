@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
-from api.nodes.node_attr_values import NodeType, MessageNodeStatus
+from api.nodes.node_attr_values import MessageNodeStatus, NodeType
 
 
 class NodeBase(BaseModel):
