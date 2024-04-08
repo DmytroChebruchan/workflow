@@ -25,7 +25,7 @@ async def get_node_by_id(session: AsyncSession, node_id: int) -> Node | None:
 async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
     await validate_node_for_creating(node_in)
 
-    node = Node(**node_in.dict())
+    node = Node(**node_in.model_dump())
     session.add(node)
     await session.commit()
     await session.refresh(node)
