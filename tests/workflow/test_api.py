@@ -27,13 +27,6 @@ def client():
     return TestClient(app)
 
 
-async def test_create_workflow(client: TestClient, async_session: AsyncSession):
-    response = client.post("/workflows/health_check/")
-    dict_response = response.json()
-    assert dict_response["message"] == "Healthy"
-    assert response.status_code == 200
-
-
 def test_workflow_created(client: TestClient, async_session: AsyncSession):
     response = client.post(
         "/workflows/create/", json={"title": "Test Workflow"}

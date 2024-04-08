@@ -10,3 +10,4 @@ class Node(Base):
     status = Column(String, nullable=True)
     message_text = Column(String, nullable=True)
     workflow = relationship("Workflow", back_populates="nodes")
+    condition = Column(String, nullable=True)

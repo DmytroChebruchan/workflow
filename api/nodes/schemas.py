@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
-from api.nodes.node_attr_values import NodeType
+from api.nodes.node_attr_values import NodeType, MessageNodeStatus
 
 
 class NodeBase(BaseModel):
@@ -25,3 +25,12 @@ class NodeUpdate(NodeBase):
 class Node(NodeBase):
     id: int
     model_config = ConfigDict(from_attributes=True)
+
+
+class MessageNode(NodeBase):
+    status: MessageNodeStatus
+    message_text: str
+
+
+class ConditionNode(NodeBase):
+    condition: str

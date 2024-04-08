@@ -15,11 +15,6 @@ from core.models import db_helper
 router = APIRouter(tags=["Workflows"])
 
 
-@router.post("/health_check/")
-async def health_check():
-    return {"message": "Healthy"}
-
-
 @router.get("/show_workflows/", response_model=list[Workflow])
 async def get_workflows(
     session: AsyncSession = Depends(db_helper.session_dependency),
