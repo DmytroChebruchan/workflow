@@ -37,6 +37,6 @@ def test_workflow_created(client: TestClient, async_session: AsyncSession):
     assert "id" in data
 
 
-def test_get_workflows(client: TestClient, async_session: AsyncSession):
+def test_show_workflows(client: TestClient, async_session: AsyncSession):
     response = client.get("/workflows/show_workflows/")
     assert response.status_code == 200, response.text

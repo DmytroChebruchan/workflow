@@ -16,6 +16,7 @@ if config.config_file_name is not None:
 
 from sqlalchemy import MetaData
 from core.models.workflow import Workflow
+from core.models.edge import Edge
 from core.models.node import Node
 
 # Create a new MetaData object
@@ -24,6 +25,7 @@ engine = create_engine("sqlite:///db.sqlite3")
 # Add the metadata from each model to the target_metadata
 Node.metadata.create_all(engine)
 Workflow.metadata.create_all(engine)
+Edge.metadata.create_all(engine)
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
