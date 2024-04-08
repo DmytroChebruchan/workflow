@@ -9,7 +9,9 @@ from main import app
 # Create an in-memory SQLite database for testing
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 engine = create_async_engine(DATABASE_URL, echo=True)
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+TestingSessionLocal = sessionmaker(
+    autocommit=False, autoflush=False, bind=engine
+)
 
 
 @pytest.fixture
@@ -26,13 +28,17 @@ def client():
 
 
 async def create_test_workflow(client: TestClient) -> int:
-    response = client.post("/workflows/create/", json={"title": "Test Workflow"})
+    response = client.post(
+        "/workflows/create/", json={"title": "Test Workflow"}
+    )
     data = response.json()
     return data["id"]
 
 
 @pytest.mark.asyncio
-async def test_create_start_node(client: TestClient, async_session: AsyncSession):
+async def test_create_start_node(
+    client: TestClient, async_session: AsyncSession
+):
     workflow_id = await create_test_workflow(client)
 
     # Create start node
@@ -61,7 +67,9 @@ async def test_create_start_node_with_message(
 
 
 @pytest.mark.asyncio
-async def test_create_message_node(client: TestClient, async_session: AsyncSession):
+async def test_create_message_node(
+    client: TestClient, async_session: AsyncSession
+):
     workflow_id = await create_test_workflow(client)
 
     # Create message node

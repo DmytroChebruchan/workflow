@@ -9,7 +9,9 @@ from main import app
 # Create an in-memory SQLite database for testing
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 engine = create_async_engine(DATABASE_URL, echo=True)
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+TestingSessionLocal = sessionmaker(
+    autocommit=False, autoflush=False, bind=engine
+)
 
 
 @pytest.fixture
@@ -26,7 +28,9 @@ def client():
 
 
 def test_workflow_created(client: TestClient, async_session: AsyncSession):
-    response = client.post("/workflows/create/", json={"title": "Test Workflow"})
+    response = client.post(
+        "/workflows/create/", json={"title": "Test Workflow"}
+    )
     assert response.status_code == 200, response.text
     data = response.json()
     assert data["title"] == "Test Workflow"
