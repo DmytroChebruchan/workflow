@@ -89,7 +89,5 @@ async def delete_workflow(
     workflow_id: int,
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    workflow = await workflow_validator(
-        session=session, workflow_id=workflow_id
-    )
+    workflow = await workflow_validator(session=session, workflow_id=workflow_id)
     await crud.delete_workflow_by_id(session=session, workflow=workflow)
