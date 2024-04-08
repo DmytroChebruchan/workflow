@@ -20,7 +20,7 @@ from core.models.node import Node
 
 # Create a new MetaData object
 target_metadata = MetaData()
-engine = create_engine("sqlite:///db.sqlite")
+engine = create_engine("sqlite:///db.sqlite3")
 # Add the metadata from each model to the target_metadata
 Node.metadata.create_all(engine)
 Workflow.metadata.create_all(engine)
