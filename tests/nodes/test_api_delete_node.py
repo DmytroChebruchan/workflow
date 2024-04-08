@@ -5,9 +5,9 @@ from sqlalchemy.orm import sessionmaker
 
 from core.models import Base
 from main import app
+from tests.constants import DATABASE_URL
 
 # Create an in-memory SQLite database for testing
-DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 engine = create_async_engine(DATABASE_URL, echo=True)
 TestingSessionLocal = sessionmaker(
     autocommit=False, autoflush=False, bind=engine
