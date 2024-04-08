@@ -1,7 +1,10 @@
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import (
+    AsyncSession,
+    create_async_engine,
+    async_sessionmaker,
+)
 
 from core.models import Base
 from main import app
@@ -9,7 +12,7 @@ from tests.constants import DATABASE_URL
 
 # Create an in-memory SQLite database for testing
 engine = create_async_engine(DATABASE_URL, echo=True)
-TestingSessionLocal = sessionmaker(
+TestingSessionLocal = async_sessionmaker(
     autocommit=False, autoflush=False, bind=engine
 )
 
