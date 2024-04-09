@@ -1,3 +1,5 @@
+from typing import Union
+
 from fastapi import HTTPException
 from starlette import status
 
@@ -30,6 +32,14 @@ async def validate_message(node_in: NodeCreate | NodeUpdate) -> None:
         )
 
 
+async def validate_condition_of_node(node_in: NodeCreate | NodeUpdate) -> None:
+    if node_in.condition and node_in.type != NodeType.CONDITION:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Condition can be provided only for nodes with 'Condition Node' type",
+        )
+
+
 async def validate_existence_of_node(node: Node) -> None:
     if node is None:
         raise HTTPException(
@@ -50,14 +60,9 @@ async def validate_existence_of_workflow(
         )
 
 
-async def validate_node_for_update(node_update: NodeUpdate) -> None:
-    await validate_node_type(node_update)
-    await validate_status(node_update)
-    await validate_message(node_update)
-    await validate_existence_of_workflow(node_update)
-
-
-async def validate_node_for_creating(node_in: NodeCreate) -> None:
-    await validate_node_type(node_in)
-    await validate_status(node_in)
-    await validate_message(node_in)
+async def validate_node(node: Union[NodeUpdate, NodeCreate]) -> None:
+    await validate_node_type(node)
+    await validate_status(node)
+    await validate_message(node)
+    await validate_existence_of_workflow(node)
+    await validate_condition_of_node(node)
