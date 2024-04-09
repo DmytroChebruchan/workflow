@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from api.nodes.schemas import NodeCreate, NodeUpdate
+from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
 from tests.nodes.fixture_nodes_dicts import (
     dummy_condition_node,
     dummy_message_node,

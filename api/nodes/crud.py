@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.nodes.schemas import NodeCreate, NodeUpdate
+from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
 from api.nodes.validators import validate_existence_of_node, validate_node
 from core.models import Node
 
