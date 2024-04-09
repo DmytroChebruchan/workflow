@@ -3,10 +3,10 @@ from pydantic import ValidationError
 
 from api.nodes.schemas import NodeCreate, NodeUpdate
 from tests.nodes.fixture_nodes_dicts import (
-    dummy_condition_node,
-    dummy_message_node,
     dummy_node,
     dummy_start_node,
+    dummy_message_node,
+    dummy_condition_node,
 )
 
 
