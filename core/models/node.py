@@ -11,6 +11,8 @@ class Node(Base):
     message_text = Column(String, nullable=True)
     workflow = relationship("Workflow", back_populates="nodes")
     condition = Column(String, nullable=True)
+    id_of_true_condition = Column(Integer, nullable=True)
+    id_of_false_condition = Column(Integer, nullable=True)
     outgoing_edges = relationship(
         "Edge",
         foreign_keys="[Edge.source_node_id]",

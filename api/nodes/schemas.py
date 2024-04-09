@@ -16,7 +16,8 @@ class NodeBase(BaseModel):
 
 
 class NodeCreate(NodeBase):
-    pass
+    id_of_true_condition: Optional[int] = None
+    id_of_false_condition: Optional[int] = None
 
 
 class NodeUpdate(NodeBase):

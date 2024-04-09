@@ -67,6 +67,8 @@ async def test_create_condition_node(
         "type": "Condition Node",
         "workflow_id": workflow_id,
         "condition": "Some condition",
+        "id_of_true_condition": 1,
+        "id_of_false_condition": 2,
     }
     response = client.post("/nodes/create/", json=node_data)
     assert response.status_code == 200

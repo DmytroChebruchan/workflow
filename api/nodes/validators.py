@@ -49,15 +49,30 @@ async def validate_existence_of_node(node: Node) -> None:
 
 
 async def validate_condition_node(node: Union[NodeUpdate, NodeCreate]) -> None:
-    if node.type == NodeType.CONDITION and node.condition is None:
+    if node.type == NodeType.CONDITION and (
+        node.condition is None
+        or node.id_of_true_condition is None
+        or node.id_of_false_condition is None
+    ):
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Condition Node cannot be created without condition.",
+            detail="Condition Node cannot be created without condition, "
+            "id_of_true_condition, id_of_false_condition.",
         )
     if node.type != NodeType.CONDITION and node.condition is not None:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Only Condition Nodes can have condition.",
+        )
+    if node.type != NodeType.CONDITION and (
+        node.condition is not None
+        or node.id_of_true_condition is not None
+        or node.id_of_false_condition is not None
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Only Condition Nodes can have condition, "
+            "id_of_true_condition, id_of_false_condition.",
         )
 
 
