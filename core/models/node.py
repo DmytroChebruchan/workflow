@@ -6,13 +6,15 @@ from core.models.base import Base
 
 class Node(Base):
     type = Column(String)
-    workflow_id = Column(Integer, ForeignKey("workflows.id"))
     status = Column(String, nullable=True)
     message_text = Column(String, nullable=True)
-    workflow = relationship("Workflow", back_populates="nodes")
     condition = Column(String, nullable=True)
+
+    workflow_id = Column(Integer, ForeignKey("workflows.id"))
     id_of_true_condition = Column(Integer, nullable=True)
     id_of_false_condition = Column(Integer, nullable=True)
+
+    workflow = relationship("Workflow", back_populates="nodes")
     outgoing_edges = relationship(
         "Edge",
         foreign_keys="[Edge.source_node_id]",

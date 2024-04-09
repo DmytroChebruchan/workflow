@@ -48,8 +48,10 @@ async def get_workflow_by_id(
     )
 
 
-@router.get("/run/{workflow_id}/", response_model=WorkflowRunResponse)
-async def run_workflow_by_id(
+@router.get(
+    "/show_nodes_related/{workflow_id}/", response_model=WorkflowRunResponse
+)
+async def nodes_related(
     workflow_id: int,
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):

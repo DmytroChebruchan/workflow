@@ -23,5 +23,5 @@ async def test_delete_node(client: TestClient, async_session: AsyncSession):
     assert delete_response.status_code == 200
 
     # Verify that the node has been deleted
-    get_response = client.get(f"/nodes/{created_node['id']}/")
+    get_response = client.get(f"/nodes/details/{created_node['id']}/")
     assert get_response.status_code == 404
