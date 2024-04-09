@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
-from api.nodes.validators import validate_existence_of_node, validate_node
+from api.nodes.validators import validate_existence_of_node
 from core.models import Node
 
 
