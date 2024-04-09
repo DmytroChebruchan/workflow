@@ -3,11 +3,7 @@ from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.schemas import NodeCreate, NodeUpdate
-from api.nodes.validators import (
-    validate_existence_of_node,
-    validate_node_for_creating,
-    validate_node_for_update,
-)
+from api.nodes.validators import validate_existence_of_node, validate_node
 from core.models import Node
 
 
@@ -23,7 +19,7 @@ async def get_node_by_id(session: AsyncSession, node_id: int) -> Node | None:
 
 
 async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
-    await validate_node_for_creating(node_in)
+    await validate_node(node_in)
 
     node = Node(**node_in.model_dump())
     session.add(node)
@@ -43,7 +39,7 @@ async def update_node(
 ) -> Node:
 
     # Validate the updated node fields
-    await validate_node_for_update(node_update)
+    await validate_node(node_update)
 
     # Validate existence of node
     node = await get_node_by_id(session=session, node_id=node_id)

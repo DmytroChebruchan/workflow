@@ -48,21 +48,8 @@ async def validate_existence_of_node(node: Node) -> None:
         )
 
 
-async def validate_existence_of_workflow(
-    node_update: NodeCreate | NodeUpdate,
-) -> None:
-    workflow_id = node_update.workflow_id
-    workflow = Workflow.get_by_id(workflow_id)
-    if workflow is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Workflow with ID {workflow_id} not found",
-        )
-
-
 async def validate_node(node: Union[NodeUpdate, NodeCreate]) -> None:
     await validate_node_type(node)
     await validate_status(node)
     await validate_message(node)
-    await validate_existence_of_workflow(node)
     await validate_condition_of_node(node)
