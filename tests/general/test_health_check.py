@@ -5,9 +5,8 @@ from sqlalchemy.orm import sessionmaker
 
 from core.models import Base
 from main import app
-from tests.constants import DATABASE_URL
-
 from tests.conftest import async_session, client
+from tests.constants import DATABASE_URL
 
 
 @pytest.mark.asyncio

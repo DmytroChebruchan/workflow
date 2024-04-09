@@ -1,11 +1,5 @@
-import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
-
-from core.models import Base
-from main import app
-from tests.constants import DATABASE_URL
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from tests.conftest import async_session, client
 
