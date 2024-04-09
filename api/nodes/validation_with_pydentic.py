@@ -1,12 +1,12 @@
-from api.nodes.schemas.schemas_node_by_type import (
-    StartNode,
-    MessageNode,
-    ConditionNode,
-    EndNode,
-)
 from fastapi import HTTPException
 from starlette import status
 
+from api.nodes.schemas.schemas_node_by_type import (
+    ConditionNode,
+    EndNode,
+    MessageNode,
+    StartNode,
+)
 from core.models import Node
 
 # Map node types to their corresponding Pydantic schemas
