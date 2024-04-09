@@ -3,7 +3,7 @@ from typing import Union
 from fastapi import HTTPException
 from starlette import status
 
-from api.nodes.node_attr_values import NodeType, MessageNodeStatus
+from api.nodes.node_attr_values import MessageNodeStatus, NodeType
 from api.nodes.schemas import NodeCreate, NodeUpdate
 from core.models import Node, Workflow
 
