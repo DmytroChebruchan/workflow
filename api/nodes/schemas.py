@@ -10,6 +10,7 @@ class NodeBase(BaseModel):
     workflow_id: int
     status: Optional[str] = None
     message_text: Optional[str] = None
+    condition: Optional[str] = None
 
     model_config = ConfigDict()
 
