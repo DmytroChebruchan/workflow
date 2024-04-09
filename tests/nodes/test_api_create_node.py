@@ -12,7 +12,11 @@ async def test_create_start_node(
     workflow_id = await create_test_workflow(client)
 
     # Create start node
-    node_data = {"type": "Start Node", "workflow_id": workflow_id}
+    node_data = {
+        "type": "Start Node",
+        "workflow_id": workflow_id,
+        "id_of_true_condition": 1,
+    }
     response = client.post("/nodes/create/", json=node_data)
     assert response.status_code == 200
     node = response.json()

@@ -13,6 +13,7 @@ async def test_delete_node(client: TestClient, async_session: AsyncSession):
     node_data = {
         "type": "Start Node",
         "workflow_id": workflow_id,
+        "id_of_true_condition": 1,
     }
     create_response = client.post("/nodes/create/", json=node_data)
     assert create_response.status_code == 200

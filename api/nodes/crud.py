@@ -3,6 +3,7 @@ from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
+from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
 from api.nodes.validators import validate_existence_of_node, validate_node
 from core.models import Node
 
@@ -20,8 +21,7 @@ async def get_node_by_id(session: AsyncSession, node_id: int) -> Node | None:
 
 async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
     await validate_node(node_in)
-
-    node = Node(**node_in.model_dump())
+    node = await nodes_validation_with_pydentic(node_in.model_dump())
     session.add(node)
     await session.commit()
     await session.refresh(node)

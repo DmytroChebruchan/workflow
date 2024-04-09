@@ -17,6 +17,7 @@ async def test_create_message_node(
         "workflow_id": workflow_id,
         "message_text": "Hello World",
         "status": "pending",
+        "id_of_true_condition": 1,
     }
     response = client.post("/nodes/create/", json=node_data)
     assert response.status_code == 200

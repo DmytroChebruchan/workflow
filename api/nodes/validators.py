@@ -5,7 +5,7 @@ from starlette import status
 
 from api.nodes.node_attr_values import MessageNodeStatus, NodeType
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
-from core.models import Node, Workflow
+from core.models import Node
 
 
 async def validate_node_type(node_in: NodeCreate | NodeUpdate) -> None:
@@ -73,9 +73,8 @@ async def validate_condition_node(node: Union[NodeUpdate, NodeCreate]) -> None:
             detail="Only Condition Nodes can have condition.",
         )
     if node.type != NodeType.CONDITION and (
-        node.condition is not None
-        or node.id_of_true_condition is not None
-        or node.id_of_false_condition is not None
+        node.id_of_true_condition is not None
+        and node.id_of_false_condition is not None
     ):
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
