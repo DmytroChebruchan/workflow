@@ -3,7 +3,7 @@ from typing import Union
 from fastapi import HTTPException
 from starlette import status
 
-from api.nodes.node_attr_values import NodeType
+from api.nodes.node_attr_values import NodeType, MessageNodeStatus
 from api.nodes.schemas import NodeCreate, NodeUpdate
 from core.models import Node, Workflow
 
@@ -29,6 +29,14 @@ async def validate_message(node_in: NodeCreate | NodeUpdate) -> None:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Message text can be provided only for nodes with 'Message Node' type",
+        )
+    if node_in.type == NodeType.MESSAGE and (
+        node_in.message_text is None
+        or node_in.status not in MessageNodeStatus.__members__.values()
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Message node should have message_text and status.",
         )
 
 
