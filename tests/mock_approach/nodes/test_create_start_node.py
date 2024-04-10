@@ -1,9 +1,10 @@
-from api.nodes.crud import create_node
-from api.nodes.schemas.schemas import NodeCreate
-from core.models import Node
+from unittest.mock import AsyncMock
 
 import pytest
-from unittest.mock import MagicMock, AsyncMock
+
+from api.nodes.crud import create_node
+from api.nodes.schemas.schemas import NodeCreate
+from core.models.node import Node
 
 
 @pytest.mark.asyncio

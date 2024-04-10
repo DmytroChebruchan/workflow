@@ -1,11 +1,10 @@
 from fastapi.testclient import TestClient
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from tests.conftest import async_session, client
+from tests.conftest import test_client
 
 
-def test_workflow_created(client: TestClient, async_session: AsyncSession):
-    response = client.post(
+def test_workflow_created(test_client: TestClient):
+    response = test_client.post(
         "/workflows/create/", json={"title": "Test Workflow"}
     )
     assert response.status_code == 200, response.text
@@ -14,6 +13,6 @@ def test_workflow_created(client: TestClient, async_session: AsyncSession):
     assert "id" in data
 
 
-def test_show_workflows(client: TestClient, async_session: AsyncSession):
-    response = client.get("/workflows/show_workflows/")
+def test_show_workflows(test_client: TestClient):
+    response = test_client.get("/workflows/show_workflows/")
     assert response.status_code == 200, response.text
