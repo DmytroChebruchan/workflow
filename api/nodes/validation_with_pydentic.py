@@ -7,7 +7,7 @@ from api.nodes.schemas.schemas_node_by_type import (
     MessageNode,
     StartNode,
 )
-from core.models import Node
+from core.models.node import Node
 
 # Map node types to their corresponding Pydantic schemas
 NODE_TYPE_TO_SCHEMA = {

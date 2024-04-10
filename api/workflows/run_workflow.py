@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from sqlalchemy.sql import select
 
-from core.models import Workflow
+from core.models.workflow import Workflow
 
 
 async def run_workflow(session: AsyncSession, workflow_id: int) -> dict | None:

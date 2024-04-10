@@ -2,7 +2,7 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.workflows import crud
-from core.models import db_helper
+from core.models.db_helper import db_helper
 
 
 async def workflow_validator(

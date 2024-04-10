@@ -5,7 +5,7 @@ from starlette import status
 
 from api.nodes.node_attr_values import MessageNodeStatus, NodeType
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
-from core.models import Node
+from core.models.node import Node
 
 
 async def validate_existence_of_node(node: Node) -> None:

@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.nodes import crud
 from api.nodes.schemas.schemas import Node, NodeCreate
 from api.workflows.validator import workflow_validator
-from core.models import db_helper
+from core.models.db_helper import db_helper
 
 router = APIRouter(tags=["Nodes"])
 

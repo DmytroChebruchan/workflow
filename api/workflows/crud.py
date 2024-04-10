@@ -5,7 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edge.schemas import EdgeBase
 from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
-from core.models import Edge, Node, Workflow
+from core.models.node import Node
+from core.models.edge import Edge
+from core.models.workflow import Workflow
 
 
 async def get_workflows(session: AsyncSession) -> list[Workflow]:

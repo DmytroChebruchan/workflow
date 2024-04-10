@@ -10,7 +10,7 @@ from api.workflows.schemas import (
     WorkflowUpdate,
 )
 from api.workflows.validator import workflow_validator
-from core.models import db_helper
+from core.models.db_helper import db_helper
 
 router = APIRouter(tags=["Workflows"])
 
