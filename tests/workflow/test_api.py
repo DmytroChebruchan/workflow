@@ -1,10 +1,10 @@
 from fastapi.testclient import TestClient
 
-from tests.conftest import test_client
+from tests.conftest import client
 
 
-def test_workflow_created(test_client: TestClient):
-    response = test_client.post(
+def test_workflow_created(client: TestClient):
+    response = client.post(
         "/workflows/create/", json={"title": "Test Workflow"}
     )
     assert response.status_code == 200, response.text
@@ -13,6 +13,6 @@ def test_workflow_created(test_client: TestClient):
     assert "id" in data
 
 
-def test_show_workflows(test_client: TestClient):
-    response = test_client.get("/workflows/show_workflows/")
+def test_show_workflows(client: TestClient):
+    response = client.get("/workflows/show_workflows/")
     assert response.status_code == 200, response.text

@@ -1,12 +1,12 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from tests.conftest import test_client, create_test_workflow
+from tests.conftest import client, create_test_workflow
 
 
 @pytest.mark.asyncio
-async def test_create_message_node(test_client: TestClient):
-    workflow_id = await create_test_workflow(test_client)
+async def test_create_message_node(client: TestClient):
+    workflow_id = await create_test_workflow(client)
 
     # Create message node
     node_data = {
@@ -16,7 +16,7 @@ async def test_create_message_node(test_client: TestClient):
         "status": "pending",
         "id_of_true_condition": 1,
     }
-    response = test_client.post("/nodes/create/", json=node_data)
+    response = client.post("/nodes/create/", json=node_data)
     assert response.status_code == 200
     node = response.json()
     assert node["type"] == node_data["type"]
@@ -25,8 +25,8 @@ async def test_create_message_node(test_client: TestClient):
 
 
 @pytest.mark.asyncio
-async def test_create_message_node_wrong_status(test_client: TestClient):
-    workflow_id = await create_test_workflow(test_client)
+async def test_create_message_node_wrong_status(client: TestClient):
+    workflow_id = await create_test_workflow(client)
 
     # Create message node
     node_data = {
@@ -35,13 +35,13 @@ async def test_create_message_node_wrong_status(test_client: TestClient):
         "message_text": "Hello World",
         "status": "",
     }
-    response = test_client.post("/nodes/create/", json=node_data)
+    response = client.post("/nodes/create/", json=node_data)
     assert response.status_code == 422
 
 
 @pytest.mark.asyncio
-async def test_create_message_node_without_status(test_client: TestClient):
-    workflow_id = await create_test_workflow(test_client)
+async def test_create_message_node_without_status(client: TestClient):
+    workflow_id = await create_test_workflow(client)
 
     # Create message node
     node_data = {
@@ -49,13 +49,13 @@ async def test_create_message_node_without_status(test_client: TestClient):
         "workflow_id": workflow_id,
         "message_text": "Hello World",
     }
-    response = test_client.post("/nodes/create/", json=node_data)
+    response = client.post("/nodes/create/", json=node_data)
     assert response.status_code == 422
 
 
 @pytest.mark.asyncio
-async def test_create_start_node_with_message(test_client: TestClient):
-    workflow_id = await create_test_workflow(test_client)
+async def test_create_start_node_with_message(client: TestClient):
+    workflow_id = await create_test_workflow(client)
 
     # Try to create start node with message
     node_data = {
@@ -63,5 +63,5 @@ async def test_create_start_node_with_message(test_client: TestClient):
         "workflow_id": workflow_id,
         "message_text": "Hello",
     }
-    response = test_client.post("/nodes/create/", json=node_data)
+    response = client.post("/nodes/create/", json=node_data)
     assert response.status_code == 422
