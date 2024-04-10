@@ -19,7 +19,6 @@ NODE_TYPE_TO_SCHEMA = {
 
 
 async def nodes_validation_with_pydentic(data: dict):
-    print()
     node_type = data["type"]
     if node_type not in NODE_TYPE_TO_SCHEMA:
         raise HTTPException(
