@@ -1,8 +1,11 @@
-import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    async_sessionmaker,
+    create_async_engine,
+    AsyncSession,
+)
 
-from core.models.base import Base
+from core.models.db_helper import db_helper
 from main import app
 from tests.constants import DATABASE_URL
 
@@ -13,16 +16,23 @@ TestingSessionLocal = async_sessionmaker(
 )
 
 
-@pytest.fixture
-async def async_session():
-    async with TestingSessionLocal() as session:
-        async with engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
-        yield session
+# async def async_session() -> AsyncSession:
+#     async with TestingSessionLocal() as session:
+#         async with engine.begin() as conn:
+#             await conn.run_sync(Base.metadata.create_all)
+#         yield session
 
 
-@pytest.fixture
+async def async_session() -> AsyncSession:
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        await db.close()
+
+
 def client():
+    app.dependency_overrides[db_helper.session_dependency] = async_session
     return TestClient(app)
 
 
