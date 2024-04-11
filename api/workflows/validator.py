@@ -2,12 +2,12 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.workflows import crud
-from core.models.db_helper import db_helper
+from core.database.database import get_async_session
 
 
 async def workflow_validator(
     workflow_id: int,
-    session: AsyncSession = Depends(db_helper.session_dependency),
+    session: AsyncSession = Depends(get_async_session),
 ):
     workflow = await crud.get_workflow_by_id(session, workflow_id)
     if workflow is None:

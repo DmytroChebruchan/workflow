@@ -1,9 +1,4 @@
-from tests.conftest import client
-
-client = client()
-
-
-async def test_workflow_created():
+async def test_workflow_created(client):
     response = client.post(
         "/workflows/create/", json={"title": "Test Workflow"}
     )

@@ -10,14 +10,14 @@ from api.workflows.schemas import (
     WorkflowUpdate,
 )
 from api.workflows.validator import workflow_validator
-from core.models.db_helper import db_helper
+from core.database.database import get_async_session
 
 router = APIRouter(tags=["Workflows"])
 
 
 @router.get("/show_workflows/", response_model=list[Workflow])
 async def get_workflows(
-    session: AsyncSession = Depends(db_helper.session_dependency),
+    session: AsyncSession = Depends(get_async_session),
 ):
     return await crud.get_workflows(session=session)
 
@@ -25,7 +25,7 @@ async def get_workflows(
 @router.post("/create/", response_model=Workflow)
 async def create_workflow(
     workflow_in: WorkflowCreate,
-    session: AsyncSession = Depends(db_helper.session_dependency),
+    session: AsyncSession = Depends(get_async_session),
 ):
     return await crud.create_workflow(session=session, workflow_in=workflow_in)
 
@@ -33,7 +33,7 @@ async def create_workflow(
 @router.get("/read/{workflow_id}/", response_model=Workflow)
 async def get_workflow_by_id(
     workflow_id: int,
-    session: AsyncSession = Depends(db_helper.session_dependency),
+    session: AsyncSession = Depends(get_async_session),
 ):
     workflow = await crud.get_workflow_by_id(
         session=session,
@@ -53,7 +53,7 @@ async def get_workflow_by_id(
 )
 async def nodes_related(
     workflow_id: int,
-    session: AsyncSession = Depends(db_helper.session_dependency),
+    session: AsyncSession = Depends(get_async_session),
 ):
     workflow = await crud.get_workflow_by_id(
         session=session,
@@ -72,7 +72,7 @@ async def nodes_related(
 async def update_workflow(
     workflow_id: int,
     workflow_update: WorkflowUpdate,
-    session: AsyncSession = Depends(db_helper.session_dependency),
+    session: AsyncSession = Depends(get_async_session),
 ):
     workflow = await workflow_validator(
         session=session,
@@ -89,7 +89,7 @@ async def update_workflow(
 @router.delete("/delete/{workflow_id}/", response_model=None)
 async def delete_workflow(
     workflow_id: int,
-    session: AsyncSession = Depends(db_helper.session_dependency),
+    session: AsyncSession = Depends(get_async_session),
 ):
     workflow = await workflow_validator(
         session=session, workflow_id=workflow_id

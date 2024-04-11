@@ -1,18 +1,16 @@
 from sqlalchemy.ext.asyncio import (
-    create_async_engine,
-    async_sessionmaker,
     AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
 )
 
 from core.models.base import Base
 
-engine = create_async_engine(
-    "sqlite+aiosqlite:///db.sqlite3", connect_args={"check_same_thread": False}
-)
+engine = create_async_engine("sqlite+aiosqlite:///db.sqlite3")
 SessionLocal = async_sessionmaker(engine)
 
 
-async def get_db() -> AsyncSession:
+async def get_async_session() -> AsyncSession:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 

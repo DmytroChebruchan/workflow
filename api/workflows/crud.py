@@ -1,12 +1,11 @@
-from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.edge.schemas import EdgeBase
+from api.edge.crud import create_edge
+from api.nodes.crud import create_node
 from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
 from core.models.node import Node
-from core.models.edge import Edge
 from core.models.workflow import Workflow
 
 
@@ -23,34 +22,12 @@ async def get_workflow_by_id(
     return await session.get(Workflow, workflow_id)
 
 
-async def create_workflow(
-    session: AsyncSession, workflow_in: WorkflowCreate
-) -> Workflow:
+async def create_workflow(session: AsyncSession, workflow_in: WorkflowCreate):
     # Create and add the workflow to the session
     workflow = Workflow(**workflow_in.model_dump())
     session.add(workflow)
     await session.commit()
     await session.refresh(workflow)
-
-    # Create start and end nodes associated with the workflow
-    start_node = Node(type="Start Node", workflow_id=workflow.id)
-    end_node = Node(type="End Node", workflow_id=workflow.id)
-    session.add_all([start_node, end_node])
-    await session.commit()
-
-    # Create an edge connecting the start and end nodes
-    edge = Edge(
-        source_node_id=start_node.id,
-        destination_node_id=end_node.id,
-    )
-    session.add(edge)
-    await session.commit()
-
-    # Refresh objects to get their updated attributes
-    await session.refresh(start_node)
-    await session.refresh(end_node)
-    await session.refresh(edge)
-
     return workflow
 
 
@@ -74,3 +51,22 @@ async def delete_workflow_by_id(
     await session.delete(workflow)
     await session.commit()
     await session.refresh(workflow)
+
+
+async def create_workflow_with_nodes(
+    session: AsyncSession, workflow_in: WorkflowCreate
+):
+    # Create and add the workflow to the session
+    workflow = await create_workflow(session=session, workflow_in=workflow_in)
+
+    # Create start and end nodes associated with the workflow
+    start_node = Node(type="Start Node", workflow_id=workflow.id)
+    created_start_node = create_node(start_node)
+    end_node = Node(type="End Node", workflow_id=workflow.id)
+    created_end_node = create_node(end_node)
+
+    # Create an edge connecting the start and end nodes
+    await create_edge(
+        from_node_id=created_start_node.id, to_node_id=created_end_node.id
+    )
+    return workflow
