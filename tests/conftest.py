@@ -1,3 +1,5 @@
+from unittest.mock import AsyncMock
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import (
@@ -8,6 +10,7 @@ from sqlalchemy.ext.asyncio import (
 
 from core.database.database import get_async_session
 from core.models.base import Base
+from core.models.node import Node
 from main import app
 
 engine = create_async_engine(
@@ -15,7 +18,10 @@ engine = create_async_engine(
     connect_args={"check_same_thread": False},
 )
 SessionLocal = async_sessionmaker(
-    autocommit=False, autoflush=False, bind=engine
+    autocommit=False,
+    autoflush=False,
+    bind=engine,
+    class_=AsyncSession,
 )
 
 
@@ -43,3 +49,13 @@ async def create_test_workflow(client: TestClient) -> int:
     )
     data = response.json()
     return data["id"]
+
+
+@pytest.fixture
+def mock_get_async_session():
+    return AsyncMock()
+
+
+@pytest.fixture
+def get_node_by_id_mock():
+    return Node()
