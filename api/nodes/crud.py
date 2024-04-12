@@ -1,6 +1,8 @@
+from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette import status
 
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
@@ -29,6 +31,11 @@ async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
 
 async def delete_node_by_id(session: AsyncSession, node_id: int) -> None:
     node = await get_node_by_id(session=session, node_id=node_id)
+    if node is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Node with ID {node_id} not found",
+        )
     await session.delete(node)
     await session.commit()
 
