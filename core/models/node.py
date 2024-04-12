@@ -2,6 +2,9 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from core.models.base import Base
+# fmt: off
+from core.models.edge import Edge
+# fmt: on
 
 
 class Node(Base):

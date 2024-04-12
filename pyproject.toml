@@ -1,5 +1,2 @@
 [tool.black]
 line-length = 80
-
-[tool.pytest.ini_options]
-python_files = "tests/workflow/test_api.py"
