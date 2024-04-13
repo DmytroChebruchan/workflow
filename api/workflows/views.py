@@ -10,6 +10,7 @@ from api.workflows.schemas import (
     WorkflowUpdate,
 )
 from api.workflows.validator import workflow_validator
+from api.workflows.workflow_utils import create_workflow_with_nodes
 from core.database.database import get_async_session
 
 router = APIRouter(tags=["Workflows"])
@@ -23,15 +24,17 @@ async def get_workflows(
 
 
 @router.post("/create/", response_model=Workflow)
-async def create_workflow(
-    workflow_in: WorkflowCreate,
+async def create_workflow_view(
+    workflow_input: WorkflowCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    return await crud.create_workflow(session=session, workflow_in=workflow_in)
+    return await create_workflow_with_nodes(
+        session=session, workflow_in=workflow_input
+    )
 
 
 @router.get("/read/{workflow_id}/", response_model=Workflow)
-async def get_workflow_by_id(
+async def get_workflow_by_id_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
@@ -51,7 +54,7 @@ async def get_workflow_by_id(
 @router.get(
     "/show_nodes_related/{workflow_id}/", response_model=WorkflowRunResponse
 )
-async def nodes_related(
+async def nodes_related_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
@@ -69,7 +72,7 @@ async def nodes_related(
 
 
 @router.put("/update/{workflow_id}/", response_model=Workflow)
-async def update_workflow(
+async def update_workflow_view(
     workflow_id: int,
     workflow_update: WorkflowUpdate,
     session: AsyncSession = Depends(get_async_session),
@@ -87,7 +90,7 @@ async def update_workflow(
 
 
 @router.delete("/delete/{workflow_id}/", response_model=None)
-async def delete_workflow(
+async def delete_workflow_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
