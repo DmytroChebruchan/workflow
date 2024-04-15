@@ -37,7 +37,7 @@ async def create_workflow_view(
 async def get_workflow_by_id_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
-):
+) -> Workflow:
     workflow = await crud.get_workflow_by_id(
         session=session,
         workflow_id=workflow_id,

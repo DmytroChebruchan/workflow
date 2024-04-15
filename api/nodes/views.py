@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes import crud
@@ -43,9 +44,10 @@ async def get_node_view(
     )
 
 
-@router.delete("/{node_id}/", response_model=None)
+@router.delete("/{node_id}/")
 async def delete_node_view(
     node_id: int,
     session: AsyncSession = Depends(get_async_session),
-) -> None:
+) -> Response:
     await crud.delete_node_by_id(session=session, node_id=node_id)
+    return Response(content={"status": "ok"}, status_code=200)
