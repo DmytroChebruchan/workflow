@@ -6,13 +6,6 @@ from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
 from core.models.workflow import Workflow
 
 
-async def get_workflows(session: AsyncSession) -> list[Workflow]:
-    stmt = select(Workflow).order_by(Workflow.id)
-    result: Result = await session.execute(stmt)
-    workflows = result.scalars().all()
-    return list(workflows)
-
-
 async def get_workflow_by_id(
     session: AsyncSession, workflow_id: int
 ) -> Workflow | None:

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.general.utils import get_elements, get_element_by_id
 from api.workflows import crud
 from api.workflows.run_workflow import run_workflow
 from api.workflows.schemas import (
@@ -20,7 +21,7 @@ router = APIRouter(tags=["Workflows"])
 async def get_workflows(
     session: AsyncSession = Depends(get_async_session),
 ):
-    return await crud.get_workflows(session=session)
+    return await get_elements(session=session, element=Workflow)
 
 
 @router.post("/create/", response_model=Workflow)
@@ -38,9 +39,8 @@ async def get_workflow_by_id_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> Workflow:
-    workflow = await crud.get_workflow_by_id(
-        session=session,
-        workflow_id=workflow_id,
+    workflow = await get_element_by_id(
+        session=session, element_id=workflow_id, element=Workflow
     )
     if workflow is not None:
         return workflow
@@ -58,9 +58,8 @@ async def nodes_related_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    workflow = await crud.get_workflow_by_id(
-        session=session,
-        workflow_id=workflow_id,
+    workflow = await get_element_by_id(
+        session=session, element_id=workflow_id, element=Workflow
     )
     if workflow is not None:
         return await run_workflow(session=session, workflow_id=workflow_id)

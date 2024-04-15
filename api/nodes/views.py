@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.general.utils import get_elements, get_element_by_id
 from api.nodes import crud
 from api.nodes.schemas.schemas import Node, NodeCreate
 from api.workflows.validator import workflow_validator
@@ -15,7 +16,7 @@ router = APIRouter(tags=["Nodes"])
 async def get_nodes_view(
     session: AsyncSession = Depends(get_async_session),
 ):
-    return await crud.get_nodes(session=session)
+    return await get_elements(session=session, element=Node)
 
 
 @router.post("/create/", response_model=Node)
@@ -35,7 +36,11 @@ async def get_node_view(
     node_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> Node:
-    node = await crud.get_node_by_id(session=session, node_id=node_id)
+    node = await get_element_by_id(
+        session=session,
+        element_id=node_id,
+        element=Node,
+    )
     if node:
         return node
     raise HTTPException(

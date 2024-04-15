@@ -4,21 +4,11 @@ from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
+from api.general.utils import get_element_by_id
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
 from api.nodes.validators import validate_existence_of_node
 from core.models.node import Node
-
-
-async def get_nodes(session: AsyncSession) -> list[Node]:
-    stmt = select(Node).order_by(Node.id)
-    result: Result = await session.execute(stmt)
-    nodes = result.scalars().all()
-    return list(nodes)
-
-
-async def get_node_by_id(session: AsyncSession, node_id: int) -> Node | None:
-    return await session.get(Node, node_id)
 
 
 async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
@@ -30,7 +20,9 @@ async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
 
 
 async def delete_node_by_id(session: AsyncSession, node_id: int) -> None:
-    node = await get_node_by_id(session=session, node_id=node_id)
+    node = await get_element_by_id(
+        session=session, element_id=node_id, element=Node
+    )
     if node is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -48,7 +40,11 @@ async def update_node(
     await nodes_validation_with_pydentic(node_update.model_dump())
 
     # Validate existence of node
-    node = await get_node_by_id(session=session, node_id=node_id)
+    node = await get_element_by_id(
+        session=session,
+        element_id=node_id,
+        element=Node,
+    )
     await validate_existence_of_node(node)
 
     # Update the node fields
