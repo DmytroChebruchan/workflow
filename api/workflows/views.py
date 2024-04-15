@@ -14,14 +14,16 @@ from api.workflows.validator import workflow_validator
 from api.workflows.workflow_utils import create_workflow_with_nodes
 from core.database.database import get_async_session
 
+from core.models.workflow import Workflow as WorkflowModel
+
 router = APIRouter(tags=["Workflows"])
 
 
-@router.get("/show_workflows/", response_model=list[Workflow])
-async def get_workflows(
+@router.get("/show_workflows/")
+async def get_workflows_view(
     session: AsyncSession = Depends(get_async_session),
 ):
-    return await get_elements(session=session, element=Workflow)
+    return await get_elements(session=session, element=WorkflowModel)
 
 
 @router.post("/create/", response_model=Workflow)
