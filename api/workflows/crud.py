@@ -2,6 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.general.utils import get_element_by_id
 from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
 from core.models.workflow import Workflow
 
@@ -9,7 +10,11 @@ from core.models.workflow import Workflow
 async def get_workflow_by_id(
     session: AsyncSession, workflow_id: int
 ) -> Workflow | None:
-    return await session.get(Workflow, workflow_id)
+    return await get_element_by_id(
+        element=Workflow,
+        session=session,
+        element_id=workflow_id,
+    )
 
 
 async def create_workflow(session: AsyncSession, workflow_in: WorkflowCreate):

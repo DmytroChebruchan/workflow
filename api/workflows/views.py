@@ -7,7 +7,6 @@ from api.workflows.run_workflow import run_workflow
 from api.workflows.schemas import (
     Workflow,
     WorkflowCreate,
-    WorkflowRunResponse,
     WorkflowUpdate,
 )
 from api.workflows.validator import workflow_validator
@@ -41,8 +40,8 @@ async def get_workflow_by_id_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> Workflow:
-    workflow = await get_element_by_id(
-        session=session, element_id=workflow_id, element=Workflow
+    workflow = await crud.get_workflow_by_id(
+        session=session, workflow_id=workflow_id
     )
     if workflow is not None:
         return workflow
@@ -53,15 +52,13 @@ async def get_workflow_by_id_view(
     )
 
 
-@router.get(
-    "/show_nodes_related/{workflow_id}/", response_model=WorkflowRunResponse
-)
+@router.get("/show_nodes_related/{workflow_id}/")
 async def nodes_related_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    workflow = await get_element_by_id(
-        session=session, element_id=workflow_id, element=Workflow
+    workflow = await crud.get_workflow_by_id(
+        session=session, workflow_id=workflow_id
     )
     if workflow is not None:
         return await run_workflow(session=session, workflow_id=workflow_id)
