@@ -14,8 +14,6 @@ class Node(Base):
     condition = Column(String, nullable=True)
 
     workflow_id = Column(Integer, ForeignKey("workflows.id"))
-    id_of_true_condition = Column(Integer, nullable=True)
-    id_of_false_condition = Column(Integer, nullable=True)
 
     workflow = relationship("Workflow", back_populates="nodes")
     outgoing_edges = relationship(

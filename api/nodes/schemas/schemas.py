@@ -8,16 +8,14 @@ from api.nodes.node_attr_values import MessageNodeStatus, NodeType
 class NodeBase(BaseModel):
     type: NodeType
     workflow_id: int
-    status: Optional[str] = None
     message_text: Optional[str] = None
+    status: Optional[str] = None
     condition: Optional[str] = None
-
     model_config = ConfigDict()
 
 
 class NodeCreate(NodeBase):
-    id_of_true_condition: Optional[int] = None
-    id_of_false_condition: Optional[int] = None
+    pass
 
 
 class NodeUpdate(NodeBase):

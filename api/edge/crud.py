@@ -12,4 +12,5 @@ async def create_edge(
     )
     session.add(edge)
     await session.commit()
+    await session.refresh(edge)
     return edge

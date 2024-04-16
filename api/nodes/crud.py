@@ -12,7 +12,8 @@ from core.models.node import Node
 
 
 async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
-    node = await nodes_validation_with_pydentic(node_in.model_dump())
+    await nodes_validation_with_pydentic(node_in.model_dump())
+    node = Node(**node_in.model_dump())
     session.add(node)
     await session.commit()
     await session.refresh(node)

@@ -25,7 +25,6 @@
 #     node_data = {
 #         "type": "Start Node",
 #         "workflow_id": 1,
-#         "id_of_true_condition": 1,
 #         "id": 1,
 #     }
 #

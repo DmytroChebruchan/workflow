@@ -34,5 +34,6 @@ async def nodes_validation_with_pydentic(data: dict):
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Failed to validate node of type {node_type}: {e}",
         )
-    node = Node(**data)
-    return node
+    # # to save the node it should be
+    # node_to_save = Node(**data)
+    # return node_to_save

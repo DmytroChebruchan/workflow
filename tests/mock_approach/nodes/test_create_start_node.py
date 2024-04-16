@@ -4,6 +4,7 @@ import pytest
 
 from api.nodes.crud import create_node
 from api.nodes.schemas.schemas import NodeCreate
+from api.nodes.schemas.schemas_node_by_type import StartNode
 from core.models.node import Node
 
 
@@ -13,7 +14,6 @@ async def test_create_node():
     dummy_node = {
         "type": "Start Node",
         "workflow_id": 1,
-        "id_of_true_condition": 2,
     }
     mock_node_in = NodeCreate(**dummy_node)
 
