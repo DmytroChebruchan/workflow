@@ -1,32 +1,5 @@
-from api.edges.crud import create_edge
 from api.general.utils import save_element_into_db
-from api.nodes.schemas.schemas import NodeCreate
 from core.models import Node
-
-
-async def creating_required_edges(
-    node: Node, node_in: NodeCreate, session
-) -> None:
-    if node_in.from_node_id:
-        await create_edge(
-            from_node_id=node_in.from_node_id,
-            to_node_id=node.id,
-            session=session,
-        )
-    if node_in.to_node_id:
-        await create_edge(
-            from_node_id=node.id,
-            to_node_id=node_in.to_node_id,
-            session=session,
-        )
-    if node_in.nodes_to_list:
-        for node_to in node_in.nodes_to_list:
-            await create_edge(
-                from_node_id=node_in.from_node_id,
-                to_node_id=node_to.id,
-                session=session,
-                condition=node_to.condition,
-            )
 
 
 async def node_model_dict_generator(node_in) -> dict:

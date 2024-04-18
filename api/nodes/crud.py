@@ -5,10 +5,10 @@ from starlette import status
 from api.general.utils import get_element_by_id
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
 from api.nodes.utils import (
-    creating_required_edges,
     node_model_dict_generator,
     node_saver,
 )
+from api.edges.crud import creating_required_edges
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
 from api.nodes.validators import validate_existence_of_node
 from core.models.node import Node

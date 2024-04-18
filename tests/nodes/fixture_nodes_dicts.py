@@ -16,3 +16,9 @@ dummy_condition_node = {
     "type": "Condition Node",
     "workflow_id": 1,
 }
+
+dummy_node_with_id = {
+    "type": "Start Node",
+    "workflow_id": 1,
+    "id": 1,
+}
