@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.general.utils import save_element_into_db
 from api.workflows.schemas import WorkflowCreate
 from core.models.node import Node
 from core.models.workflow import Workflow
@@ -10,8 +11,6 @@ async def create_workflow_with_nodes(
 ):
 
     workflow = Workflow(**workflow_in.model_dump())
-    session.add(workflow)
-    await session.commit()
-    await session.refresh(workflow)
+    await save_element_into_db(session=session, element=workflow)
 
     return workflow

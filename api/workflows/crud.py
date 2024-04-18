@@ -17,15 +17,6 @@ async def get_workflow_by_id(
     )
 
 
-async def create_workflow(session: AsyncSession, workflow_in: WorkflowCreate):
-    # Create and add the workflow to the session
-    workflow = Workflow(**workflow_in.model_dump())
-    session.add(workflow)
-    await session.flush()
-    await session.refresh(workflow)
-    return workflow
-
-
 async def update_workflow(
     session: AsyncSession,
     workflow_update: WorkflowUpdate,

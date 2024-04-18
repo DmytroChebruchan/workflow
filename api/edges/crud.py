@@ -2,7 +2,7 @@ from typing import Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.edges.schemas import EdgeBase
+from api.general.utils import save_element_into_db
 from api.nodes.validators import node_validator
 from core.models.edge import Edge
 
@@ -24,8 +24,4 @@ async def create_edge(
         destination_node_id=to_node_id,
         condition_type=condition,
     )
-    session.add(edge)
-    await session.commit()
-    await session.refresh(edge)
-
-    return edge
+    return await save_element_into_db(session=session, element=edge)

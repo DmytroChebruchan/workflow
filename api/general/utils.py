@@ -12,3 +12,10 @@ async def get_elements(session: AsyncSession, element) -> list:
 
 async def get_element_by_id(session: AsyncSession, element_id: int, element):
     return await session.get(element, element_id)
+
+
+async def save_element_into_db(session: AsyncSession, element):
+    session.add(element)
+    await session.commit()
+    await session.refresh(element)
+    return element

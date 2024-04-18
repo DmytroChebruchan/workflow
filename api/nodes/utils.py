@@ -1,4 +1,5 @@
 from api.edges.crud import create_edge
+from api.general.utils import save_element_into_db
 from api.nodes.schemas.schemas import NodeCreate
 from core.models import Node
 
@@ -40,7 +41,4 @@ async def node_model_dict_generator(node_in) -> dict:
 
 async def node_saver(node_model_dict, session) -> Node:
     node = Node(**node_model_dict)
-    session.add(node)
-    await session.commit()
-    await session.refresh(node)
-    return node
+    return await save_element_into_db(session=session, element=node)
