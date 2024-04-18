@@ -4,7 +4,9 @@ from api.edge.schemas import EdgeBase
 
 
 async def create_edge(
-    from_node_id: int, to_node_id: int, session: AsyncSession
+    from_node_id: int,
+    to_node_id: int,
+    session: AsyncSession,
 ):
     edge = EdgeBase(
         source_node_id=from_node_id,

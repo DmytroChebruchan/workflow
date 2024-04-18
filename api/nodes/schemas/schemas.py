@@ -15,7 +15,8 @@ class NodeBase(BaseModel):
 
 
 class NodeCreate(NodeBase):
-    pass
+    from_node_id: Optional[int] | None = None
+    to_node_id: Optional[int] | None = None
 
 
 class NodeUpdate(NodeBase):

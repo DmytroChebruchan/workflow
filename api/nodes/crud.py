@@ -1,22 +1,29 @@
 from fastapi import HTTPException
-from sqlalchemy import select
-from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from api.general.utils import get_element_by_id
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
+from api.nodes.utils import (
+    creating_required_edges,
+    node_model_dict_generator,
+    node_saver,
+)
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
 from api.nodes.validators import validate_existence_of_node
 from core.models.node import Node
 
 
 async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
+    # validation
     await nodes_validation_with_pydentic(node_in.model_dump())
-    node = Node(**node_in.model_dump())
-    session.add(node)
-    await session.commit()
-    await session.refresh(node)
+
+    # node saver
+    node_model_dict = await node_model_dict_generator(node_in)
+    node = await node_saver(node_model_dict, session)
+
+    # create edges
+    await creating_required_edges(node=node, node_in=node_in, session=session)
     return node
 
 
