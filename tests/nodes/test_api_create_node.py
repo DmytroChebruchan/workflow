@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 from tests.conftest import client
 
 
-async def get_workflow_by_id_mock(session, workflow_id):
+async def get_workflow_by_id_mock(*args):
     return True
 
 

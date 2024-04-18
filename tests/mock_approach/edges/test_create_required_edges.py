@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import AsyncMock, patch
+
+import pytest
 
 from api.edges.crud import create_edge, creating_required_edges
 from api.nodes.schemas.schemas import NodeCreate
