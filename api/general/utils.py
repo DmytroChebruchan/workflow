@@ -1,7 +1,6 @@
+from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from sqlalchemy import select
 
 
 async def get_elements(session: AsyncSession, element) -> list:

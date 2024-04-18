@@ -4,7 +4,6 @@ import pytest
 
 from api.nodes.crud import create_node
 from api.nodes.schemas.schemas import NodeCreate
-from api.nodes.schemas.schemas_node_by_type import StartNode
 from core.models.node import Node
 
 

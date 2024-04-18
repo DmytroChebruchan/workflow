@@ -1,7 +1,9 @@
+from unittest.mock import patch
+
 import pytest
 from fastapi.testclient import TestClient
+
 from tests.conftest import client
-from unittest.mock import patch
 
 
 async def get_workflow_by_id_mock(session, workflow_id):
