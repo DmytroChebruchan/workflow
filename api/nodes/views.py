@@ -23,7 +23,7 @@ async def get_nodes_view(
 async def create_node_view(
     node_in: NodeCreate,
     session: AsyncSession = Depends(get_async_session),
-) -> NodeFromDB | None:
+) -> NodeModel | None:
     return await crud.create_node(session=session, node_in=node_in)
 
 
