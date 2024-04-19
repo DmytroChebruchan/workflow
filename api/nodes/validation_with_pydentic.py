@@ -7,7 +7,6 @@ from api.nodes.schemas.schemas_node_by_type import (
     MessageNode,
     StartNode,
 )
-from core.models.node import Node
 
 # Map node types to their corresponding Pydantic schemas
 NODE_TYPE_TO_SCHEMA = {
@@ -18,7 +17,7 @@ NODE_TYPE_TO_SCHEMA = {
 }
 
 
-async def nodes_validation_with_pydentic(data: dict):
+async def nodes_validation_with_pydentic(data: dict) -> None:
     node_type = data["type"]
     if node_type not in NODE_TYPE_TO_SCHEMA:
         raise HTTPException(
@@ -28,12 +27,9 @@ async def nodes_validation_with_pydentic(data: dict):
 
     try:
         schema = NODE_TYPE_TO_SCHEMA[node_type]
-        node = schema(**data)
+        schema(**data)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Failed to validate node of type {node_type}: {e}",
         )
-    # # to save the node it should be
-    # node_to_save = Node(**data)
-    # return node_to_save
