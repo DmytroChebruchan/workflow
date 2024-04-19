@@ -16,7 +16,7 @@ class NodeBase(BaseModel):
 
 class NodeCreate(NodeBase):
     from_node_id: Optional[int] | None = None
-    nodes_to_list: Optional[List[dict]] = None
+    nodes_to_list: List[dict] | list = []
 
 
 class NodeUpdate(NodeBase):
@@ -26,12 +26,3 @@ class NodeUpdate(NodeBase):
 class Node(NodeBase):
     id: int
     model_config = ConfigDict(from_attributes=True)
-
-
-class MessageNode(NodeBase):
-    status: MessageNodeStatus
-    message_text: str
-
-
-class ConditionNode(NodeBase):
-    condition: str

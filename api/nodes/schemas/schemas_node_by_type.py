@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import ConfigDict
 from pydantic.fields import Field
 
