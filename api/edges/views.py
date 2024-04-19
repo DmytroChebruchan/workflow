@@ -1,12 +1,19 @@
-from typing import List
-
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.edges.crud import delete_edge
+from api.edges.crud import delete_edge, update_edge
 from core.database.database import get_async_session
 
 router = APIRouter(tags=["Edges"])
+
+
+@router.put("update/{edge_id}/")
+async def update_view(
+    edge_id: int,
+    session: AsyncSession = Depends(get_async_session),
+) -> Response:
+    await update_edge(session=session, edge_id=edge_id)
+    return Response(content={"status": "ok"}, status_code=200)
 
 
 @router.delete("/{edge_id}/")

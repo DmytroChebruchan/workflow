@@ -65,4 +65,7 @@ async def update_node_view(
         node_id=node_id,
         node_update=node_update,
     )
-    return Response(content={"status": "ok"}, status_code=200)
+    return Response(
+        content={"status": "ok"},
+        status_code=200,
+    )

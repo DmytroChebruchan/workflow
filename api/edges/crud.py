@@ -2,6 +2,7 @@ from typing import Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.edges.schemas import EdgeBase
 from api.general.utils import (
     save_element_into_db,
     delete_element_from_db,
@@ -60,4 +61,17 @@ async def delete_edge(edge_id: int, session: AsyncSession) -> None:
     await delete_element_from_db(edge)
 
 
-# async def get_edges():
+async def update_edge(
+    edge_id: int, edge_update: EdgeBase, session: AsyncSession
+) -> None:
+    edge = await get_element_by_id(
+        session=session, element_id=edge_id, element=Edge
+    )
+
+    # Update the node fields
+    for field, value in edge_update.dict(exclude_unset=True).items():
+        setattr(edge, field, value)
+
+    await session.commit()
+    await session.refresh(edge)
+    return edge
