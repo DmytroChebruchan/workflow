@@ -1,33 +1,15 @@
 from fastapi import HTTPException
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from api.edges.crud import creating_required_edges
 from api.general.utils import delete_element_from_db, get_element_by_id
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
-from api.nodes.utils import node_model_dict_generator, node_saver
+from api.nodes.utils import node_model_dict_generator, node_saver, delete_edges_related
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
 from api.nodes.validators import validate_existence_of_node
 from api.workflows.validator import workflow_validator
-from core.models import Edge
 from core.models.node import Node
-
-
-async def get_edges_of_node(node: Node, session: AsyncSession) -> list[Edge]:
-    edges_query = await session.execute(
-        select(Edge).filter(
-            Edge.source_node == node.id or Edge.destination_node == node.id
-        )
-    )
-    edges = edges_query.scalars().all()
-    return list(edges)
-
-
-async def delete_edges_related(node: Node, session: AsyncSession) -> None:
-    edges_related = await get_edges_of_node(node=node, session=session)
-    for edge in edges_related:
-        await delete_element_from_db(session=session, element=edge)
 
 
 async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
