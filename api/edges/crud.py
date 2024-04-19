@@ -58,7 +58,7 @@ async def delete_edge(edge_id: int, session: AsyncSession) -> None:
     edge = await get_element_by_id(
         session=session, element_id=edge_id, element=Edge
     )
-    await delete_element_from_db(edge)
+    await delete_element_from_db(session=session, element=edge)
 
 
 async def update_edge(
