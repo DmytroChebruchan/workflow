@@ -2,7 +2,11 @@ from typing import Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils import save_element_into_db
+from api.general.utils import (
+    save_element_into_db,
+    delete_element_from_db,
+    get_element_by_id,
+)
 from api.nodes.schemas.schemas import NodeCreate
 from api.nodes.validators import node_validator
 from core.models import Node
@@ -30,7 +34,7 @@ async def create_edge(
 
 
 async def creating_required_edges(
-    node: Node, node_in: NodeCreate, session
+    node: Node, node_in: NodeCreate, session: AsyncSession
 ) -> None:
     if node_in.from_node_id:
         await create_edge(
@@ -47,3 +51,13 @@ async def creating_required_edges(
                 session=session,
                 condition=node_to["condition"],
             )
+
+
+async def delete_edge(edge_id: int, session: AsyncSession) -> None:
+    edge = await get_element_by_id(
+        session=session, element_id=edge_id, element=Edge
+    )
+    await delete_element_from_db(edge)
+
+
+# async def get_edges():
