@@ -25,10 +25,6 @@ async def create_node_view(
     node_in: NodeCreate,
     session: AsyncSession = Depends(get_async_session),
 ) -> Node | None:
-    await workflow_validator(
-        session=session,
-        workflow_id=node_in.workflow_id,
-    )
     return await crud.create_node(session=session, node_in=node_in)
 
 

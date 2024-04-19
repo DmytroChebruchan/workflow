@@ -8,10 +8,16 @@ from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
 from api.nodes.utils import node_model_dict_generator, node_saver
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
 from api.nodes.validators import validate_existence_of_node
+from api.workflows.validator import workflow_validator
 from core.models.node import Node
 
 
 async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
+    # workflow validation
+    await workflow_validator(
+        session=session,
+        workflow_id=node_in.workflow_id,
+    )
     # validation
     await nodes_validation_with_pydentic(node_in.model_dump())
 
