@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_element_by_id, get_elements
 from api.nodes import crud
-from api.nodes.schemas.schemas import NodeFromDB, NodeCreate
+from api.nodes.schemas.schemas import NodeFromDB, NodeCreate, NodeUpdate
 from core.database.database import get_async_session
 from core.models.node import Node as NodeModel
 
@@ -57,7 +57,12 @@ async def delete_node_view(
 @router.put("/{node_id}/")
 async def update_node_view(
     node_id: int,
+    node_update: NodeUpdate,
     session: AsyncSession = Depends(get_async_session),
 ) -> Response:
-    await crud.update_node(session=session, node_id=node_id)
+    await crud.update_node(
+        session=session,
+        node_id=node_id,
+        node_update=node_update,
+    )
     return Response(content={"status": "ok"}, status_code=200)
