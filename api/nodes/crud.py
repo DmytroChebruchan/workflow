@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
@@ -9,7 +10,24 @@ from api.nodes.utils import node_model_dict_generator, node_saver
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
 from api.nodes.validators import validate_existence_of_node
 from api.workflows.validator import workflow_validator
+from core.models import Edge
 from core.models.node import Node
+
+
+async def get_edges_of_node(node: Node, session: AsyncSession) -> list[Edge]:
+    edges_query = await session.execute(
+        select(Edge).filter(
+            Edge.source_node == node.id or Edge.destination_node == node.id
+        )
+    )
+    edges = edges_query.scalars().all()
+    return list(edges)
+
+
+async def delete_edges_related(node: Node, session: AsyncSession) -> None:
+    edges_related = await get_edges_of_node(node=node, session=session)
+    for edge in edges_related:
+        await delete_element_from_db(session=session, element=edge)
 
 
 async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
@@ -39,6 +57,7 @@ async def delete_node_by_id(session: AsyncSession, node_id: int) -> None:
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Node with ID {node_id} not found",
         )
+    await delete_edges_related(session=session, node=node)
     await delete_element_from_db(session=session, element=node)
 
 
