@@ -19,3 +19,10 @@ async def save_element_into_db(session: AsyncSession, element):
     await session.commit()
     await session.refresh(element)
     return element
+
+
+async def delete_element_from_db(session: AsyncSession, element):
+    await session.delete(element)
+    await session.commit()
+    await session.refresh(element)
+    return element

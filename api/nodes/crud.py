@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from api.edges.crud import creating_required_edges
-from api.general.utils import get_element_by_id
+from api.general.utils import get_element_by_id, delete_element_from_db
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
 from api.nodes.utils import node_model_dict_generator, node_saver
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
@@ -39,8 +39,7 @@ async def delete_node_by_id(session: AsyncSession, node_id: int) -> None:
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Node with ID {node_id} not found",
         )
-    await session.delete(node)
-    await session.commit()
+    await delete_element_from_db(session=session, element=node)
 
 
 async def update_node(

@@ -1,6 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils import get_element_by_id, save_element_into_db
+from api.general.utils import (
+    get_element_by_id,
+    save_element_into_db,
+    delete_element_from_db,
+)
 from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
 from core.models import Workflow
 from core.models.workflow import Workflow
@@ -33,8 +37,7 @@ async def update_workflow(
 async def delete_workflow_by_id(
     session: AsyncSession, workflow: Workflow
 ) -> dict[str, str]:
-    await session.delete(workflow)
-    await session.commit()
+    await delete_element_from_db(session=session, element=workflow)
     return {"details": "Workflow deleted"}
 
 
