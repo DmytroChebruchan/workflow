@@ -1,8 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils import save_element_into_db, delete_element_from_db
-from core.models import Node, Edge
+from api.general.utils import delete_element_from_db, save_element_into_db
+from core.models import Edge, Node
 
 
 async def node_model_dict_generator(node_in) -> dict:
