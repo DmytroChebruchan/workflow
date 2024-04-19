@@ -38,12 +38,7 @@ async def creating_required_edges(
             to_node_id=node.id,
             session=session,
         )
-    if node_in.to_node_id:
-        await create_edge(
-            from_node_id=node.id,
-            to_node_id=node_in.to_node_id,
-            session=session,
-        )
+
     if node_in.nodes_to_list:
         for node_to in node_in.nodes_to_list:
             await create_edge(

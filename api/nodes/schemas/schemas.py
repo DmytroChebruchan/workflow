@@ -16,7 +16,6 @@ class NodeBase(BaseModel):
 
 class NodeCreate(NodeBase):
     from_node_id: Optional[int] | None = None
-    to_node_id: Optional[int] | None = None
     nodes_to_list: Optional[List[dict]] = None
 
 

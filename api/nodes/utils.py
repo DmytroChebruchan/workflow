@@ -3,7 +3,7 @@ from core.models import Node
 
 
 async def node_model_dict_generator(node_in) -> dict:
-    keys_to_exclude = ["from_node_id", "to_node_id", "nodes_to_list"]
+    keys_to_exclude = ["from_node_id", "nodes_to_list"]
     node_model_dict = {
         key: value
         for key, value in node_in.model_dump().items()
