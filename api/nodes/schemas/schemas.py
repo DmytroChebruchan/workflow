@@ -21,8 +21,10 @@ class NodeCreate(NodeBase):
 
 class NodeUpdate(NodeBase):
     id: int
+    from_node_id: Optional[int] | None = None
+    nodes_to_list: List[dict] | list = []
 
 
-class Node(NodeBase):
+class NodeFromDB(NodeBase):
     id: int
     model_config = ConfigDict(from_attributes=True)
