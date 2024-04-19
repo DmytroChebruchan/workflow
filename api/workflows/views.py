@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -13,7 +15,7 @@ from core.models.workflow import Workflow as WorkflowModel
 router = APIRouter(tags=["Workflows"])
 
 
-@router.get("/show_workflows/")
+@router.get("/show_workflows/", response_model=List[Workflow])
 async def get_workflows_view(
     session: AsyncSession = Depends(get_async_session),
 ):

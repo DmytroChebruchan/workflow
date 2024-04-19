@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -6,15 +8,16 @@ from api.nodes import crud
 from api.nodes.schemas.schemas import Node, NodeCreate
 from api.workflows.validator import workflow_validator
 from core.database.database import get_async_session
+from core.models.node import Node as NodeModel
 
 router = APIRouter(tags=["Nodes"])
 
 
-@router.get("/show_nodes/", response_model=list[Node])
+@router.get("/show_nodes/", response_model=List[Node])
 async def get_nodes_view(
     session: AsyncSession = Depends(get_async_session),
 ):
-    return await get_elements(session=session, element=Node)
+    return await get_elements(session=session, element=NodeModel)
 
 
 @router.post("/create/", response_model=Node)
