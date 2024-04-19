@@ -5,7 +5,11 @@ from starlette import status
 from api.edges.crud import creating_required_edges
 from api.general.utils import delete_element_from_db, get_element_by_id
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
-from api.nodes.utils import node_model_dict_generator, node_saver, delete_edges_related
+from api.nodes.utils import (
+    node_model_dict_generator,
+    node_saver,
+    delete_edges_related,
+)
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
 from api.nodes.validators import validate_existence_of_node
 from api.workflows.validator import workflow_validator
