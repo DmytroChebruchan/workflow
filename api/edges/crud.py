@@ -4,9 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.schemas import EdgeBase
 from api.general.utils import (
-    save_element_into_db,
     delete_element_from_db,
     get_element_by_id,
+    save_element_into_db,
 )
 from api.nodes.schemas.schemas import NodeCreate
 from api.nodes.validators import node_validator

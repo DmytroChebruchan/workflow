@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_element_by_id, get_elements
 from api.nodes import crud
-from api.nodes.schemas.schemas import NodeFromDB, NodeCreate, NodeUpdate
+from api.nodes.schemas.schemas import NodeCreate, NodeFromDB, NodeUpdate
 from core.database.database import get_async_session
 from core.models.node import Node as NodeModel
 
