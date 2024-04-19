@@ -14,7 +14,9 @@ async def create_workflow_with_nodes(
 
     # creating start and end nodes
     start_node_info = NodeCreate(workflow_id=workflow.id, type="Start Node")
-    created_start_node = await create_node(session=session, node_in=start_node_info)
+    created_start_node = await create_node(
+        session=session, node_in=start_node_info
+    )
 
     end_node_info = NodeCreate(
         workflow_id=workflow.id,
