@@ -16,14 +16,20 @@ class Node(Base):
 
     workflow_id = Column(Integer, ForeignKey("workflows.id"))
 
-    workflow = relationship("Workflow", back_populates="nodes")
+    workflow = relationship(
+        "Workflow",
+        back_populates="nodes",
+        lazy="selectin",
+    )
     outgoing_edges = relationship(
         "Edge",
         foreign_keys="[Edge.source_node_id]",
         back_populates="source_node",
+        lazy="selectin",
     )
     incoming_edges = relationship(
         "Edge",
         foreign_keys="[Edge.destination_node_id]",
         back_populates="destination_node",
+        lazy="selectin",
     )

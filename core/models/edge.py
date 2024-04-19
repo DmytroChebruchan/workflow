@@ -15,9 +15,11 @@ class Edge(Base):
         "Node",
         foreign_keys=[source_node_id],
         back_populates="outgoing_edges",
+        lazy="selectin",
     )
     destination_node = relationship(
         "Node",
         foreign_keys=[destination_node_id],
         back_populates="incoming_edges",
+        lazy="selectin",
     )
