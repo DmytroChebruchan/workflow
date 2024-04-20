@@ -4,7 +4,7 @@ from pydantic import BaseModel, ConfigDict
 class WorkflowBase(BaseModel):
     title: str
 
-    model_config = ConfigDict(env_prefix="WORKFLOW_")
+    model_config = ConfigDict()
 
 
 class WorkflowCreate(WorkflowBase):
