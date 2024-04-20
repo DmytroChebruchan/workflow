@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_element_by_id, get_elements
-from api.nodes import crud
+from api.nodes.crud import update_node, create_node, delete_node_by_id
 from api.nodes.schemas.schemas import NodeCreate, NodeFromDB, NodeUpdate
 from core.database.database import get_async_session
 from core.models.node import Node as NodeModel
@@ -24,7 +24,7 @@ async def create_node_view(
     node_in: NodeCreate,
     session: AsyncSession = Depends(get_async_session),
 ) -> NodeModel | None:
-    return await crud.create_node(session=session, node_in=node_in)
+    return await create_node(session=session, node_in=node_in)
 
 
 @router.get("/details/{node_id}/", response_model=NodeFromDB)
@@ -50,7 +50,7 @@ async def delete_node_view(
     node_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> Response:
-    await crud.delete_node_by_id(session=session, node_id=node_id)
+    await delete_node_by_id(session=session, node_id=node_id)
     return Response(content={"status": "ok"}, status_code=200)
 
 
@@ -60,7 +60,7 @@ async def update_node_view(
     node_update: NodeUpdate,
     session: AsyncSession = Depends(get_async_session),
 ) -> Response:
-    await crud.update_node(
+    await update_node(
         session=session,
         node_id=node_id,
         node_update=node_update,

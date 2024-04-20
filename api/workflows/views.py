@@ -4,7 +4,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_elements
-from api.workflows import crud
+from api.workflows.crud import (
+    delete_workflow_by_id,
+    get_workflow_by_id,
+    update_workflow,
+)
 from api.workflows.run_workflow import run_workflow
 from api.workflows.schemas import Workflow, WorkflowCreate, WorkflowUpdate
 from api.workflows.validator import workflow_validator
@@ -37,7 +41,7 @@ async def get_workflow_by_id_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> WorkflowModel:
-    workflow = await crud.get_workflow_by_id(
+    workflow = await get_workflow_by_id(
         session=session, workflow_id=workflow_id
     )
     if workflow is not None:
@@ -49,12 +53,12 @@ async def get_workflow_by_id_view(
     )
 
 
-@router.get("/show_nodes_related/{workflow_id}/")
-async def nodes_related_view(
+@router.get("/run/{workflow_id}/")
+async def run_workflow_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    workflow = await crud.get_workflow_by_id(
+    workflow = await get_workflow_by_id(
         session=session, workflow_id=workflow_id
     )
     if workflow is not None:
@@ -76,7 +80,7 @@ async def update_workflow_view(
         session=session,
         workflow_id=workflow_id,
     )
-    updated_workflow = await crud.update_workflow(
+    updated_workflow = await update_workflow(
         session=session,
         workflow=workflow,
         workflow_update=workflow_update,
@@ -92,4 +96,4 @@ async def delete_workflow_view(
     workflow = await workflow_validator(
         session=session, workflow_id=workflow_id
     )
-    await crud.delete_workflow_by_id(session=session, workflow=workflow)
+    await delete_workflow_by_id(session=session, workflow=workflow)
