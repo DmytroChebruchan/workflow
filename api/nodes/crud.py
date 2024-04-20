@@ -1,3 +1,6 @@
+from select import select
+from typing import Optional
+
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
@@ -68,4 +71,16 @@ async def update_node(
 
     await session.commit()
     await session.refresh(node)
+    return node
+
+
+async def read_node_by_id(
+    session: AsyncSession, node_id: int
+) -> Optional[Node]:
+    """Read a node from the database by its ID."""
+    # Retrieve the node from the database
+    query = select(Node).filter(Node.id == node_id)
+    result = await session.execute(query)
+    node = result.scalar_one_or_none()
+
     return node
