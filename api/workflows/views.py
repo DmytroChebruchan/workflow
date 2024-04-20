@@ -44,7 +44,7 @@ async def get_workflow_by_id_view(
     workflow = await get_workflow_by_id(
         session=session, workflow_id=workflow_id
     )
-    if workflow is not None:
+    if workflow:
         return workflow
 
     raise HTTPException(
