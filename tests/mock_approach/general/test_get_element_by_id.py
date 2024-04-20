@@ -47,7 +47,3 @@ class TestFunctions(unittest.IsolatedAsyncioTestCase):
 
         # Assert the function calls
         mock_session.get.assert_called_once_with(element, 1)
-
-
-if __name__ == "__main__":
-    unittest.main()
