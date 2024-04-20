@@ -1,3 +1,4 @@
+from select import select
 from typing import Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -34,8 +35,20 @@ async def create_edge(
     return await save_element_into_db(session=session, element=edge)
 
 
+async def read_edge(edge_id: int, session: AsyncSession) -> Optional[Edge]:
+    """Read an edge from the database by its ID."""
+    # Retrieve the edge from the database
+    query = select(Edge).filter(Edge.id == edge_id)
+    result = await session.execute(query)
+    edge = result.scalar_one_or_none()
+
+    return edge
+
+
 async def creating_required_edges(
-    node: Node, node_in: NodeCreate, session: AsyncSession
+    node: Node,
+    node_in: NodeCreate,
+    session: AsyncSession,
 ) -> None:
     if node_in.from_node_id:
         await create_edge(
@@ -47,7 +60,7 @@ async def creating_required_edges(
     if node_in.nodes_to_list:
         for node_to in node_in.nodes_to_list:
             await create_edge(
-                from_node_id=node_in.from_node_id,
+                from_node_id=node.id,
                 to_node_id=node_to["id"],
                 session=session,
                 condition=node_to["condition"],
