@@ -40,7 +40,7 @@ async def delete_workflow_by_id(
     return {"details": "Workflow deleted"}
 
 
-async def create_workflow(session, workflow_in):
+async def create_workflow(session, workflow_in) -> Workflow | None:
     workflow = Workflow(**workflow_in.model_dump())
     await save_element_into_db(session=session, element=workflow)
     return workflow

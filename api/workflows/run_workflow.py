@@ -17,6 +17,7 @@ async def run_workflow(session: AsyncSession, workflow_id: int) -> dict | None:
 
     # get nodes
     nodes = await get_nodes_of_workflow(workflow)
+    nodes = list(workflow.nodes)
     # get edges
     edges = await get_edges_of_nodes(nodes, session)
     # create_graph

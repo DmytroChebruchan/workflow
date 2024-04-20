@@ -2,10 +2,12 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from api.edges.crud import create_edge, creating_required_edges
+from api.edges.crud import creating_required_edges
 from api.nodes.schemas.schemas import NodeCreate
 from core.models import Node
-from tests.nodes.fixture_nodes_dicts import dummy_node_with_id
+from tests.swaped_db_approach.nodes.fixture_nodes_dicts import (
+    dummy_node_with_id,
+)
 
 
 @pytest.fixture
