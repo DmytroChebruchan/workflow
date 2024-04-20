@@ -1,6 +1,9 @@
+from typing import Dict, Type
+
 from fastapi import HTTPException
 from starlette import status
 
+from api.nodes.schemas.schemas import NodeBase
 from api.nodes.schemas.schemas_node_by_type import (
     ConditionNode,
     EndNode,
@@ -9,7 +12,7 @@ from api.nodes.schemas.schemas_node_by_type import (
 )
 
 # Map node types to their corresponding Pydantic schemas
-NODE_TYPE_TO_SCHEMA = {
+NODE_TYPE_TO_SCHEMA: Dict[str, Type[NodeBase]] = {
     "Start Node": StartNode,
     "Message Node": MessageNode,
     "Condition Node": ConditionNode,
