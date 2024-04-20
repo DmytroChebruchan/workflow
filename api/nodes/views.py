@@ -1,10 +1,15 @@
-from typing import List
+from typing import List, Dict
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_element_by_id, get_elements
-from api.nodes.crud import update_node, create_node, delete_node_by_id
+from api.nodes.crud import (
+    update_node,
+    create_node,
+    delete_node_by_id,
+    get_node_by_id,
+)
 from api.nodes.schemas.schemas import NodeCreate, NodeFromDB, NodeUpdate
 from core.database.database import get_async_session
 from core.models.node import Node as NodeModel
@@ -27,18 +32,18 @@ async def create_node_view(
     return await create_node(session=session, node_in=node_in)
 
 
-@router.get("/details/{node_id}/", response_model=NodeFromDB)
+@router.get("/read/{node_id}/", response_model=NodeFromDB)
 async def get_node_view(
     node_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> NodeFromDB:
-    node = await get_element_by_id(
+    node = await get_node_by_id(
         session=session,
-        element_id=node_id,
-        element=NodeFromDB,
+        node_id=node_id,
     )
     if node:
         return node
+
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Node {node_id} not found!",
@@ -49,9 +54,9 @@ async def get_node_view(
 async def delete_node_view(
     node_id: int,
     session: AsyncSession = Depends(get_async_session),
-) -> Response:
+) -> dict[str, str]:
     await delete_node_by_id(session=session, node_id=node_id)
-    return Response(content={"status": "ok"}, status_code=200)
+    return {"message": "Node deleted!"}
 
 
 @router.put("/{node_id}/")
@@ -59,13 +64,10 @@ async def update_node_view(
     node_id: int,
     node_update: NodeUpdate,
     session: AsyncSession = Depends(get_async_session),
-) -> Response:
+) -> dict[str, str]:
     await update_node(
         session=session,
         node_id=node_id,
         node_update=node_update,
     )
-    return Response(
-        content={"status": "ok"},
-        status_code=200,
-    )
+    return {"message": "Node updated!"}
