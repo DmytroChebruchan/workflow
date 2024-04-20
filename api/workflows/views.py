@@ -8,7 +8,7 @@ from api.workflows import crud
 from api.workflows.run_workflow import run_workflow
 from api.workflows.schemas import Workflow, WorkflowCreate, WorkflowUpdate
 from api.workflows.validator import workflow_validator
-from api.workflows.workflow_utils import create_workflow_with_nodes
+from api.workflows.utils import create_workflow_with_nodes
 from core.database.database import get_async_session
 from core.models.workflow import Workflow as WorkflowModel
 
