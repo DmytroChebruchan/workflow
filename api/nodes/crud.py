@@ -37,6 +37,14 @@ async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
     return node
 
 
+async def get_node_by_id(session: AsyncSession, node_id: int) -> Node | None:
+    return await get_element_by_id(
+        element=Node,
+        session=session,
+        element_id=node_id,
+    )
+
+
 async def delete_node_by_id(session: AsyncSession, node_id: int) -> None:
     node = await get_element_by_id(
         session=session, element_id=node_id, element=Node
@@ -71,16 +79,4 @@ async def update_node(
 
     await session.commit()
     await session.refresh(node)
-    return node
-
-
-async def read_node_by_id(
-    session: AsyncSession, node_id: int
-) -> Optional[Node]:
-    """Read a node from the database by its ID."""
-    # Retrieve the node from the database
-    query = select(Node).filter(Node.id == node_id)
-    result = await session.execute(query)
-    node = result.scalar_one_or_none()
-
     return node
