@@ -1,14 +1,14 @@
-from typing import List, Dict
+from typing import Dict, List
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils import get_element_by_id, get_elements
+from api.general.utils import get_elements
 from api.nodes.crud import (
-    update_node,
     create_node,
     delete_node_by_id,
     get_node_by_id,
+    update_node,
 )
 from api.nodes.schemas.schemas import NodeCreate, NodeFromDB, NodeUpdate
 from core.database.database import get_async_session
@@ -36,7 +36,7 @@ async def create_node_view(
 async def get_node_view(
     node_id: int,
     session: AsyncSession = Depends(get_async_session),
-) -> NodeFromDB:
+) -> NodeModel:
     node = await get_node_by_id(
         session=session,
         node_id=node_id,

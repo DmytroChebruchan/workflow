@@ -7,7 +7,6 @@ from api.nodes.node_attr_values import NodeType
 from api.nodes.schemas.schemas import NodeCreate
 from api.workflows.crud import create_workflow
 from api.workflows.schemas import WorkflowCreate
-
 from core.models import Workflow
 
 

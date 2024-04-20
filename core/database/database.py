@@ -1,3 +1,5 @@
+from typing import AsyncGenerator
+
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
@@ -5,7 +7,6 @@ from sqlalchemy.ext.asyncio import (
 )
 
 from core.models.base import Base
-from typing import AsyncGenerator
 
 engine = create_async_engine("sqlite+aiosqlite:///db.sqlite3")
 SessionLocal = async_sessionmaker(engine)
