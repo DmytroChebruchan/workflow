@@ -1,11 +1,10 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
 
 from core.models.base import Base
 
 
 class Edge(Base):
-    id = Column(Integer, primary_key=True)
     source_node_id = Column(Integer, ForeignKey("nodes.id"))
     destination_node_id = Column(Integer, ForeignKey("nodes.id"))
     condition_type = Column(Boolean, default=False, nullable=True)
