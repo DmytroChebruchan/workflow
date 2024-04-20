@@ -1,35 +1,30 @@
-from typing import List
-
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
-from sqlalchemy.sql import select
 
-from core.models.workflow import Workflow
+from api.nodes.utils import get_edges_of_nodes
+from api.workflows.crud import get_workflow_by_id
+from api.workflows.utils import get_nodes_of_workflow
+from core.graph.utils import nodes_relation_checker
 
 
 async def run_workflow(session: AsyncSession, workflow_id: int) -> dict | None:
     # get workflow
-    result = await session.execute(
-        select(Workflow)
-        .where(Workflow.id == workflow_id)
-        .options(selectinload(Workflow.nodes))
+    workflow = await get_workflow_by_id(
+        workflow_id=workflow_id,
+        session=session,
     )
-    workflow = result.scalars().first()
-
-    # get nodes
     if not workflow:
         return None
 
-    nodes = [
-        {
-            "id": node.id,
-            "type": node.type,
-            "status": node.status,
-            "message_text": node.message_text,
-        }
-        for node in workflow.nodes
-    ]
+    # get nodes
+    nodes = await get_nodes_of_workflow(workflow)
     # get edges
+    edges = await get_edges_of_nodes(nodes, session)
     # create_graph
+    reply = {
+        "connection_between_start_and_finnish": await nodes_relation_checker(
+            nodes=nodes,
+            edges=edges,
+        )
+    }
     # generate reply
-    return {"id": workflow.id, "title": workflow.title, "nodes": nodes}
+    return reply

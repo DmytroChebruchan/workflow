@@ -23,9 +23,10 @@ SessionLocal = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
 )
+from typing import AsyncGenerator
 
 
-async def override_get_async_session() -> AsyncSession:
+async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
