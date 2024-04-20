@@ -34,3 +34,13 @@ async def delete_edges_related(node: Node, session: AsyncSession) -> None:
     edges_related = await get_edges_of_node(node=node, session=session)
     for edge in edges_related:
         await delete_element_from_db(session=session, element=edge)
+
+
+async def get_edges_of_nodes(nodes: list, session: AsyncSession) -> list[Edge]:
+    edges = []
+    for node_dict in nodes:
+        node = Node(**node_dict)
+        edges = await get_edges_of_node(node=node, session=session)
+        edges.extend(edges)
+    unique_edges_list = list(set(edges))
+    return unique_edges_list
