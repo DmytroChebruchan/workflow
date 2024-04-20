@@ -16,13 +16,13 @@ async def run_workflow(session: AsyncSession, workflow_id: int) -> dict | None:
         return None
 
     # get nodes
-    nodes = await get_nodes_of_workflow(workflow)
+    # nodes = await get_nodes_of_workflow(workflow)
     nodes = list(workflow.nodes)
     # get edges
     edges = await get_edges_of_nodes(nodes, session)
     # create_graph
     reply = {
-        "connection_between_start_and_finnish": await nodes_relation_checker(
+        "connection_between_start_and_finish": await nodes_relation_checker(
             nodes=nodes,
             edges=edges,
         )
