@@ -5,8 +5,7 @@ from api.general.utils import (
     get_element_by_id,
     save_element_into_db,
 )
-from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
-from core.models import Workflow
+from api.workflows.schemas import WorkflowUpdate
 from core.models.workflow import Workflow
 
 
