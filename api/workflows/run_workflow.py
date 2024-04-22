@@ -2,8 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.utils import get_edges_of_nodes
 from api.workflows.crud import get_workflow_by_id
-from api.workflows.utils import get_nodes_of_workflow
-from core.graph.utils import get_path, nodes_relation_checker
+from core.graph.utils import get_path, workflow_graph_checker
 
 
 async def run_workflow(session: AsyncSession, workflow_id: int) -> dict | None:
@@ -22,11 +21,10 @@ async def run_workflow(session: AsyncSession, workflow_id: int) -> dict | None:
     edges = await get_edges_of_nodes(nodes, session)
     # create_graph
     reply = {
-        "connection_between_start_and_finish": await nodes_relation_checker(
-            nodes=nodes,
-            edges=edges,
+        "connection_between_start_and_finish": await workflow_graph_checker(
+            nodes=nodes, edges=edges, session=session
         ),
-        "path": await get_path(nodes=nodes, edges=edges),
+        "path": await get_path(nodes=nodes, edges=edges, session=session),
     }
     # generate reply
     return reply

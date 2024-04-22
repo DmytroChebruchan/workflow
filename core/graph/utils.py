@@ -1,7 +1,11 @@
 from typing import Dict, List, Union
 
 import networkx as nx
+from matplotlib import pyplot as plt
+from networkx import DiGraph
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.general.utils import get_element_by_id
 from api.nodes.node_attr_values import NodeType
 from core.models import Edge, Node
 
@@ -9,18 +13,14 @@ from core.models import Edge, Node
 async def get_path(
     nodes: List[Node],
     edges: List[Edge],
+    session: AsyncSession,
 ) -> Dict[str, Union[bool, List[str], str]]:
     G = nx.DiGraph()
 
-    for node in nodes:
-        G.add_node(node)
-
-    for edge in edges:
-        G.add_edge(
-            edge.source_node_id,
-            edge.destination_node_id,
-            condition=edge.condition_type,
-        )
+    G.add_nodes_from(nodes)
+    G = nx.DiGraph()
+    await adding_nodes(G, nodes)
+    await generate_graph_edges(G, edges, session)
 
     start_node = next(
         (node for node in nodes if node.type == NodeType.START), None
@@ -47,26 +47,30 @@ async def get_path(
         }
 
 
-async def nodes_relation_checker(nodes: list[Node], edges: list[Edge]) -> dict:
+async def workflow_graph_checker(
+    nodes: list[Node], edges: list[Edge], session
+) -> bool:
 
     if not nodes or not edges:
         return False
 
-    G = nx.DiGraph()
-
-    await adding_nodes(G, nodes)
-    await generate_graph_edges(G, edges, nodes)
+    G = await graph_builder(edges, nodes, session)
 
     start_node = await node_collector(nodes=nodes, node_type=NodeType.START)
     end_node = await node_collector(nodes=nodes, node_type=NodeType.END)
 
     has_path = nx.has_path(G, start_node, end_node)
 
-    if has_path:
-        result = {"has_path": has_path, "comments": "Path not found"}
-    else:
-        result = {"has_path": has_path, "comments": "Path found"}
-    return result
+    return has_path
+
+
+async def graph_builder(edges, nodes, session) -> DiGraph:
+    G = nx.DiGraph()
+    await adding_nodes(G, nodes)
+    await generate_graph_edges(G, edges, session)
+    nx.draw(G, with_labels=True)
+    plt.show()
+    return G
 
 
 async def adding_nodes(G: nx.DiGraph, nodes: list[Node]) -> None:
@@ -75,19 +79,18 @@ async def adding_nodes(G: nx.DiGraph, nodes: list[Node]) -> None:
 
 
 async def node_collector(nodes: list, node_type: NodeType) -> Node | None:
-    start_node = next((node for node in nodes if node.type == node_type), None)
-    return start_node
+    node = next((node for node in nodes if node.type == node_type), None)
+    return node
 
 
-async def generate_graph_edges(G, edges, nodes):
+async def generate_graph_edges(G: DiGraph, edges: list, session) -> DiGraph:
+
     for edge in edges:
-        node_from = next(
-            (node for node in nodes if node.id == edge.source_node_id), None
+        node_from = await get_element_by_id(
+            element_id=edge.source_node_id, element=Node, session=session
         )
-        node_to = next(
-            (node for node in nodes if node.id == edge.destination_node_id),
-            None,
+        node_to = await get_element_by_id(
+            element_id=edge.destination_node_id, element=Node, session=session
         )
         G.add_edge(node_from, node_to, condition=edge.condition_type)
-
     return G

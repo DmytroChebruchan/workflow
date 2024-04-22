@@ -21,13 +21,10 @@ async def node_saver(node_model_dict, session) -> Node:
 
 
 async def get_edges_of_node(node: Node, session: AsyncSession) -> list[Edge]:
-    edges_query = await session.execute(
-        select(Edge).filter(
-            Edge.source_node == node.id or Edge.destination_node == node.id
-        )
-    )
-    edges = edges_query.scalars().all()
-    return list(edges)
+    outgoing_edges = list(node.outgoing_edges)
+    incoming_edges = list(node.incoming_edges)
+    unique_edges = set(outgoing_edges + incoming_edges)
+    return list(unique_edges)
 
 
 async def delete_edges_related(node: Node, session: AsyncSession) -> None:
@@ -38,9 +35,8 @@ async def delete_edges_related(node: Node, session: AsyncSession) -> None:
 
 async def get_edges_of_nodes(nodes: list, session: AsyncSession) -> list[Edge]:
     edges = []
-    for node_dict in nodes:
-        node = Node(**node_dict)
-        edges = await get_edges_of_node(node=node, session=session)
-        edges.extend(edges)
+    for node in nodes:
+        edges_found = await get_edges_of_node(node=node, session=session)
+        edges.extend(edges_found)
     unique_edges_list = list(set(edges))
     return unique_edges_list
