@@ -9,7 +9,7 @@ from api.edges.crud import creating_required_edges
 from api.general.utils import delete_element_from_db, get_element_by_id
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
 from api.nodes.utils import (
-    delete_edges_related,
+    delete_edges_of_node,
     node_model_dict_generator,
     node_saver,
 )
@@ -54,7 +54,7 @@ async def delete_node_by_id(session: AsyncSession, node_id: int) -> None:
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Node with ID {node_id} not found",
         )
-    await delete_edges_related(session=session, node=node)
+    await delete_edges_of_node(session=session, node=node)
     await delete_element_from_db(session=session, element=node)
 
 

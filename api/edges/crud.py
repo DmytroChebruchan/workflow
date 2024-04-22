@@ -38,10 +38,11 @@ async def create_edge(
 async def read_edge(edge_id: int, session: AsyncSession) -> Optional[Edge]:
     """Read an edge from the database by its ID."""
     # Retrieve the edge from the database
-    query = select(Edge).filter(Edge.id == edge_id)
-    result = await session.execute(query)
-    edge = result.scalar_one_or_none()
-
+    edge = await get_element_by_id(
+        element_id=edge_id,
+        session=session,
+        element=Edge,
+    )
     return edge
 
 
