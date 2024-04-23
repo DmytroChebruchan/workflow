@@ -8,6 +8,8 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
+from typing import AsyncGenerator
+
 from core.database.database import get_async_session
 from core.models.base import Base
 from core.models.node import Node
@@ -23,7 +25,6 @@ SessionLocal = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
 )
-from typing import AsyncGenerator
 
 
 async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:

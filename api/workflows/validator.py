@@ -1,6 +1,5 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette import status
 
 from api.nodes.node_attr_values import NodeType
 from api.workflows.crud import get_workflow_by_id

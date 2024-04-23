@@ -1,2 +1,12 @@
 [tool.black]
 line-length = 80
+
+[tool.flake8]
+exclude = [
+    ".venv",
+    "__pycache__",
+    ".pytest_cache",
+    "build",
+    "dist",
+    "*.egg-info"
+]

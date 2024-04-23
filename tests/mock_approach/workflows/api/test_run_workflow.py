@@ -4,7 +4,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 from core.models import Workflow
-from tests.conftest import client
 
 
 async def get_workflow_by_id_mock(*args, **kwargs):

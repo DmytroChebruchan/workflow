@@ -45,7 +45,8 @@ class WorkflowGraph:
 
     async def async_update_graph(self):
         """
-        Asynchronously update the graph by adding edges, nodes, and calculating the path.
+        Asynchronously update the graph by adding edges, nodes,
+         and calculating the path.
         """
         await self.add_edges()
         await self.add_nodes()

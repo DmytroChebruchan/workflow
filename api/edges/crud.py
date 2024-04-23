@@ -1,4 +1,3 @@
-from select import select
 from typing import Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -21,13 +20,13 @@ async def create_edge(
     condition: Optional[bool] = True,
 ) -> Edge:
 
-    # Retrieve source and destination nodes
-    from_node = await get_element_by_id(
+    # Check source and destination nodes
+    await get_element_by_id(
         session=session,
         element_id=from_node_id,
         element=Node,
     )
-    to_node = await get_element_by_id(
+    await get_element_by_id(
         session=session,
         element_id=to_node_id,
         element=Node,

@@ -10,4 +10,6 @@ async def get_element_by_id_mock(**kwargs):
 @patch("api.workflows.crud.get_element_by_id", get_element_by_id_mock)
 async def test_get_workflow_by_id():
     mock_session = AsyncMock()
-    assert await get_workflow_by_id(session=mock_session, workflow_id=1) is True
+    assert (
+        await get_workflow_by_id(session=mock_session, workflow_id=1) is True
+    )

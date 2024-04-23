@@ -1,9 +1,6 @@
 from unittest.mock import patch
 
 import pytest
-from fastapi.testclient import TestClient
-
-from tests.conftest import client
 
 
 async def get_workflow_by_id_mock(*args, **kwargs):
@@ -22,7 +19,7 @@ async def nodes_existing_checker_mock(*args, **kwargs):
     new=nodes_existing_checker_mock,
 )
 @pytest.mark.asyncio
-async def test_create_start_node(client: TestClient):
+async def test_create_start_node(client):
     # Create start node
     node_data = {
         "type": "Start Node",
@@ -43,7 +40,7 @@ async def test_create_start_node(client: TestClient):
     new=nodes_existing_checker_mock,
 )
 @pytest.mark.asyncio
-async def test_create_condition_node(client: TestClient):
+async def test_create_condition_node(client):
 
     # Create message node
     node_data = {
@@ -60,7 +57,7 @@ async def test_create_condition_node(client: TestClient):
 
 
 @pytest.mark.asyncio
-async def test_create_condition_node_without_condition(client: TestClient):
+async def test_create_condition_node_without_condition(client):
     # Create message node
     node_data = {
         "type": "Condition Node",

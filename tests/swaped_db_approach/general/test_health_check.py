@@ -1,11 +1,8 @@
 import pytest
-from fastapi.testclient import TestClient
-
-from tests.conftest import client
 
 
 @pytest.mark.asyncio
-async def test_health_check(client: TestClient):
+async def test_health_check(client):
     response = client.post("/health_check/")
     dict_response = response.json()
     assert dict_response["message"] == "Healthy"

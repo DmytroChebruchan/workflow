@@ -1,9 +1,6 @@
 from unittest.mock import patch
 
 import pytest
-from fastapi.testclient import TestClient
-
-from tests.conftest import client
 
 
 async def get_workflow_by_id_mock(*args, **kwargs):
@@ -22,7 +19,7 @@ async def nodes_existing_checker_mock(*args, **kwargs):
     new=nodes_existing_checker_mock,
 )
 @pytest.mark.asyncio
-async def test_create_message_node(client: TestClient):
+async def test_create_message_node(client):
     # Create message node
     node_data = {
         "type": "Message Node",
@@ -46,7 +43,7 @@ async def test_create_message_node(client: TestClient):
 
 @patch("api.workflows.crud.get_workflow_by_id", new=get_workflow_by_id_mock)
 @pytest.mark.asyncio
-async def test_create_message_node_wrong_status(client: TestClient):
+async def test_create_message_node_wrong_status(client):
 
     # Create message node
     node_data = {
@@ -61,7 +58,7 @@ async def test_create_message_node_wrong_status(client: TestClient):
 
 @patch("api.workflows.crud.get_workflow_by_id", new=get_workflow_by_id_mock)
 @pytest.mark.asyncio
-async def test_create_message_node_without_status(client: TestClient):
+async def test_create_message_node_without_status(client):
 
     # Create message node
     node_data = {

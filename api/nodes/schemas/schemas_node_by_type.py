@@ -1,6 +1,3 @@
-from typing import List
-
-from pydantic import ConfigDict
 from pydantic.fields import Field
 
 from api.nodes.node_attr_values import MessageNodeStatus, NodeType

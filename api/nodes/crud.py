@@ -1,6 +1,3 @@
-from select import select
-from typing import Optional
-
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
