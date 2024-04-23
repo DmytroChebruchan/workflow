@@ -2,6 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.general.validators import element_validator
+
 
 async def get_elements(session: AsyncSession, element) -> list:
     stmt = select(element).order_by(element.id)
@@ -11,7 +13,9 @@ async def get_elements(session: AsyncSession, element) -> list:
 
 
 async def get_element_by_id(session: AsyncSession, element_id: int, element):
-    return await session.get(element, element_id)
+    item = await session.get(element, element_id)
+    await element_validator(element_id=element_id, item=item)
+    return item
 
 
 async def save_element_into_db(session: AsyncSession, element):

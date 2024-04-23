@@ -12,7 +12,6 @@ from api.workflows.crud import (
 from api.workflows.run_workflow import run_workflow
 from api.workflows.schemas import Workflow, WorkflowCreate, WorkflowUpdate
 from api.workflows.utils import create_workflow_with_nodes
-from api.workflows.validator import workflow_validator
 from core.database.database import get_async_session
 from core.models.workflow import Workflow as WorkflowModel
 
@@ -76,10 +75,7 @@ async def update_workflow_view(
     workflow_update: WorkflowUpdate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    workflow = await workflow_validator(
-        session=session,
-        workflow_id=workflow_id,
-    )
+    workflow = await get_workflow_by_id(workflow_id=workflow_id)
     updated_workflow = await update_workflow(
         session=session,
         workflow=workflow,
@@ -93,7 +89,7 @@ async def delete_workflow_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    workflow = await workflow_validator(
+    workflow = await get_workflow_by_id(
         session=session, workflow_id=workflow_id
     )
     await delete_workflow_by_id(session=session, workflow=workflow)

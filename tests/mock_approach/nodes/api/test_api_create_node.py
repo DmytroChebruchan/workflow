@@ -6,11 +6,21 @@ from fastapi.testclient import TestClient
 from tests.conftest import client
 
 
-async def get_workflow_by_id_mock(*args):
+async def get_workflow_by_id_mock(*args, **kwargs):
     return True
 
 
-@patch("api.workflows.crud.get_workflow_by_id", new=get_workflow_by_id_mock)
+async def nodes_existing_checker_mock(*args, **kwargs):
+    pass
+
+
+@patch(
+    "api.workflows.validator.get_workflow_by_id", new=get_workflow_by_id_mock
+)
+@patch(
+    "api.workflows.validator.nodes_existing_checker",
+    new=nodes_existing_checker_mock,
+)
 @pytest.mark.asyncio
 async def test_create_start_node(client: TestClient):
     # Create start node
@@ -25,7 +35,13 @@ async def test_create_start_node(client: TestClient):
     assert node["workflow_id"] == node_data["workflow_id"]
 
 
-@patch("api.workflows.crud.get_workflow_by_id", new=get_workflow_by_id_mock)
+@patch(
+    "api.workflows.validator.get_workflow_by_id", new=get_workflow_by_id_mock
+)
+@patch(
+    "api.workflows.validator.nodes_existing_checker",
+    new=nodes_existing_checker_mock,
+)
 @pytest.mark.asyncio
 async def test_create_condition_node(client: TestClient):
 
@@ -43,7 +59,6 @@ async def test_create_condition_node(client: TestClient):
     assert node["condition"] == node_data["condition"]
 
 
-@patch("api.workflows.crud.get_workflow_by_id", new=get_workflow_by_id_mock)
 @pytest.mark.asyncio
 async def test_create_condition_node_without_condition(client: TestClient):
     # Create message node

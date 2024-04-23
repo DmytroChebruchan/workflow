@@ -10,7 +10,6 @@ from api.general.utils import (
     save_element_into_db,
 )
 from api.nodes.schemas.schemas import NodeCreate
-from api.nodes.validators import node_validator
 from core.models import Node
 from core.models.edge import Edge
 
@@ -23,8 +22,16 @@ async def create_edge(
 ) -> Edge:
 
     # Retrieve source and destination nodes
-    await node_validator(from_node_id, session)
-    await node_validator(to_node_id, session)
+    from_node = await get_element_by_id(
+        session=session,
+        element_id=from_node_id,
+        element=Node,
+    )
+    to_node = await get_element_by_id(
+        session=session,
+        element_id=to_node_id,
+        element=Node,
+    )
 
     # Create and persist the edges
     edge = Edge(

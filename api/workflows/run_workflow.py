@@ -2,29 +2,43 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.utils import get_edges_of_nodes
 from api.workflows.crud import get_workflow_by_id
-from core.graph.utils import get_path, workflow_graph_checker
+from core.graph.utils import WorkflowGraph
 
 
-async def run_workflow(session: AsyncSession, workflow_id: int) -> dict | None:
-    # get workflow
+async def run_workflow(session: AsyncSession, workflow_id: int) -> dict:
+    """
+    Run a workflow.
+
+    Args:
+        session (AsyncSession): Async session for database operations.
+        workflow_id (int): ID of the workflow to run.
+
+    Returns:
+        dict: Path details of the executed workflow.
+    """
+    # Get workflow by ID
     workflow = await get_workflow_by_id(
         workflow_id=workflow_id,
         session=session,
     )
     if not workflow:
-        return None
+        return {"message": "Workflow has not been found."}
 
-    # get nodes
-    # nodes = await get_nodes_of_workflow(workflow)
+    # Collect nodes from the workflow
     nodes = list(workflow.nodes)
-    # get edges
+
+    # Get edges between nodes
     edges = await get_edges_of_nodes(nodes, session)
-    # create_graph
-    reply = {
-        "connection_between_start_and_finish": await workflow_graph_checker(
-            nodes=nodes, edges=edges, session=session
-        ),
-        "path": await get_path(nodes=nodes, edges=edges, session=session),
-    }
-    # generate reply
-    return reply
+
+    # Create a workflow graph
+    graph = WorkflowGraph(
+        nodes=nodes,
+        edges=edges,
+        session=session,
+    )
+
+    # Update the graph asynchronously
+    await graph.async_update_graph()
+
+    # Return path details of the executed workflow
+    return graph.path_details

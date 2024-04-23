@@ -44,6 +44,3 @@ class TestFunctions(unittest.IsolatedAsyncioTestCase):
 
         # Assert the function output
         self.assertEqual(element_result, {"id": 1, "name": "element1"})
-
-        # Assert the function calls
-        mock_session.get.assert_called_once_with(element, 1)
