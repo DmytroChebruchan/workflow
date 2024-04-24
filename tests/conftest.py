@@ -1,3 +1,4 @@
+from typing import AsyncGenerator
 from unittest.mock import AsyncMock
 
 import pytest
@@ -7,8 +8,6 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
-
-from typing import AsyncGenerator
 
 from core.database.database import get_async_session
 from core.models.base import Base

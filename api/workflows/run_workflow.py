@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.nodes.utils import get_edges_of_nodes
+from api.nodes.node_handling import get_edges_of_nodes
 from api.workflows.crud import get_workflow_by_id
 from core.graph.utils import WorkflowGraph
 

@@ -3,20 +3,12 @@ from unittest.mock import patch
 import pytest
 
 
-async def get_workflow_by_id_mock(*args, **kwargs):
+async def true_returner(*args, **kwargs):
     return True
 
 
-async def nodes_existing_checker_mock(*args, **kwargs):
-    pass
-
-
 @patch(
-    "api.workflows.validator.get_workflow_by_id", new=get_workflow_by_id_mock
-)
-@patch(
-    "api.workflows.validator.nodes_existing_checker",
-    new=nodes_existing_checker_mock,
+    "api.nodes.utils.check_node_type_existence_in_workflow", new=true_returner
 )
 @pytest.mark.asyncio
 async def test_create_message_node(client):
@@ -41,7 +33,7 @@ async def test_create_message_node(client):
     assert response.status_code == 200
 
 
-@patch("api.workflows.crud.get_workflow_by_id", new=get_workflow_by_id_mock)
+@patch("api.workflows.crud.get_workflow_by_id", new=true_returner)
 @pytest.mark.asyncio
 async def test_create_message_node_wrong_status(client):
 
@@ -56,7 +48,7 @@ async def test_create_message_node_wrong_status(client):
     assert response.status_code == 422
 
 
-@patch("api.workflows.crud.get_workflow_by_id", new=get_workflow_by_id_mock)
+@patch("api.workflows.crud.get_workflow_by_id", new=true_returner)
 @pytest.mark.asyncio
 async def test_create_message_node_without_status(client):
 
