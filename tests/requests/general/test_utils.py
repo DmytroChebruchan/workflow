@@ -28,5 +28,5 @@ async def test_update_element_id_checker_different_id():
     assert exc_info.value.status_code == status.HTTP_400_BAD_REQUEST
     assert (
         exc_info.value.detail
-        == "Workflow with ID in update workflow is not correct."
+        == "Workflow with ID 2 in update workflow is not correct."
     )
