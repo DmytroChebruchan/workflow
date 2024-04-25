@@ -41,5 +41,6 @@ async def update_element_id_checker(original_id: int, update_id: int):
     if original_id != update_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Workflow with ID in update workflow is not correct.",
+            detail=f"Workflow with ID {update_id} in "
+            f"update workflow is not correct.",
         )
