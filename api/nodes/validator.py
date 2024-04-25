@@ -4,7 +4,6 @@ from starlette import status
 
 from api.nodes.node_attr_values import NodeType
 from api.nodes.node_handling import get_nodes_by_type
-
 from api.workflows.crud import get_workflow_by_id
 
 

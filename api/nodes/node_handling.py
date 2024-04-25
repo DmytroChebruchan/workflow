@@ -1,8 +1,8 @@
-from sqlalchemy import select, Result
+from sqlalchemy import Result, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import delete_element_from_db
-from core.models import Node, Edge
+from core.models import Edge, Node
 
 
 async def get_edges_of_node(node: Node) -> list[Edge]:
