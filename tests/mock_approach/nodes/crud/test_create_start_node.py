@@ -5,11 +5,12 @@ import pytest
 from api.nodes.crud import create_node
 from api.nodes.schemas.schemas import NodeCreate
 from core.models.node import Node
-from tests.mock_file import true_returner
+from tests.mock_file import true_returner_mock
 
 
 @patch(
-    "api.nodes.utils.check_node_type_existence_in_workflow", new=true_returner
+    "api.nodes.utils.check_node_type_existence_in_workflow",
+    new=true_returner_mock,
 )
 @pytest.mark.asyncio
 async def test_create_node():

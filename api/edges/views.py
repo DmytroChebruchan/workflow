@@ -1,11 +1,19 @@
 from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.edges.crud import delete_edge, update_edge
+from api.edges.crud import delete_edge, update_edge, read_edge
 from api.edges.schemas import EdgeBase
 from core.database.database import get_async_session
 
 router = APIRouter(tags=["Edges"])
+
+
+@router.get("/{edge_id}", response_model=EdgeBase)
+async def get_edge(
+    edge_id: int,
+    session: AsyncSession = Depends(get_async_session),
+):
+    return await read_edge(session=session, edge_id=edge_id)
 
 
 @router.put("update/{edge_id}/")

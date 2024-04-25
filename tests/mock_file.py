@@ -1,4 +1,4 @@
-async def true_returner(*args, **kwargs):
+async def true_returner_mock(*args, **kwargs):
     return True
 
 

@@ -2,7 +2,7 @@ import pytest
 from pydantic import ValidationError
 
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
-from tests.swaped_db_approach.nodes.fixture_nodes_dicts import (
+from tests.mock_approach.nodes.fixture_nodes_dicts import (
     dummy_node,
     dummy_start_node,
 )

@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_elements
@@ -79,3 +79,7 @@ async def delete_workflow_view(
         session=session, workflow_id=workflow_id
     )
     await delete_workflow_by_id(session=session, workflow=workflow)
+    return Response(
+        content=f"Workflow with id {str(workflow_id)} was deleted.",
+        status_code=200,
+    )
