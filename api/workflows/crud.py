@@ -24,11 +24,11 @@ async def get_workflow_by_id(
 async def update_workflow(
     session: AsyncSession,
     workflow_update: WorkflowUpdate,
-    workflow,
+    workflow: Workflow,
 ) -> Workflow:
     await update_element_id_checker(workflow.id, workflow_update.id)
 
-    for field, value in workflow_update.dict(exclude_unset=True).items():
+    for field, value in workflow_update.model_dump(exclude_unset=True).items():
         setattr(workflow, field, value)
 
     await commit_and_refresh_element(session=session, element=workflow)
@@ -37,9 +37,8 @@ async def update_workflow(
 
 async def delete_workflow_by_id(
     session: AsyncSession, workflow: Workflow
-) -> dict[str, str]:
+) -> None:
     await delete_element_from_db(session=session, element=workflow)
-    return {"details": "Workflow deleted"}
 
 
 async def create_workflow(session, workflow_in) -> Workflow:

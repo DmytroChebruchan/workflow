@@ -64,7 +64,7 @@ async def update_node(
     )
 
     # Update the node fields
-    for field, value in node_update.dict(exclude_unset=True).items():
+    for field, value in node_update.model_dump(exclude_unset=True).items():
         setattr(node, field, value)
 
     await commit_and_refresh_element(session=session, element=node)
