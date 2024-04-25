@@ -75,7 +75,9 @@ async def update_workflow_view(
     workflow_update: WorkflowUpdate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    workflow = await get_workflow_by_id(workflow_id=workflow_id)
+    workflow = await get_workflow_by_id(
+        workflow_id=workflow_id, session=session
+    )
     updated_workflow = await update_workflow(
         session=session,
         workflow=workflow,

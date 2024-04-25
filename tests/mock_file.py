@@ -1,4 +1,4 @@
-async def true_returner(*args, **kwargs) -> True:
+async def true_returner(*args, **kwargs):
     return True
 
 

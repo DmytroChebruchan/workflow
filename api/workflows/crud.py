@@ -11,7 +11,7 @@ from core.models.workflow import Workflow
 
 async def get_workflow_by_id(
     session: AsyncSession, workflow_id: int
-) -> Workflow | None:
+) -> Workflow:
     return await get_element_by_id(
         element=Workflow,
         session=session,
@@ -23,7 +23,7 @@ async def update_workflow(
     session: AsyncSession,
     workflow_update: WorkflowUpdate,
     workflow,
-) -> Workflow | None:
+) -> Workflow:
 
     for field, value in workflow_update.dict(exclude_unset=True).items():
         setattr(workflow, field, value)

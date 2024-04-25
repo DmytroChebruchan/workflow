@@ -21,7 +21,7 @@ async def delete_edges_of_node(node: Node, session: AsyncSession) -> None:
 async def get_edges_of_nodes(nodes: list, session: AsyncSession) -> list[Edge]:
     edges = []
     for node in nodes:
-        edges_found = await get_edges_of_node(node=node, session=session)
+        edges_found = await get_edges_of_node(node=node)
         edges.extend(edges_found)
     unique_edges_list = list(set(edges))
     return unique_edges_list
