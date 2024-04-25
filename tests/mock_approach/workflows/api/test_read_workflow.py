@@ -4,13 +4,10 @@ import pytest
 from fastapi.testclient import TestClient
 
 from core.models import Workflow
+from tests.mock_file import true_returner
 
 
-async def get_workflow_by_id_mock(*args, **kwargs):
-    return Workflow(title="some", id=1)
-
-
-@patch("api.workflows.views.get_workflow_by_id", new=get_workflow_by_id_mock)
+@patch("api.workflows.views.get_workflow_by_id", new=true_returner)
 @pytest.mark.asyncio
 async def test_read_workflow(client: TestClient):
     response = client.get("/workflows/read/1")

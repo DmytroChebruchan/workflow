@@ -5,10 +5,7 @@ import pytest
 from api.nodes.crud import create_node
 from api.nodes.schemas.schemas import NodeCreate
 from core.models.node import Node
-
-
-async def true_returner(*args, **kwargs):
-    return True
+from tests.mock_file import true_returner
 
 
 @patch(

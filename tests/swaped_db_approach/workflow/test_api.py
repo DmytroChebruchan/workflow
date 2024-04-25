@@ -1,12 +1,6 @@
 from unittest.mock import patch
 
-
-async def get_workflow_by_id_mock(*args, **kwargs):
-    return True
-
-
-async def true_returner(*args, **kwargs):
-    return True
+from tests.mock_file import true_returner
 
 
 @patch(

@@ -2,9 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-
-async def true_returner(*args, **kwargs):
-    return True
+from tests.mock_file import true_returner
 
 
 @patch(
