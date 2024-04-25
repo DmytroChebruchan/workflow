@@ -1,10 +1,11 @@
-from unittest.mock import AsyncMock, patch, MagicMock
 import unittest
+from unittest.mock import AsyncMock, MagicMock, patch
+
 from api.workflows.crud import (
+    create_workflow,
+    delete_workflow_by_id,
     get_workflow_by_id,
     update_workflow,
-    delete_workflow_by_id,
-    create_workflow,
 )
 from api.workflows.schemas import WorkflowUpdate
 from core.models import Workflow

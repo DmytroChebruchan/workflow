@@ -4,10 +4,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.schemas import EdgeBase
 from api.general.utils import (
+    commit_and_refresh_element,
     delete_element_from_db,
     get_element_by_id,
     save_element_into_db,
-    commit_and_refresh_element,
 )
 from api.nodes.schemas.schemas import NodeCreate
 from core.models import Node

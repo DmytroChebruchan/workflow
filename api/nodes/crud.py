@@ -4,9 +4,9 @@ from starlette import status
 
 from api.edges.crud import creating_required_edges
 from api.general.utils import (
+    commit_and_refresh_element,
     delete_element_from_db,
     get_element_by_id,
-    commit_and_refresh_element,
 )
 from api.nodes.node_handling import delete_edges_of_node
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate

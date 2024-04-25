@@ -5,9 +5,7 @@ import pytest
 from api.edges.crud import creating_required_edges
 from api.nodes.schemas.schemas import NodeCreate
 from core.models import Node
-from tests.mock_approach.nodes.fixture_nodes_dicts import (
-    dummy_node_with_id,
-)
+from tests.mock_approach.nodes.fixture_nodes_dicts import dummy_node_with_id
 
 
 @pytest.fixture

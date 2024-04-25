@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.edges.crud import delete_edge, update_edge, read_edge
+from api.edges.crud import delete_edge, read_edge, update_edge
 from api.edges.schemas import EdgeBase
 from core.database.database import get_async_session
 
