@@ -7,6 +7,7 @@ from api.general.utils import (
     delete_element_from_db,
     get_element_by_id,
     save_element_into_db,
+    commit_and_refresh_element,
 )
 from api.nodes.schemas.schemas import NodeCreate
 from core.models import Node
@@ -92,6 +93,5 @@ async def update_edge(
     for field, value in edge_update.dict(exclude_unset=True).items():
         setattr(edge, field, value)
 
-    await session.commit()
-    await session.refresh(edge)
+    await commit_and_refresh_element(session=session, element=edge)
     return edge

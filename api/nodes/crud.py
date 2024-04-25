@@ -3,7 +3,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from api.edges.crud import creating_required_edges
-from api.general.utils import delete_element_from_db, get_element_by_id
+from api.general.utils import (
+    delete_element_from_db,
+    get_element_by_id,
+    commit_and_refresh_element,
+)
 from api.nodes.node_handling import delete_edges_of_node
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
 from api.nodes.utils import node_model_dict_generator, node_saver
@@ -63,6 +67,5 @@ async def update_node(
     for field, value in node_update.dict(exclude_unset=True).items():
         setattr(node, field, value)
 
-    await session.commit()
-    await session.refresh(node)
+    await commit_and_refresh_element(session=session, element=node)
     return node

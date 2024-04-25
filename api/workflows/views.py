@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_elements
+
 from api.workflows.crud import (
     delete_workflow_by_id,
     get_workflow_by_id,
@@ -21,7 +22,7 @@ router = APIRouter(tags=["Workflows"])
 @router.get("/show_workflows/", response_model=List[Workflow])
 async def get_workflows_view(
     session: AsyncSession = Depends(get_async_session),
-):
+) -> List[Workflow]:
     return await get_elements(session=session, element=WorkflowModel)
 
 
@@ -40,16 +41,7 @@ async def get_workflow_by_id_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> WorkflowModel:
-    workflow = await get_workflow_by_id(
-        session=session, workflow_id=workflow_id
-    )
-    if workflow:
-        return workflow
-
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Workflow {workflow_id} not found!",
-    )
+    return await get_workflow_by_id(session=session, workflow_id=workflow_id)
 
 
 @router.get("/run/{workflow_id}/")
@@ -57,16 +49,8 @@ async def run_workflow_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    workflow = await get_workflow_by_id(
-        session=session, workflow_id=workflow_id
-    )
-    if workflow is not None:
-        return await run_workflow(session=session, workflow_id=workflow_id)
-
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Workflow {workflow_id} not found!",
-    )
+    await get_workflow_by_id(session=session, workflow_id=workflow_id)
+    return await run_workflow(session=session, workflow_id=workflow_id)
 
 
 @router.put("/update/{workflow_id}/", response_model=Workflow)

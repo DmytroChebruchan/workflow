@@ -4,6 +4,7 @@ from api.general.utils import (
     delete_element_from_db,
     get_element_by_id,
     save_element_into_db,
+    commit_and_refresh_element,
 )
 from api.workflows.schemas import WorkflowUpdate
 from core.models.workflow import Workflow
@@ -28,8 +29,7 @@ async def update_workflow(
     for field, value in workflow_update.dict(exclude_unset=True).items():
         setattr(workflow, field, value)
 
-    await session.commit()
-    await session.refresh(workflow)
+    await commit_and_refresh_element(session=session, element=workflow)
     return workflow
 
 
