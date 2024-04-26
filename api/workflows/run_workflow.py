@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.node_handling import get_edges_of_nodes
 from api.workflows.crud import get_workflow_by_id
-from core.graph.utils import WorkflowGraph
+from core.graph.workflow_graph import WorkflowGraph
 
 
 async def run_workflow(session: AsyncSession, workflow_id: int) -> dict:
@@ -39,4 +39,4 @@ async def run_workflow(session: AsyncSession, workflow_id: int) -> dict:
     await graph.async_update_graph()
 
     # Return path details of the executed workflow
-    return graph.path_details
+    return await graph.find_path()
