@@ -28,7 +28,7 @@ async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
     return node
 
 
-async def get_node_by_id(session: AsyncSession, node_id: int) -> Node | None:
+async def get_node_by_id(session: AsyncSession, node_id: int) -> Node:
     return await get_element_by_id(
         element=Node,
         session=session,

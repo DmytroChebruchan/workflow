@@ -1,7 +1,5 @@
 import unittest
-from unittest.mock import AsyncMock, MagicMock, patch
-
-from sqlalchemy.ext.asyncio import AsyncSession
+from unittest.mock import AsyncMock, MagicMock
 
 from api.workflows.run_workflow import run_workflow
 from core.graph.workflow_graph import WorkflowGraph

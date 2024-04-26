@@ -1,7 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import save_element_into_db
-from api.nodes.node_attr_values import NodeType
 from api.nodes.validator import check_node_type_existence_in_workflow
 from core.models import Node
 

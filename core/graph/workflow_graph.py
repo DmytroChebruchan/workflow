@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List
 
 import networkx as nx
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -19,7 +19,7 @@ class WorkflowGraph:
         self.nodes = nodes
         self.edges = edges
         self.session = session
-        self.graph = nx.DiGraph()
+        self.graph: nx.DiGraph = nx.DiGraph()
         self.start_node = None
         self.end_node = None
 
