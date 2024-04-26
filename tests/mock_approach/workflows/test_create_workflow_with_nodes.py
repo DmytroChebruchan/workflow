@@ -1,10 +1,11 @@
 import unittest
 from unittest.mock import patch
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.workflows.utils import create_workflow_with_nodes
 from api.workflows.schemas import WorkflowCreate
-from core.models import Workflow, Node
+from api.workflows.utils import create_workflow_with_nodes
+from core.models import Node, Workflow
 
 
 class TestCreateWorkflowWithNodes(unittest.IsolatedAsyncioTestCase):

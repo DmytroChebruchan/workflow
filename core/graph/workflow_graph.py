@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_element_by_id
 from api.nodes.node_attr_values import NodeType
-from core.models import Node, Edge
+from core.models import Edge, Node
 
 
 class WorkflowGraph:

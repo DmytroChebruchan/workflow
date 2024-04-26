@@ -3,10 +3,9 @@ from unittest.mock import AsyncMock
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.graph.workflow_graph import WorkflowGraph
-
 from api.nodes.node_attr_values import NodeType
-from core.models import Node, Edge
+from core.graph.workflow_graph import WorkflowGraph
+from core.models import Edge, Node
 
 
 class TestWorkflowGraph(unittest.IsolatedAsyncioTestCase):

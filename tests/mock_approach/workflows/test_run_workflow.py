@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
