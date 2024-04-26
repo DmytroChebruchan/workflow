@@ -7,7 +7,7 @@ from api.general.utils import (
     save_element_into_db,
     update_element_id_checker,
 )
-from api.workflows.schemas import WorkflowUpdate
+from api.workflows.schemas import WorkflowUpdate, WorkflowCreate
 from core.models.workflow import Workflow
 
 
@@ -41,7 +41,7 @@ async def delete_workflow_by_id(
     await delete_element_from_db(session=session, element=workflow)
 
 
-async def create_workflow(session, workflow_in) -> Workflow:
+async def create_workflow(session, workflow_in: WorkflowCreate) -> Workflow:
     workflow = Workflow(**workflow_in.model_dump())
     await save_element_into_db(session=session, element=workflow)
     return workflow
