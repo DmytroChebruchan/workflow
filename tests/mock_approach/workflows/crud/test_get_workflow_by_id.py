@@ -4,8 +4,9 @@ from api.workflows.crud import (
     delete_workflow_by_id,
     get_workflow_by_id,
     update_workflow,
+    create_workflow,
 )
-from api.workflows.schemas import WorkflowUpdate
+from api.workflows.schemas import WorkflowUpdate, WorkflowCreate
 from core.models import Workflow
 from tests.mock_file import true_returner_mock
 
@@ -35,10 +36,21 @@ async def test_update_workflow(client):
 
 
 @patch("api.workflows.crud.delete_element_from_db", true_returner_mock)
-async def test_delete_workflow():
+async def test_delete_workflow_by_id():
     workflow_base_mock = Workflow(id=1, title="title")
     session = AsyncMock()
     result = await delete_workflow_by_id(
         session=session, workflow=workflow_base_mock
     )
     assert result is None
+
+
+@patch("api.workflows.crud.save_element_into_db", true_returner_mock)
+async def test_create_workflow_by_id():
+    workflow_base_mock = WorkflowCreate(title="title")
+    session = AsyncMock()
+    result = await create_workflow(
+        session=session, workflow_in=workflow_base_mock
+    )
+    assert isinstance(result, Workflow)
+    assert result.title == "title"
