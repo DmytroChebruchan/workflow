@@ -22,7 +22,3 @@ async def node_saver(node_model_dict: dict, session: AsyncSession) -> Node:
     )
     node = Node(**node_model_dict)
     return await save_element_into_db(session=session, element=node)
-
-
-async def find_node_by_type(nodes: list, node_type: NodeType) -> Node | None:
-    return next((node for node in nodes if node.type == node_type), None)
