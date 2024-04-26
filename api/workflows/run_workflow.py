@@ -21,8 +21,6 @@ async def run_workflow(session: AsyncSession, workflow_id: int) -> dict:
         workflow_id=workflow_id,
         session=session,
     )
-    if not workflow:
-        return {"message": "Workflow has not been found."}
 
     # Collect nodes from the workflow
     nodes = list(workflow.nodes)
