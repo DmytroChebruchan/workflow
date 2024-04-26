@@ -61,12 +61,15 @@ async def update_workflow_view(
     workflow = await get_workflow_by_id(
         workflow_id=workflow_id, session=session
     )
-    updated_workflow = await update_workflow(
+    await update_workflow(
         session=session,
         workflow=workflow,
         workflow_update=workflow_update,
     )
-    return updated_workflow
+    return Response(
+        content=f"Workflow with id {str(workflow_id)} was updated.",
+        status_code=200,
+    )
 
 
 @router.delete("/delete/{workflow_id}/", response_model=None)
