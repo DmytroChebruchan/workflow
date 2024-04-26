@@ -37,16 +37,9 @@ async def get_node_view(
     node_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> NodeModel:
-    node = await get_node_by_id(
+    return await get_node_by_id(
         session=session,
         node_id=node_id,
-    )
-    if node:
-        return node
-
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Node {node_id} not found!",
     )
 
 
