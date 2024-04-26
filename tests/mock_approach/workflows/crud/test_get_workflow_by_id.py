@@ -10,11 +10,7 @@ from core.models import Workflow
 from tests.mock_file import true_returner_mock
 
 
-async def get_element_by_id_mock(**kwargs):
-    return True
-
-
-@patch("api.workflows.crud.get_element_by_id", get_element_by_id_mock)
+@patch("api.workflows.crud.get_element_by_id", true_returner_mock)
 async def test_get_workflow_by_id():
     mock_session = AsyncMock()
     assert (
