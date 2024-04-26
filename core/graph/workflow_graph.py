@@ -79,7 +79,7 @@ class WorkflowGraph:
                         "value": {"condition_of_edge": edge["condition"]},
                     }
                 )
-            steps.append(path[i])
+            steps.append({"type": "node", "value": path[i]})
         return steps
 
     async def find_path(self) -> dict:
@@ -91,7 +91,7 @@ class WorkflowGraph:
             # Find the shortest path
             return {
                 "has_path": True,
-                "path": self.path_steps_generator(),
+                "path": await self.path_steps_generator(),
             }
         else:
             return {
