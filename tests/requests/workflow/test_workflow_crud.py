@@ -34,9 +34,10 @@ async def test_workflow_update(client):
     response = client.put(
         "workflows/update/1", json={"title": "Updated Title", "id": "1"}
     )
-    # assert response.status_code == 200, True
-    data = response.json()
-    assert data == {"id": 1, "title": "updated title"}
+    assert response.status_code == 200, True
+    assert (
+        response.content.decode("utf-8") == "Workflow with id 1 was updated."
+    )
 
 
 @patch(
