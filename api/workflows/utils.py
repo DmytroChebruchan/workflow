@@ -1,5 +1,3 @@
-from typing import List
-
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.crud import create_node
@@ -7,20 +5,6 @@ from api.nodes.node_attr_values import NodeType
 from api.nodes.schemas.schemas import NodeCreate
 from api.workflows.crud import create_workflow
 from api.workflows.schemas import WorkflowCreate
-from core.models import Workflow
-
-
-async def get_nodes_of_workflow(workflow: Workflow) -> List[dict]:
-    nodes = [
-        {
-            "id": node.id,
-            "type": node.type,
-            "status": node.status,
-            "message_text": node.message_text,
-        }
-        for node in workflow.nodes
-    ]
-    return nodes
 
 
 async def create_workflow_with_nodes(
