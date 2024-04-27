@@ -43,7 +43,12 @@ async def test_creating_required_edges(
     session = AsyncMock()
 
     # Call the function under test
-    await creating_required_edges(node, node_in_with_conditions, session)
+    await creating_required_edges(
+        node_id=node.id,
+        node_from_id=node_in_with_conditions.from_node_id,
+        nodes_to_list=node_in_with_conditions.nodes_to_list,
+        session=session,
+    )
 
     # Assertions for node_in_with_conditions
     create_edge_mock.assert_any_call(
@@ -57,7 +62,12 @@ async def test_creating_required_edges(
     create_edge_mock.reset_mock()
 
     # Call the function under test again with node_in_without_conditions
-    await creating_required_edges(node, node_in_without_conditions, session)
+    await creating_required_edges(
+        node_id=node.id,
+        node_from_id=node_in_without_conditions.from_node_id,
+        nodes_to_list=node_in_without_conditions.nodes_to_list,
+        session=session,
+    )
 
     # Assertions for node_in_without_conditions
     create_edge_mock.assert_any_call(

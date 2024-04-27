@@ -18,7 +18,7 @@ async def delete_edges_of_node(node: Node, session: AsyncSession) -> None:
         await delete_element_from_db(session=session, element=edge)
 
 
-async def get_edges_of_nodes(nodes: list, session: AsyncSession) -> list[Edge]:
+async def get_edges_of_nodes(nodes: list) -> list[Edge]:
     edges = []
     for node in nodes:
         edges_found = await get_edges_of_node(node=node)

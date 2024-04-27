@@ -1,12 +1,12 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.validator import (
-    ensure_unique_node_type,
     check_node_type_existence_in_workflow,
+    ensure_unique_node_type,
 )
 from tests.mock_file import true_returner_mock
 

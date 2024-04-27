@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.edges.crud import delete_edge, read_edge, update_edge
+from api.edges.crud import delete_edge_by_id, read_edge, update_edge
 from api.edges.schemas import EdgeBase
 from core.database.database import get_async_session
 
@@ -35,5 +35,5 @@ async def delete_edge_view(
     edge_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> Response:
-    await delete_edge(session=session, edge_id=edge_id)
+    await delete_edge_by_id(session=session, edge_id=edge_id)
     return Response(content={"status": "ok"}, status_code=200)

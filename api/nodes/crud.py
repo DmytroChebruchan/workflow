@@ -1,8 +1,6 @@
-from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette import status
 
-from api.edges.crud import creating_required_edges
+from api.edges.crud import creating_required_edges, delete_old_edges
 from api.general.utils import (
     commit_and_refresh_element,
     delete_element_from_db,
@@ -23,8 +21,18 @@ async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
     node_model_dict = await node_model_dict_generator(node_in)
     node = await node_saver(node_model_dict, session)
 
+    await delete_old_edges(
+        node_from_id=node_in.from_node_id,
+        nodes_to_list=node_in.nodes_to_list,
+        session=session,
+    )
     # create edges
-    await creating_required_edges(node=node, node_in=node_in, session=session)
+    await creating_required_edges(
+        node_id=node.id,
+        node_from_id=node_in.from_node_id,
+        nodes_to_list=node_in.nodes_to_list,
+        session=session,
+    )
     return node
 
 
@@ -37,14 +45,7 @@ async def get_node_by_id(session: AsyncSession, node_id: int) -> Node:
 
 
 async def delete_node_by_id(session: AsyncSession, node_id: int) -> None:
-    node = await get_element_by_id(
-        session=session, element_id=node_id, element=Node
-    )
-    if node is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Node with ID {node_id} not found",
-        )
+    node = await get_node_by_id(session=session, node_id=node_id)
     await delete_edges_of_node(session=session, node=node)
     await delete_element_from_db(session=session, element=node)
 
