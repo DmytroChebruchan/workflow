@@ -104,7 +104,8 @@ async def delete_old_edges(
     edges_to_check = [
         (node_from_id, node_to["id"]) for node_to in nodes_to_list
     ]
-
+    if not edges_to_check:
+        return
     # Extract destination node IDs from edges_to_check
     destination_node_ids = [node_id for _, node_id in edges_to_check]
 

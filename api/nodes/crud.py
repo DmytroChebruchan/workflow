@@ -21,11 +21,12 @@ async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
     node_model_dict = await node_model_dict_generator(node_in)
     node = await node_saver(node_model_dict, session)
 
-    await delete_old_edges(
-        node_from_id=node_in.from_node_id,
-        nodes_to_list=node_in.nodes_to_list,
-        session=session,
-    )
+    if node_in.from_node_id:
+        await delete_old_edges(
+            node_from_id=node_in.from_node_id,
+            nodes_to_list=node_in.nodes_to_list,
+            session=session,
+        )
     # create edges
     await creating_required_edges(
         node_id=node.id,

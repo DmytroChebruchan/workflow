@@ -34,7 +34,7 @@ async def ensure_unique_node_type(
         session, node_type=node_type, workflow_id=workflow_id
     )
 
-    if nodes_of_type is not None:
+    if nodes_of_type:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Workflow with ID {workflow_id} has a {node_type}",
