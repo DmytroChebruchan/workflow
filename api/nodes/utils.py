@@ -1,23 +1,22 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import save_element_into_db
+from api.nodes.schemas.schemas import NodeCreate
 from api.nodes.validator import check_node_type_existence_in_workflow
 from core.models import Node
 
 
-async def node_model_dict_generator(node_in) -> dict:
-    keys_to_exclude = ["from_node_id", "nodes_to_list"]
-    node_model_dict = {
-        key: value
-        for key, value in node_in.model_dump().items()
-        if key not in keys_to_exclude
-    }
-    return node_model_dict
-
-
-async def node_saver(node_model_dict: dict, session: AsyncSession) -> Node:
+async def node_saver(node_in: NodeCreate, session: AsyncSession) -> Node:
     await check_node_type_existence_in_workflow(
-        node_model_dict=node_model_dict, session=session
+        node_in=node_in, session=session
     )
-    node = Node(**node_model_dict)
+    node = await create_node_from_node_create_dict(node_in)
     return await save_element_into_db(session=session, element=node)
+
+
+async def create_node_from_node_create_dict(node_in):
+    node_dict = node_in.model_dump()
+    node_dict.pop("nodes_to_list", None)
+    node_dict.pop("from_node_id", None)
+    node = Node(**node_dict)
+    return node

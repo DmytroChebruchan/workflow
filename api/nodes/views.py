@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_elements
 from api.nodes.crud import (
-    create_node,
+    create_node_script,
     delete_node_by_id,
     get_node_by_id,
     update_node,
@@ -29,7 +29,7 @@ async def create_node_view(
     node_in: NodeCreate,
     session: AsyncSession = Depends(get_async_session),
 ) -> NodeModel | None:
-    return await create_node(session=session, node_in=node_in)
+    return await create_node_script(session=session, node_in=node_in)
 
 
 @router.get("/read/{node_id}/", response_model=NodeFromDB)

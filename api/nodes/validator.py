@@ -4,17 +4,18 @@ from starlette import status
 
 from api.nodes.node_attr_values import NodeType
 from api.nodes.node_handling import get_nodes_by_type
+from api.nodes.schemas.schemas import NodeCreate
 from api.workflows.crud import get_workflow_by_id
 
 
 async def check_node_type_existence_in_workflow(
-    node_model_dict: dict, session: AsyncSession
+    node_in: NodeCreate, session: AsyncSession
 ) -> None:
 
     # collecting values fot check
-    workflow_id = node_model_dict["workflow_id"]
+    workflow_id = node_in.workflow_id
     await get_workflow_by_id(workflow_id=workflow_id, session=session)
-    node_type = node_model_dict["type"]
+    node_type = node_in.type
 
     # checker
     await ensure_unique_node_type(

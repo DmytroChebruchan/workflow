@@ -8,18 +8,19 @@ from api.general.utils import (
 )
 from api.nodes.node_handling import delete_edges_of_node
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
-from api.nodes.utils import node_model_dict_generator, node_saver
+from api.nodes.utils import node_saver
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
 from core.models.node import Node
 
 
-async def create_node(session: AsyncSession, node_in: NodeCreate) -> Node:
+async def create_node_script(
+    session: AsyncSession, node_in: NodeCreate
+) -> Node:
     # validation
     await nodes_validation_with_pydentic(node_in.model_dump())
 
     # node saver
-    node_model_dict = await node_model_dict_generator(node_in)
-    node = await node_saver(node_model_dict, session)
+    node = await node_saver(node_in, session)
 
     if node_in.from_node_id:
         await delete_old_edges(

@@ -4,6 +4,7 @@ import pytest
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.nodes.schemas.schemas import NodeCreate
 from api.nodes.validator import (
     check_node_type_existence_in_workflow,
     ensure_unique_node_type,
@@ -33,13 +34,13 @@ async def test_check_node_type_existence_in_workflow(
     mock_ensure_unique_node_type, mock_get_workflow_by_id
 ):
     # Define the input data
-    node_model_dict = {"workflow_id": 1, "type": "Start Node"}
+    node_in = NodeCreate(workflow_id=1, type="Start Node", nodes_to_list=[{}])
 
     # Mocking AsyncSession
     mock_session = MagicMock(spec=AsyncSession)
 
     # Call the function
-    await check_node_type_existence_in_workflow(node_model_dict, mock_session)
+    await check_node_type_existence_in_workflow(node_in, mock_session)
 
     # Assert the number of calls to get_workflow_by_id
     mock_get_workflow_by_id.assert_called_once_with(
