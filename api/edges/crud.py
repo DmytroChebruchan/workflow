@@ -42,21 +42,10 @@ async def create_edge(
     return await save_element_into_db(session=session, element=edge)
 
 
-async def read_edge(edge_id: int, session: AsyncSession) -> Optional[Edge]:
-    """Read an edge from the database by its ID."""
-    # Retrieve the edge from the database
-    edge = await get_element_by_id(
-        element_id=edge_id,
-        session=session,
-        element=Edge,
-    )
-    return edge
-
-
 async def creating_required_edges(
     node_id: int,
     node_from_id: int | None,
-    nodes_to_list: list,
+    nodes_destination_list: list,
     session: AsyncSession,
 ) -> None:
     if node_from_id:
@@ -66,21 +55,14 @@ async def creating_required_edges(
             session=session,
         )
 
-    if nodes_to_list:
-        for node_to in nodes_to_list:
+    if nodes_destination_list:
+        for node_to in nodes_destination_list:
             await create_edge(
                 from_node_id=node_id,
                 to_node_id=node_to["id"],
                 session=session,
                 condition=node_to["condition"],
             )
-
-
-async def delete_edge_by_id(edge_id: int, session: AsyncSession) -> None:
-    edge = await get_element_by_id(
-        session=session, element_id=edge_id, element=Edge
-    )
-    await delete_element_from_db(session=session, element=edge)
 
 
 async def update_edge(
@@ -99,13 +81,16 @@ async def update_edge(
 
 
 async def delete_old_edges(
-    node_from_id: int | None, nodes_to_list: list, session: AsyncSession
+    node_from_id: int | None,
+    nodes_destination_list: list,
+    session: AsyncSession,
 ) -> None:
     edges_to_check = [
-        (node_from_id, node_to["id"]) for node_to in nodes_to_list
+        (node_from_id, node_to["id"]) for node_to in nodes_destination_list
     ]
     if not edges_to_check:
         return
+
     # Extract destination node IDs from edges_to_check
     destination_node_ids = [node_id for _, node_id in edges_to_check]
 

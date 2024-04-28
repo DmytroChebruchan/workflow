@@ -25,14 +25,14 @@ async def create_node_script(
     if node_in.from_node_id:
         await delete_old_edges(
             node_from_id=node_in.from_node_id,
-            nodes_to_list=node_in.nodes_to_list,
+            nodes_destination_list=node_in.nodes_destination_list,
             session=session,
         )
     # create edges
     await creating_required_edges(
         node_id=node.id,
         node_from_id=node_in.from_node_id,
-        nodes_to_list=node_in.nodes_to_list,
+        nodes_destination_list=node_in.nodes_destination_list,
         session=session,
     )
     return node
