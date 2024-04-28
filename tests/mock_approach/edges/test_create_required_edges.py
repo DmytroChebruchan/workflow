@@ -64,5 +64,5 @@ async def test_creating_required_edges(
 
     # Assertions for node_in_without_conditions
     create_edge_mock.assert_any_call(
-        session=session, from_node_id=5, to_node_id=1
+        session=session, from_node_id=1, to_node_id=3, condition=False
     )

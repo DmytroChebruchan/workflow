@@ -15,15 +15,20 @@ from core.models import Node
 async def create_node_script(
     session: AsyncSession, node_in: NodeCreate
 ) -> Node:
+    # collecting incoming edge type
     nodes_dest_json_dict = node_in.nodes_dest_dict
     if nodes_dest_json_dict:
         node_in.nodes_dest_dict = {
             bool(k.capitalize()): v for k, v in nodes_dest_json_dict.items()
         }
+
     # validation
     await nodes_validation_with_pydentic(node_in.model_dump())
 
-    if node_in.from_node_id or node_in.nodes_dest_dict:
+    # deleting old edges if any
+    if (node_in.from_node_id or node_in.nodes_dest_dict) and (
+        node_in.edge_condition_type is not None
+    ):
         await delete_old_edges(
             node_from_id=node_in.from_node_id,
             nodes_destination=node_in.nodes_dest_dict,
@@ -35,7 +40,9 @@ async def create_node_script(
     node = await node_saver(node_in, session)
 
     # create edges
-    if node_in.from_node_id or node_in.nodes_dest_dict:
+    if (
+        node_in.from_node_id or node_in.nodes_dest_dict
+    ) and node_in.nodes_dest_dict is not None:
         await creating_required_edges(
             node_id=node.id,
             node_from_id=node_in.from_node_id,

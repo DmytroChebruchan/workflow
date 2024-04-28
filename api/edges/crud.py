@@ -1,5 +1,3 @@
-from typing import Optional
-
 from sqlalchemy import delete, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -14,7 +12,7 @@ async def create_edge(
     from_node_id: int,
     to_node_id: int,
     session: AsyncSession,
-    condition: Optional[bool] = True,
+    condition: bool,
 ) -> Edge:
 
     return await create_edge_script(
@@ -36,6 +34,7 @@ async def creating_required_edges(
             from_node_id=node_from_id,
             to_node_id=node_id,
             session=session,
+            condition=True,
         )
 
     if nodes_destination_dict:
@@ -65,7 +64,7 @@ async def update_edge(
 
 async def delete_old_edges(
     node_from_id: int | None,
-    nodes_destination: dict,
+    nodes_destination: dict | None,
     session: AsyncSession,
     edge_condition_type: bool,
 ) -> None:
