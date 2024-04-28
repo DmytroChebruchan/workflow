@@ -7,6 +7,7 @@ from api.workflows.crud import (
     update_workflow,
 )
 from api.workflows.run_workflow import run_workflow
+from api.workflows.schemas import WorkflowUpdate
 
 
 async def run_workflow_script(session, workflow_id):
@@ -26,7 +27,9 @@ async def delete_workflow_script(session, workflow_id):
     )
 
 
-async def update_workflow_script(session, workflow_id, workflow_update):
+async def update_workflow_script(
+    session, workflow_id: int, workflow_update: WorkflowUpdate
+):
     workflow = await get_workflow_by_id(
         workflow_id=workflow_id, session=session
     )
@@ -35,6 +38,7 @@ async def update_workflow_script(session, workflow_id, workflow_update):
         workflow=workflow,
         workflow_update=workflow_update,
     )
+
     return Response(
         content=f"Workflow with id {str(workflow_id)} was updated.",
         status_code=200,

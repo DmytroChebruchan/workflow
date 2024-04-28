@@ -34,12 +34,3 @@ async def delete_element_from_db(session: AsyncSession, element):
 async def commit_and_refresh_element(session: AsyncSession, element):
     await session.commit()
     await session.refresh(element)
-
-
-async def update_element_id_checker(original_id: int, update_id: int):
-    if original_id != update_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Workflow with ID {update_id} in "
-            f"update workflow is not correct.",
-        )

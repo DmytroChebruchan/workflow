@@ -5,7 +5,6 @@ from api.general.utils import (
     delete_element_from_db,
     get_element_by_id,
     save_element_into_db,
-    update_element_id_checker,
 )
 from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
 from core.models.workflow import Workflow
@@ -32,7 +31,6 @@ async def update_workflow(
     workflow_update: WorkflowUpdate,
     workflow: Workflow,
 ) -> Workflow:
-    await update_element_id_checker(workflow.id, workflow_update.id)
 
     for field, value in workflow_update.model_dump(exclude_unset=True).items():
         setattr(workflow, field, value)

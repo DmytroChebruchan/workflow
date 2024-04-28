@@ -12,9 +12,9 @@ class WorkflowCreate(WorkflowBase):
 
 
 class WorkflowUpdate(WorkflowBase):
-    id: int
+    pass
 
 
-class Workflow(WorkflowBase):
+class WorkflowFromDB(WorkflowBase):
     id: int
     model_config = ConfigDict(from_attributes=True)

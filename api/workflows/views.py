@@ -7,7 +7,11 @@ from api.general.utils import get_elements
 from api.workflows.crud import (
     get_workflow_by_id,
 )
-from api.workflows.schemas import Workflow, WorkflowCreate, WorkflowUpdate
+from api.workflows.schemas import (
+    WorkflowFromDB,
+    WorkflowCreate,
+    WorkflowUpdate,
+)
 from api.workflows.scripts import (
     run_workflow_script,
     delete_workflow_script,
@@ -20,14 +24,14 @@ from core.models.workflow import Workflow as WorkflowModel
 router = APIRouter(tags=["Workflows"])
 
 
-@router.get("/show_workflows/", response_model=List[Workflow])
+@router.get("/show_workflows/", response_model=List[WorkflowFromDB])
 async def get_workflows_view(
     session: AsyncSession = Depends(get_async_session),
-) -> List[Workflow]:
+) -> List[WorkflowFromDB]:
     return await get_elements(session=session, element=WorkflowModel)
 
 
-@router.post("/create/", response_model=Workflow)
+@router.post("/create/", response_model=WorkflowFromDB)
 async def create_workflow_view(
     workflow_input: WorkflowCreate,
     session: AsyncSession = Depends(get_async_session),
@@ -37,7 +41,7 @@ async def create_workflow_view(
     )
 
 
-@router.get("/read/{workflow_id}/", response_model=Workflow)
+@router.get("/read/{workflow_id}/", response_model=WorkflowFromDB)
 async def get_workflow_by_id_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
