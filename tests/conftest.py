@@ -1,5 +1,4 @@
 from typing import AsyncGenerator
-from unittest.mock import AsyncMock
 
 import pytest
 from fastapi.testclient import TestClient
@@ -13,9 +12,10 @@ from core.database.database import get_async_session
 from core.models.base import Base
 from core.models.node import Node
 from main import app
+from tests.constants import DATABASE_URL
 
 engine = create_async_engine(
-    "sqlite+aiosqlite:///:memory:",
+    DATABASE_URL,
     connect_args={"check_same_thread": False},
 )
 SessionLocal = async_sessionmaker(
@@ -42,19 +42,6 @@ def client():
     app.dependency_overrides[get_async_session] = override_get_async_session
     client = TestClient(app)
     yield client
-
-
-async def create_test_workflow(client: TestClient) -> int:
-    response = client.post(
-        "/workflows/create/", json={"title": "Test Workflow"}
-    )
-    data = response.json()
-    return data["id"]
-
-
-@pytest.fixture
-def mock_get_async_session():
-    return AsyncMock()
 
 
 @pytest.fixture

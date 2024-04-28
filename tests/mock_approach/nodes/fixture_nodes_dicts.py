@@ -6,16 +6,6 @@ dummy_start_node = {
     "id": 1,
 }
 
-dummy_message_node = {
-    "type": "Message Node",
-    "workflow_id": 1,
-    "status": "pending",
-}
-dummy_condition_node = {
-    "type": "Condition Node",
-    "workflow_id": 1,
-}
-
 dummy_node_with_id = {
     "type": "Start Node",
     "workflow_id": 1,
