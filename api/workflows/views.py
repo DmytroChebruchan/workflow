@@ -72,7 +72,7 @@ async def update_workflow_view(
     )
 
 
-@router.delete("/delete/{workflow_id}/", response_model=None)
+@router.delete("/delete/{workflow_id}/", response_class=Response)
 async def delete_workflow_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
@@ -83,5 +83,6 @@ async def delete_workflow_view(
     await delete_workflow_by_id(session=session, workflow=workflow)
     return Response(
         content=f"Workflow with id {str(workflow_id)} was deleted.",
+        media_type="text/plain",
         status_code=200,
     )
