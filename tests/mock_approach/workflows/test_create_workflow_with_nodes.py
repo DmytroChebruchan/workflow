@@ -10,7 +10,7 @@ from core.models import Node, Workflow
 
 class TestCreateWorkflowWithNodes(unittest.IsolatedAsyncioTestCase):
     @patch(
-        "api.workflows.utils.create_node",
+        "api.workflows.utils.create_node_script",
         return_value=Node(id=1, type="Start Node"),
     )
     @patch(
