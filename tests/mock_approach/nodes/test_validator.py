@@ -34,9 +34,7 @@ async def test_check_node_type_existence_in_workflow(
     mock_ensure_unique_node_type, mock_get_workflow_by_id
 ):
     # Define the input data
-    node_in = NodeCreate(
-        workflow_id=1, type="Start Node", nodes_destination_list=[{}]
-    )
+    node_in = NodeCreate(workflow_id=1, type="Start Node")
 
     # Mocking AsyncSession
     mock_session = MagicMock(spec=AsyncSession)

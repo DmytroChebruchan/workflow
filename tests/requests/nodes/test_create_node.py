@@ -23,6 +23,7 @@ async def test_create_start_node(client):
     assert node["workflow_id"] == node_data["workflow_id"]
 
 
+@patch("api.edges.scripts.get_element_by_id", new=true_returner_mock)
 @patch(
     "api.nodes.utils.check_node_type_existence_in_workflow",
     new=true_returner_mock,
@@ -35,6 +36,9 @@ async def test_create_condition_node(client):
         "type": "Condition Node",
         "workflow_id": 1,
         "condition": "Some condition",
+        "from_node_id": 1,
+        "nodes_dest_dict": {True: 1, False: 3},
+        "edge_condition_type": True,
     }
     response = client.post("/nodes/create/", json=node_data)
     assert response.status_code == 200
@@ -50,11 +54,13 @@ async def test_create_condition_node_without_condition(client):
     node_data = {
         "type": "Condition Node",
         "workflow_id": 1,
+        "edge_condition_type": True,
     }
     response = client.post("/nodes/create/", json=node_data)
     assert response.status_code == 422
 
 
+@patch("api.edges.scripts.get_element_by_id", new=true_returner_mock)
 @patch(
     "api.nodes.utils.check_node_type_existence_in_workflow",
     new=true_returner_mock,
@@ -67,6 +73,9 @@ async def test_create_message_node(client):
         "workflow_id": 1,
         "message_text": "Hello World",
         "status": "pending",
+        "from_node_id": 22,
+        "edge_condition_type": True,
+        "nodes_dest_dict": {True: 4},
     }
     #
     response = client.post("/nodes/create/", json=node_data)
@@ -92,6 +101,8 @@ async def test_create_message_node_wrong_status(client):
         "workflow_id": 1,
         "message_text": "Hello World",
         "status": "",
+        "from_node_id": 1,
+        "nodes_dest_dict": {True: 1, False: 3},
     }
     response = client.post("/nodes/create/", json=node_data)
     assert response.status_code == 422
