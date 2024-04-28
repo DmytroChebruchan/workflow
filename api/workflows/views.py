@@ -5,12 +5,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_elements
 from api.workflows.crud import (
-    delete_workflow_by_id,
     get_workflow_by_id,
-    update_workflow,
 )
-from api.workflows.run_workflow import run_workflow
 from api.workflows.schemas import Workflow, WorkflowCreate, WorkflowUpdate
+from api.workflows.scripts import (
+    run_workflow_script,
+    delete_workflow_script,
+    update_workflow_script,
+)
 from api.workflows.utils import create_workflow_with_nodes
 from core.database.database import get_async_session
 from core.models.workflow import Workflow as WorkflowModel
@@ -48,28 +50,16 @@ async def run_workflow_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    await get_workflow_by_id(session=session, workflow_id=workflow_id)
-    return await run_workflow(session=session, workflow_id=workflow_id)
+    return await run_workflow_script(session, workflow_id)
 
 
-@router.put("/update/{workflow_id}/", response_model=Workflow)
+@router.put("/update/{workflow_id}/", response_class=Response)
 async def update_workflow_view(
     workflow_id: int,
     workflow_update: WorkflowUpdate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    workflow = await get_workflow_by_id(
-        workflow_id=workflow_id, session=session
-    )
-    await update_workflow(
-        session=session,
-        workflow=workflow,
-        workflow_update=workflow_update,
-    )
-    return Response(
-        content=f"Workflow with id {str(workflow_id)} was updated.",
-        status_code=200,
-    )
+    return await update_workflow_script(session, workflow_id, workflow_update)
 
 
 @router.delete("/delete/{workflow_id}/", response_class=Response)
@@ -77,12 +67,4 @@ async def delete_workflow_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    workflow = await get_workflow_by_id(
-        session=session, workflow_id=workflow_id
-    )
-    await delete_workflow_by_id(session=session, workflow=workflow)
-    return Response(
-        content=f"Workflow with id {str(workflow_id)} was deleted.",
-        media_type="text/plain",
-        status_code=200,
-    )
+    return await delete_workflow_script(session, workflow_id)

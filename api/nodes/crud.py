@@ -1,3 +1,4 @@
+from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.crud import creating_required_edges, delete_old_edges
@@ -72,3 +73,10 @@ async def update_node(
 
     await commit_and_refresh_element(session=session, element=node)
     return node
+
+
+async def delete_nodes_of_workflow(
+    session: AsyncSession, workflow_id: int
+) -> None:
+    await session.execute(delete(Node).where(Node.workflow_id == workflow_id))
+    await session.commit()

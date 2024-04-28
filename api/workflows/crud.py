@@ -11,6 +11,12 @@ from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
 from core.models.workflow import Workflow
 
 
+async def create_workflow(session, workflow_in: WorkflowCreate) -> Workflow:
+    workflow = Workflow(**workflow_in.model_dump())
+    await save_element_into_db(session=session, element=workflow)
+    return workflow
+
+
 async def get_workflow_by_id(
     session: AsyncSession, workflow_id: int
 ) -> Workflow:
@@ -39,9 +45,3 @@ async def delete_workflow_by_id(
     session: AsyncSession, workflow: Workflow
 ) -> None:
     await delete_element_from_db(session=session, element=workflow)
-
-
-async def create_workflow(session, workflow_in: WorkflowCreate) -> Workflow:
-    workflow = Workflow(**workflow_in.model_dump())
-    await save_element_into_db(session=session, element=workflow)
-    return workflow
