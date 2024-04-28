@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
+from api.workflows.schemas import WorkflowCreate
 
 
 def test_workflow_create():

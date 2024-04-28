@@ -1,14 +1,11 @@
 from typing import Optional
-from sqlalchemy import or_
-from sqlalchemy import delete
+
+from sqlalchemy import delete, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.schemas import EdgeBase
 from api.edges.scripts import create_edge_script
-from api.general.utils import (
-    commit_and_refresh_element,
-    get_element_by_id,
-)
+from api.general.utils import commit_and_refresh_element, get_element_by_id
 from api.workflows.crud import get_workflow_by_id
 from core.models.edge import Edge
 

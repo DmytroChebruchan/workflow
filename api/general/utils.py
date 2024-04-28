@@ -1,8 +1,6 @@
-from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette import status
 
 from api.general.validators import element_validator
 

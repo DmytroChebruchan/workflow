@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.crud import (
+    creating_required_edges,
     delete_edges_of_workflow,
     delete_old_edges,
-    creating_required_edges,
 )
 from api.nodes.crud import delete_nodes_of_workflow
 from api.nodes.schemas.schemas import NodeCreate
