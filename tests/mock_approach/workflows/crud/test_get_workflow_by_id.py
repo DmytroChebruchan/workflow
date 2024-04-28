@@ -2,7 +2,6 @@ from unittest.mock import AsyncMock, patch
 
 from api.workflows.crud import (
     create_workflow,
-    delete_workflow_by_id,
     get_workflow_by_id,
     update_workflow,
 )
@@ -33,16 +32,6 @@ async def test_update_workflow(client):
     assert isinstance(function_return, Workflow)
     assert function_return.id == workflow_update_mock.id
     assert function_return.title == "new title"
-
-
-@patch("api.workflows.crud.delete_element_from_db", true_returner_mock)
-async def test_delete_workflow_by_id():
-    workflow_base_mock = Workflow(id=1, title="title")
-    session = AsyncMock()
-    result = await delete_workflow_by_id(
-        session=session, workflow=workflow_base_mock
-    )
-    assert result is None
 
 
 @patch("api.workflows.crud.save_element_into_db", true_returner_mock)

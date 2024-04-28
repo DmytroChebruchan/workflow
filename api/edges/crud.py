@@ -1,5 +1,5 @@
 from typing import Optional
-
+from sqlalchemy import or_
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,7 +10,8 @@ from api.general.utils import (
     get_element_by_id,
     save_element_into_db,
 )
-from core.models import Node
+from api.workflows.crud import get_workflow_by_id
+from core.models import Node, Edge
 from core.models.edge import Edge
 
 
@@ -101,4 +102,25 @@ async def delete_old_edges(
             and (Edge.destination_node_id.in_(destination_node_ids))
         )
     )
+    await session.commit()
+
+
+async def delete_edges_of_workflow(workflow_id: int, session: AsyncSession):
+    workflow = await get_workflow_by_id(
+        session=session, workflow_id=workflow_id
+    )
+    nodes_related = workflow.nodes
+    nodes_ids = [node.id for node in nodes_related]
+
+    # Construct a list of conditions for source and destination node IDs
+    conditions = or_(
+        Edge.source_node_id.in_(nodes_ids),
+        Edge.destination_node_id.in_(nodes_ids),
+    )
+
+    # Construct a delete statement with the combined conditions
+    stmt = delete(Edge).where(conditions)
+
+    # Execute the delete statement and commit the changes
+    await session.execute(stmt)
     await session.commit()

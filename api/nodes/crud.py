@@ -1,7 +1,10 @@
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.edges.crud import creating_required_edges, delete_old_edges
+from api.edges.crud import (
+    creating_required_edges,
+    delete_old_edges,
+)
 from api.general.utils import (
     commit_and_refresh_element,
     delete_element_from_db,

@@ -1,6 +1,6 @@
 from starlette.responses import Response
 
-from api.nodes.crud import delete_nodes_of_workflow
+from api.nodes.script import delete_nodes_of_workflow_script
 from api.workflows.crud import (
     get_workflow_by_id,
     delete_workflow_by_id,
@@ -15,11 +15,10 @@ async def run_workflow_script(session, workflow_id):
 
 
 async def delete_workflow_script(session, workflow_id):
-    workflow = await get_workflow_by_id(
+    await delete_nodes_of_workflow_script(
         session=session, workflow_id=workflow_id
     )
-    await delete_nodes_of_workflow(session=session, workflow_id=workflow_id)
-    await delete_workflow_by_id(session=session, workflow=workflow)
+    await delete_workflow_by_id(session=session, workflow_id=workflow_id)
     return Response(
         content=f"Workflow with id {str(workflow_id)} was deleted.",
         media_type="text/plain",
