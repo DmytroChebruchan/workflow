@@ -16,7 +16,7 @@ async def node_saver(node_in: NodeCreate, session: AsyncSession) -> Node:
 
 async def create_node_from_node_create_dict(node_in):
     node_dict = node_in.model_dump()
-    node_dict.pop("nodes_to_list", None)
+    node_dict.pop("nodes_destination_list", None)
     node_dict.pop("from_node_id", None)
     node = Node(**node_dict)
     return node

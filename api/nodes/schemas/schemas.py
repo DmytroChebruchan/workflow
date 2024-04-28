@@ -16,13 +16,13 @@ class NodeBase(BaseModel):
 
 class NodeCreate(NodeBase):
     from_node_id: Optional[int] | None = None
-    nodes_to_list: List[dict] | list = []
+    nodes_destination_list: List[dict] | list = []
 
 
 class NodeUpdate(NodeBase):
     id: int
     from_node_id: Optional[int] | None = None
-    nodes_to_list: List[dict] | list = []
+    nodes_destination_list: List[dict] | list = []
 
 
 class NodeFromDB(NodeBase):

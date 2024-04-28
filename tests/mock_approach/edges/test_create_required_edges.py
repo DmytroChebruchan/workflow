@@ -14,7 +14,7 @@ def node_in_with_conditions():
         type="Start Node",
         workflow_id=1,
         from_node_id=1,
-        nodes_to_list=[
+        nodes_destination_list=[
             {"id": 3, "condition": True},
             {"id": 4, "condition": False},
         ],
@@ -46,7 +46,7 @@ async def test_creating_required_edges(
     await creating_required_edges(
         node_id=node.id,
         node_from_id=node_in_with_conditions.from_node_id,
-        nodes_to_list=node_in_with_conditions.nodes_to_list,
+        nodes_destination_list=node_in_with_conditions.nodes_destination_list,
         session=session,
     )
 
@@ -65,7 +65,7 @@ async def test_creating_required_edges(
     await creating_required_edges(
         node_id=node.id,
         node_from_id=node_in_without_conditions.from_node_id,
-        nodes_to_list=node_in_without_conditions.nodes_to_list,
+        nodes_destination_list=node_in_without_conditions.nodes_destination_list,
         session=session,
     )
 
