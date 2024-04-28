@@ -1,45 +1,15 @@
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.edges.crud import (
-    creating_required_edges,
-    delete_old_edges,
-)
 from api.general.utils import (
     commit_and_refresh_element,
     delete_element_from_db,
     get_element_by_id,
 )
 from api.nodes.node_handling import delete_edges_of_node
-from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
-from api.nodes.utils import node_saver
+from api.nodes.schemas.schemas import NodeUpdate
 from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
 from core.models.node import Node
-
-
-async def create_node_script(
-    session: AsyncSession, node_in: NodeCreate
-) -> Node:
-    # validation
-    await nodes_validation_with_pydentic(node_in.model_dump())
-
-    # node saver
-    node = await node_saver(node_in, session)
-
-    if node_in.from_node_id:
-        await delete_old_edges(
-            node_from_id=node_in.from_node_id,
-            nodes_destination_list=node_in.nodes_destination_list,
-            session=session,
-        )
-    # create edges
-    await creating_required_edges(
-        node_id=node.id,
-        node_from_id=node_in.from_node_id,
-        nodes_destination_list=node_in.nodes_destination_list,
-        session=session,
-    )
-    return node
 
 
 async def get_node_by_id(session: AsyncSession, node_id: int) -> Node:
