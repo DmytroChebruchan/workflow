@@ -36,6 +36,7 @@ class ConditionNode(NodeBase):
     from_node_id: int
     nodes_dest_dict: dict
     edge_condition_type: bool
+    condition: MessageNodeStatus
 
     @field_validator("nodes_dest_dict")
     def validate_nodes_dest_dict(cls, v):
