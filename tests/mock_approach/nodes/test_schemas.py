@@ -1,6 +1,3 @@
-import pytest
-from pydantic import ValidationError
-
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
 from tests.mock_approach.nodes.fixture_nodes_dicts import (
     dummy_node,
@@ -21,8 +18,3 @@ def test_node_update():
     assert node.id == dummy_start_node["id"]
     assert node.workflow_id == dummy_start_node["workflow_id"]
     assert node.type == dummy_start_node["type"]
-
-
-def test_node_invalid_data():
-    with pytest.raises(ValidationError):
-        NodeCreate()

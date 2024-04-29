@@ -1,23 +1,20 @@
 import unittest
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock
 
 from api.workflows.run_workflow import run_workflow
 from core.graph.workflow_graph import WorkflowGraph
 
 
-async def mock_async_update_graph(*_args, **_kwargs):
-    return 1
-
-
 class TestRunWorkflow(unittest.IsolatedAsyncioTestCase):
     async def test_run_workflow(self):
-        WorkflowGraph.async_update_graph = MagicMock(
-            return_value=mock_async_update_graph()
-        )
-        WorkflowGraph.find_path = MagicMock(
-            return_value=mock_async_update_graph()
-        )
+        # generating mocks
+        WorkflowGraph.async_update_graph = AsyncMock(return_value=1)
+        WorkflowGraph.find_path = AsyncMock(return_value=1)
+
+        # making request
         result = await run_workflow(AsyncMock(), 1)
 
+        # assert
         self.assertEqual(result, 1)
         self.assertEqual(WorkflowGraph.async_update_graph.call_count, 1)
+        self.assertEqual(WorkflowGraph.find_path.call_count, 1)
