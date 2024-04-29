@@ -1,11 +1,7 @@
----
-
 ## Project Information
 - **Repository**: [GitHub - DmytroChebruchan/workflow](https://codeclimate.com/github/DmytroChebruchan/workflow)
 - **Maintainability Badge**: [![Maintainability](https://api.codeclimate.com/v1/badges/a1e1122c2d6eb01b0a58/maintainability)](https://codeclimate.com/github/DmytroChebruchan/workflow/maintainability)
-
----
-
+  
 ## Getting Started
 
 ### Installation
