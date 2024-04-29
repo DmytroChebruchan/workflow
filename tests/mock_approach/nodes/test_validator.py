@@ -5,7 +5,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.schemas.schemas import NodeCreate
-from api.nodes.validator import (
+from api.nodes.validation.validator import (
     check_node_type_existence_in_workflow,
     ensure_unique_node_type,
 )
@@ -13,7 +13,8 @@ from tests.mock_file import true_returner_mock
 
 
 @patch(
-    "api.nodes.validator.get_nodes_by_type", return_value=true_returner_mock
+    "api.nodes.validation.validator.get_nodes_by_type",
+    return_value=true_returner_mock,
 )
 async def test_ensure_unique_node_type(get_nodes_by_type):
     # Check if exception is raised
@@ -28,8 +29,8 @@ async def test_ensure_unique_node_type(get_nodes_by_type):
 
 
 @pytest.mark.asyncio
-@patch("api.nodes.validator.get_workflow_by_id")
-@patch("api.nodes.validator.ensure_unique_node_type")
+@patch("api.nodes.validation.validator.get_workflow_by_id")
+@patch("api.nodes.validation.validator.ensure_unique_node_type")
 async def test_check_node_type_existence_in_workflow(
     mock_ensure_unique_node_type, mock_get_workflow_by_id
 ):

@@ -9,7 +9,7 @@ async def success_workflow_mock(*args, **kwargs):
 
 
 @patch(
-    "api.nodes.validator.check_node_type_existence_in_workflow",
+    "api.nodes.validation.validator.check_node_type_existence_in_workflow",
     new=true_returner_mock,
 )
 async def test_workflow_created(client):

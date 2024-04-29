@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, AsyncMock
 
 import pytest
 
@@ -28,9 +28,12 @@ async def test_create_start_node(client):
     "api.nodes.utils.check_node_type_existence_in_workflow",
     new=true_returner_mock,
 )
+@patch(
+    "api.nodes.validation.script.condition_node_validation",
+    new=AsyncMock(return_value=True),
+)
 @pytest.mark.asyncio
 async def test_create_condition_node(client):
-
     # Create message node
     node_data = {
         "type": "Condition Node",
@@ -46,6 +49,30 @@ async def test_create_condition_node(client):
     assert node["type"] == node_data["type"]
     assert node["workflow_id"] == node_data["workflow_id"]
     assert node["condition"] == node_data["condition"]
+
+
+@patch("api.edges.scripts.get_element_by_id", new=true_returner_mock)
+@patch(
+    "api.nodes.utils.check_node_type_existence_in_workflow",
+    new=true_returner_mock,
+)
+@patch(
+    "api.nodes.validation.script.condition_node_validation",
+    new=true_returner_mock,
+)
+@pytest.mark.asyncio
+async def test_create_condition_node(client):
+    # Create message node
+    node_data = {
+        "type": "Condition Node",
+        "workflow_id": 1,
+        "condition": "Some condition",
+        "from_node_id": 1,
+        "nodes_dest_dict": {True: 1, False: 3},
+        "edge_condition_type": True,
+    }
+    response = client.post("/nodes/create/", json=node_data)
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio

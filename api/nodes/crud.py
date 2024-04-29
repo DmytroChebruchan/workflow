@@ -8,7 +8,7 @@ from api.general.utils import (
 )
 from api.nodes.node_handling import delete_edges_of_node
 from api.nodes.schemas.schemas import NodeUpdate
-from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
+from api.nodes.validation.script import nodes_val_with_pydentic_script
 from core.models.node import Node
 
 
@@ -33,7 +33,9 @@ async def update_node(
 ) -> Node:
 
     # Validate the updated node fields
-    await nodes_validation_with_pydentic(node_update.model_dump())
+    await nodes_val_with_pydentic_script(
+        data=node_update.model_dump(), session=session
+    )
 
     # Validate existence of node
     node = await get_element_by_id(

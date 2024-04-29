@@ -8,7 +8,8 @@ from api.edges.crud import (
 from api.nodes.crud import delete_nodes_of_workflow
 from api.nodes.schemas.schemas import NodeCreate
 from api.nodes.utils import node_saver
-from api.nodes.validation_with_pydentic import nodes_validation_with_pydentic
+
+from api.nodes.validation.script import nodes_val_with_pydentic_script
 from core.models import Node
 
 
@@ -23,7 +24,9 @@ async def create_node_script(
         }
 
     # validation
-    await nodes_validation_with_pydentic(node_in.model_dump())
+    await nodes_val_with_pydentic_script(
+        data=node_in.model_dump(), session=session
+    )
 
     # deleting old edges if any
     await delete_old_nodes_script(node_in, session)
