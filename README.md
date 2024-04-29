@@ -3,7 +3,8 @@
 - **Maintainability Badge**: [![Maintainability](https://api.codeclimate.com/v1/badges/02724330d63a34a5fc21/maintainability)](https://codeclimate.com/github/DmytroChebruchan/workflow/maintainability)
 
 This project was done as test case. Main task it can perform is to manage workflows with
-tasks as nodes inside. Main feature is checking if workflow has a path from Start Node to End Node.
+tasks as nodes inside. With this app you can create, read, update and delete workflows and nodes of workflows.
+Main feature is checking if workflow has a path from Start Node to End Node.
 
 ## Getting Started
 
