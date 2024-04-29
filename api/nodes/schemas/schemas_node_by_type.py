@@ -32,7 +32,6 @@ class MessageNode(NodeBase):
 
 class ConditionNode(NodeBase):
     type: NodeType = Field(NodeType.CONDITION)
-    condition: str
     from_node_id: int
     nodes_dest_dict: dict
     edge_condition_type: bool

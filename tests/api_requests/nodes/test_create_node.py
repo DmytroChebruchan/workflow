@@ -38,7 +38,7 @@ async def test_create_condition_node(client):
     node_data = {
         "type": "Condition Node",
         "workflow_id": 1,
-        "condition": "Some condition",
+        "condition": "sent",
         "from_node_id": 1,
         "nodes_dest_dict": {True: 1, False: 3},
         "edge_condition_type": True,
@@ -66,7 +66,7 @@ async def test_create_condition_node(client):
     node_data = {
         "type": "Condition Node",
         "workflow_id": 1,
-        "condition": "Some condition",
+        "condition": "sent",
         "from_node_id": 1,
         "nodes_dest_dict": {True: 1, False: 3},
         "edge_condition_type": True,
