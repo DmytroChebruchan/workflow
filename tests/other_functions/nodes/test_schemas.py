@@ -1,5 +1,5 @@
 from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
-from tests.mock_approach.nodes.fixture_nodes_dicts import (
+from tests.other_functions.nodes.fixture_nodes_dicts import (
     dummy_node,
     dummy_start_node,
 )
