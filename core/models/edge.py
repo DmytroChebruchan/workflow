@@ -22,3 +22,6 @@ class Edge(Base):
         back_populates="incoming_edges",
         lazy="selectin",
     )
+
+    def __str__(self):
+        return f"Edge {self.source_node_id} -> {self.destination_node_id}"

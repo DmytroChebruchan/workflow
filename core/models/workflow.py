@@ -11,3 +11,6 @@ class Workflow(Base):
         back_populates="workflow",
         lazy="selectin",
     )
+
+    def __str__(self):
+        return f"Workflow {self.title}"

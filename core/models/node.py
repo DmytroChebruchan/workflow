@@ -33,3 +33,6 @@ class Node(Base):
         back_populates="destination_node",
         lazy="selectin",
     )
+
+    def __str__(self):
+        return f"{self.type} Node {self.id}"
