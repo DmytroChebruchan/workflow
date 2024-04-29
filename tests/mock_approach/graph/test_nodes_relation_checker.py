@@ -8,7 +8,7 @@ from core.graph.workflow_graph import WorkflowGraph
 from core.models import Edge, Node
 
 
-async def workflow_graph_generator(edges, nodes):
+async def workflow_graph_generator_mock(edges, nodes):
     workflow_graph = WorkflowGraph(
         nodes=nodes, edges=edges, session=AsyncSession()
     )
@@ -19,19 +19,20 @@ async def workflow_graph_generator(edges, nodes):
 
 
 class TestWorkflowGraph(unittest.IsolatedAsyncioTestCase):
+
+    nodes = [
+        Node(id=1, type=NodeType.START),
+        Node(id=2, type=NodeType.END),
+    ]
+    edges = [
+        Edge(
+            source_node_id=1,
+            destination_node_id=2,
+            condition_type=True,
+        )
+    ]
+
     async def test_async_update_graph(self):
-        # Create mock nodes, edges, and session
-        nodes = [
-            Node(id=1, type=NodeType.START),
-            Node(id=2, type=NodeType.END),
-        ]
-        edges = [
-            Edge(
-                source_node_id=1,
-                destination_node_id=2,
-                condition_type=True,
-            )
-        ]
 
         # Mock the required functions
         WorkflowGraph._add_edges = AsyncMock()
@@ -40,7 +41,7 @@ class TestWorkflowGraph(unittest.IsolatedAsyncioTestCase):
 
         # Create WorkflowGraph instance
         workflow_graph = WorkflowGraph(
-            nodes=nodes, edges=edges, session=AsyncSession()
+            nodes=self.nodes, edges=self.edges, session=AsyncSession()
         )
 
         # Call async_update_graph
@@ -52,22 +53,10 @@ class TestWorkflowGraph(unittest.IsolatedAsyncioTestCase):
         WorkflowGraph._update_important_nodes_by_type.assert_awaited_once()
 
     async def test_has_path(self):
-        # Create mock nodes, edges, and session
-        nodes = [
-            Node(id=1, type=NodeType.START),
-            Node(id=2, type=NodeType.END),
-        ]
-        edges = [
-            Edge(
-                source_node_id=1,
-                destination_node_id=2,
-                condition_type=True,
-            )
-        ]
 
         # Create WorkflowGraph instance
         workflow_graph = WorkflowGraph(
-            nodes=nodes, edges=edges, session=AsyncSession()
+            nodes=self.nodes, edges=self.edges, session=AsyncSession()
         )
 
         # Call has_path
@@ -77,29 +66,19 @@ class TestWorkflowGraph(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(has_path)
 
     async def test_path_steps_generator(self):
-        # Create mock nodes, edges, and session
-        nodes = [
-            Node(id=1, type=NodeType.START),
-            Node(id=2, type=NodeType.END),
-        ]
-        edges = [
-            Edge(
-                source_node_id=1,
-                destination_node_id=2,
-                condition_type=True,
-            )
-        ]
 
         # Create WorkflowGraph instance
-        workflow_graph = await workflow_graph_generator(edges, nodes)
+        workflow_graph = await workflow_graph_generator_mock(
+            self.edges, self.nodes
+        )
         # Call path_steps_generator
         steps = await workflow_graph.path_steps_generator()
 
         # Assertions
         expected_steps = [
-            {"type": "node", "value": nodes[0]},
+            {"type": "node", "value": self.nodes[0]},
             {"type": "edge", "value": {"condition_of_edge": True}},
-            {"type": "node", "value": nodes[1]},
+            {"type": "node", "value": self.nodes[1]},
         ]
         self.assertEqual(steps, expected_steps)
 
