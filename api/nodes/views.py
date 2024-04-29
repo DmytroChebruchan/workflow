@@ -4,7 +4,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_elements
-from api.nodes.crud import delete_node_by_id, get_node_by_id, update_node
+from api.nodes.crud import (
+    delete_node_by_id_script,
+    get_node_by_id,
+    update_node,
+)
 from api.nodes.schemas.schemas import NodeCreate, NodeFromDB, NodeUpdate
 from api.nodes.script import create_node_script
 from core.database.database import get_async_session
@@ -44,7 +48,7 @@ async def delete_node_view(
     node_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> dict[str, str]:
-    await delete_node_by_id(session=session, node_id=node_id)
+    await delete_node_by_id_script(session=session, node_id=node_id)
     return {"message": "Node deleted!"}
 
 

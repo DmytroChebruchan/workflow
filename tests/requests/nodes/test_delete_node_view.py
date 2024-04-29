@@ -5,7 +5,7 @@ import pytest
 from tests.mock_file import true_returner_mock
 
 
-@patch("api.nodes.views.delete_node_by_id", new=true_returner_mock)
+@patch("api.nodes.views.delete_node_by_id_script", new=true_returner_mock)
 @pytest.mark.asyncio
 async def test_delete_node_view(client):
     response = client.delete("/nodes/1")

@@ -26,6 +26,29 @@ async def create_node_script(
     await nodes_validation_with_pydentic(node_in.model_dump())
 
     # deleting old edges if any
+    await delete_old_nodes_script(node_in, session)
+
+    # node saver
+    node = await node_saver(node_in, session)
+
+    # create edges
+    await edge_creator_script(node, node_in, session)
+    return node
+
+
+async def edge_creator_script(node, node_in, session) -> None:
+    from_node_avail = node_in.from_node_id
+    dest_node_avail = node_in.nodes_dest_dict
+    if from_node_avail or dest_node_avail:
+        await creating_required_edges(
+            node_id=node.id,
+            node_from_id=node_in.from_node_id,
+            nodes_destination_dict=node_in.nodes_dest_dict,
+            session=session,
+        )
+
+
+async def delete_old_nodes_script(node_in, session) -> None:
     if (node_in.from_node_id or node_in.nodes_dest_dict) and (
         node_in.edge_condition_type is not None
     ):
@@ -35,21 +58,6 @@ async def create_node_script(
             session=session,
             edge_condition_type=node_in.edge_condition_type,
         )
-
-    # node saver
-    node = await node_saver(node_in, session)
-
-    # create edges
-    if (
-        node_in.from_node_id or node_in.nodes_dest_dict
-    ) and node_in.nodes_dest_dict is not None:
-        await creating_required_edges(
-            node_id=node.id,
-            node_from_id=node_in.from_node_id,
-            nodes_destination_dict=node_in.nodes_dest_dict,
-            session=session,
-        )
-    return node
 
 
 async def delete_nodes_of_workflow_script(

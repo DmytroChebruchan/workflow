@@ -31,10 +31,8 @@ async def update_workflow(
     workflow_update: WorkflowUpdate,
     workflow: Workflow,
 ) -> Workflow:
-
     for field, value in workflow_update.model_dump(exclude_unset=True).items():
         setattr(workflow, field, value)
-
     await commit_and_refresh_element(session=session, element=workflow)
     return workflow
 

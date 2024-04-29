@@ -20,7 +20,9 @@ async def get_node_by_id(session: AsyncSession, node_id: int) -> Node:
     )
 
 
-async def delete_node_by_id(session: AsyncSession, node_id: int) -> None:
+async def delete_node_by_id_script(
+    session: AsyncSession, node_id: int
+) -> None:
     node = await get_node_by_id(session=session, node_id=node_id)
     await delete_edges_of_node(session=session, node=node)
     await delete_element_from_db(session=session, element=node)

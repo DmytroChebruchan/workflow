@@ -23,7 +23,7 @@ class MessageNode(NodeBase):
             raise ValueError(
                 "nodes_dest_dict must contain exactly 1 dictionaries"
             )
-        if next(iter(v)) not in {True, False}:
+        if next(iter(v)) not in (True, False):
             raise ValueError(
                 "nodes_dest_dict must contain exactly True or False"
                 " conditions."

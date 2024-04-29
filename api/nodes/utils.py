@@ -14,10 +14,13 @@ async def node_saver(node_in: NodeCreate, session: AsyncSession) -> Node:
     return await save_element_into_db(session=session, element=node)
 
 
-async def create_node_from_node_create_dict(node_in):
-    node_dict = node_in.model_dump()
-    node_dict.pop("nodes_dest_dict", None)
-    node_dict.pop("from_node_id", None)
-    node_dict.pop("edge_condition_type", None)
-    node = Node(**node_dict)
-    return node
+async def create_node_from_node_create_dict(node_in) -> Node:
+    # Extract necessary attributes from the node dictionary
+    node_dict = {
+        k: v
+        for k, v in node_in.model_dump().items()
+        if k not in ["nodes_dest_dict", "from_node_id", "edge_condition_type"]
+    }
+
+    # Create a new Node object using the extracted attributes
+    return Node(**node_dict)

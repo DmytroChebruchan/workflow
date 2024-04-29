@@ -3,7 +3,6 @@ from pydantic import BaseModel, ConfigDict
 
 class WorkflowBase(BaseModel):
     title: str
-
     model_config = ConfigDict()
 
 

@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import AsyncMock
 
-from api.workflows.run_workflow import run_workflow
+from api.workflows.scripts import run_workflow_script
 from core.graph.workflow_graph import WorkflowGraph
 
 
@@ -12,7 +12,7 @@ class TestRunWorkflow(unittest.IsolatedAsyncioTestCase):
         WorkflowGraph.find_path = AsyncMock(return_value=1)
 
         # making request
-        result = await run_workflow(AsyncMock(), 1)
+        result = await run_workflow_script(AsyncMock(), 1)
 
         # assert
         self.assertEqual(result, 1)

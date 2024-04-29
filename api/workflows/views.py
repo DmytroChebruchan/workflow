@@ -12,8 +12,8 @@ from api.workflows.schemas import (
 )
 from api.workflows.scripts import (
     delete_workflow_script,
-    run_workflow_script,
     update_workflow_script,
+    run_workflow_script,
 )
 from api.workflows.utils import create_workflow_with_nodes
 from core.database.database import get_async_session
