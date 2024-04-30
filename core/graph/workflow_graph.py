@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import get_element_by_id
 from api.nodes.node_attr_values import NodeType
+from core.graph.remove_void_edges import clean_graph_from_void_edges
 from core.models import Edge, Node
 
 
@@ -31,6 +32,7 @@ class WorkflowGraph:
         await self._add_edges()
         await self._add_nodes()
         await self._update_important_nodes_by_type()
+        await self._remove_void_edges()
 
     async def _add_nodes(self):
         """
@@ -108,3 +110,6 @@ class WorkflowGraph:
         return next(
             (node for node in self.nodes if node.type == node_type), None
         )
+
+    async def _remove_void_edges(self):
+        self.graph = await clean_graph_from_void_edges(self.graph)
