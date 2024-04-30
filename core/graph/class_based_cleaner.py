@@ -4,7 +4,7 @@ from api.nodes.schemas.schemas_node_by_type import ConditionNode
 
 
 class GraphCleaner:
-    graph = nx.DiGraph()
+    graph: nx.DiGraph
 
     async def clean_graph_from_void_edges(self):
         edges_to_remove = await self.void_edges_finder()
