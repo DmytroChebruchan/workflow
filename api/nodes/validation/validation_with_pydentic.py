@@ -18,8 +18,8 @@ async def condition_node_validation(data: dict, session: AsyncSession):
         if source_node_type in (NodeType.START, NodeType.END):
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                detail=f"Condition node can be created only after "
-                f"Message Node or Condition Node.",
+                detail="Condition node can be created only after "
+                "Message Node or Condition Node.",
             )
 
 
