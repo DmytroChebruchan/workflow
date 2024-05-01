@@ -1,6 +1,6 @@
 import networkx as nx
 
-from core.graph.workflow_graph import WorkflowGraphBase
+from core.graph.schemas.workflow_graph_base import WorkflowGraphBase
 
 
 class WorkFindMixinGraph(WorkflowGraphBase):
