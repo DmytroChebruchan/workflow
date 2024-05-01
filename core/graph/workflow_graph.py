@@ -17,14 +17,13 @@ class WorkflowGraphCreator:
     def __init__(
         self, nodes: List[Node], edges: List[Edge], session: AsyncSession
     ):
-        self.graph = None
+        self.graph: nx.DiGraph = nx.DiGraph()
         self.nodes = nodes
         self.edges = edges
         self.session = session
         self.graph_generator()
 
     def graph_generator(self):
-        self.graph: nx.DiGraph = nx.DiGraph()
         self.graph.add_nodes_from(self.nodes)
         self._add_edges()
         self._update_important_nodes_by_type_sync()
