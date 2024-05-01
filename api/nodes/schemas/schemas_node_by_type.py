@@ -39,13 +39,15 @@ class ConditionNode(NodeBase):
 
     @field_validator("nodes_dest_dict")
     def validate_nodes_dest_dict(cls, v):
-        if len(v) != 1:
-            raise ValueError(
-                "nodes_dest_dict must contain exactly  dictionary"
-            )
+        if len(v) not in [1, 2]:
+            raise ValueError("nodes_dest_dict must contain exactly 2 keys")
         if set(v) in (True, False):
             raise ValueError(
                 "nodes_dest_dict must contain exactly True and False"
+            )
+        if v[True] == v[False]:
+            raise ValueError(
+                "Both conditions can not target to the same node."
             )
         return v
 
