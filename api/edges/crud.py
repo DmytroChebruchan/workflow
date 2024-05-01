@@ -68,6 +68,14 @@ async def delete_old_edges(
     session: AsyncSession,
     edge_condition_type: bool,
 ) -> None:
+    if node_from_id:
+        await session.execute(
+            delete(Edge).where(
+                (Edge.source_node_id == node_from_id)
+                and (Edge.condition_type == edge_condition_type)
+            )
+        )
+
     if nodes_destination:
         destination_node_ids = [
             node_to for node_to in nodes_destination.values()
@@ -78,13 +86,6 @@ async def delete_old_edges(
             delete(Edge).where(
                 (Edge.source_node_id == node_from_id)
                 and (Edge.destination_node_id.in_(destination_node_ids))
-            )
-        )
-    if node_from_id:
-        await session.execute(
-            delete(Edge).where(
-                (Edge.destination_node_id == node_from_id)
-                and (Edge.condition_type == edge_condition_type)
             )
         )
     await session.commit()

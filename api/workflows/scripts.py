@@ -72,8 +72,5 @@ async def run_workflow_script(session: AsyncSession, workflow_id: int) -> dict:
         session=session,
     )
 
-    # Update the graph asynchronously
-    await graph.async_update_graph()
-
     # Return path details of the executed workflow
     return await graph.find_path()
