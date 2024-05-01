@@ -9,7 +9,7 @@ from core.graph.remove_void_edges import clean_graph_from_void_edges
 from core.models import Edge, Node
 
 
-class WorkflowGraph:
+class WorkflowGraphCreator:
     """
     Class to represent a workflow graph.
     """
@@ -17,48 +17,66 @@ class WorkflowGraph:
     def __init__(
         self, nodes: List[Node], edges: List[Edge], session: AsyncSession
     ):
+        self.graph = None
         self.nodes = nodes
         self.edges = edges
         self.session = session
+        self.graph_generator()
+
+    def graph_generator(self):
         self.graph: nx.DiGraph = nx.DiGraph()
-        self.start_node = None
-        self.end_node = None
-
-    async def async_update_graph(self):
-        """
-        Asynchronously update the graph by adding edges, nodes,
-         and calculating the path.
-        """
-        await self._add_edges()
-        await self._add_nodes()
-        await self._update_important_nodes_by_type()
-        await self._remove_void_edges()
-
-    async def _add_nodes(self):
-        """
-        Asynchronously add nodes to the graph.
-        """
         self.graph.add_nodes_from(self.nodes)
+        self._add_edges()
+        self._update_important_nodes_by_type_sync()
+        self._remove_void_edges()
 
-    async def _add_edges(self):
+    def _add_edges(self):
         """
         Asynchronously add edges to the graph.
         """
         for edge in self.edges:
-            node_from = await self._get_node_by_id(edge.source_node_id)
-            node_to = await self._get_node_by_id(edge.destination_node_id)
+            node_from = [
+                node for node in self.nodes if node.id == edge.source_node_id
+            ][0]
+            node_to = [
+                node
+                for node in self.nodes
+                if node.id == edge.destination_node_id
+            ][0]
             self.graph.add_edge(
                 node_from, node_to, condition=edge.condition_type
             )
 
-    async def _update_important_nodes_by_type(self):
+    def _update_important_nodes_by_type_sync(self):
         """
         Asynchronously update start and end nodes by their types.
         """
-        self.start_node = await self._get_node_by_type(
-            node_type=NodeType.START
+        self.start_node = [
+            node for node in self.nodes if node.type == "Start Node"
+        ][0]
+        self.end_node = [
+            node for node in self.nodes if node.type == "End Node"
+        ][0]
+
+    async def _get_node_by_id(self, node_id: int) -> Node:
+        return await get_element_by_id(
+            element_id=node_id, element=Node, session=self.session
         )
-        self.end_node = await self._get_node_by_type(node_type=NodeType.END)
+
+    async def _get_node_by_type(self, node_type: NodeType) -> Node | None:
+        return next(
+            (node for node in self.nodes if node.type == node_type), None
+        )
+
+    def _remove_void_edges(self):
+        """removes edges of Condition nodes that are void"""
+        self.graph = clean_graph_from_void_edges(self.graph)
+
+
+class WorkflowGraph(WorkflowGraphCreator):
+    """
+    Class to represent a workflow graph.
+    """
 
     async def has_path(self):
         """
@@ -88,28 +106,15 @@ class WorkflowGraph:
         """
         Asynchronously get the path details.
         """
+        has_path = await self.has_path()
         # Check if there is a path between the start and end nodes
-        if await self.has_path():
+        if has_path:
             # Find the shortest path
             return {
-                "has_path": True,
+                "has_path": has_path,
                 "path": await self.path_steps_generator(),
             }
-        else:
-            return {
-                "has_path": False,
-                "comments": "No path exists between the Start and End nodes.",
-            }
-
-    async def _get_node_by_id(self, node_id: int) -> Node:
-        return await get_element_by_id(
-            element_id=node_id, element=Node, session=self.session
-        )
-
-    async def _get_node_by_type(self, node_type: NodeType) -> Node | None:
-        return next(
-            (node for node in self.nodes if node.type == node_type), None
-        )
-
-    async def _remove_void_edges(self):
-        self.graph = await clean_graph_from_void_edges(self.graph)
+        return {
+            "has_path": has_path,
+            "comments": "No path exists between the Start and End nodes.",
+        }
