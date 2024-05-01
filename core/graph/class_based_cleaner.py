@@ -25,7 +25,9 @@ class GraphCleaner:
                 edges_to_remove.append(edge)
         return edges_to_remove
 
-    async def void_edge_finder(self, node: ConditionNode) -> list[tuple]:
+    async def void_edge_finder(
+        self, node: ConditionNode
+    ) -> list[tuple[int, int, bool]]:
         condition_of_void_edge = await self.condition_of_edge_to_be_removed(
             node
         )
