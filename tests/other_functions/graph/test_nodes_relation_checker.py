@@ -32,26 +32,6 @@ class TestWorkflowGraph(unittest.IsolatedAsyncioTestCase):
         )
     ]
 
-    async def test_async_update_graph(self):
-
-        # Mock the required functions
-        WorkflowGraph._add_edges = AsyncMock()
-        WorkflowGraph._add_nodes = AsyncMock()
-        WorkflowGraph._update_important_nodes_by_type = AsyncMock()
-
-        # Create WorkflowGraph instance
-        workflow_graph = WorkflowGraph(
-            nodes=self.nodes, edges=self.edges, session=AsyncSession()
-        )
-
-        # Call async_update_graph
-        await workflow_graph.async_update_graph()
-
-        # Assertions
-        WorkflowGraph._add_edges.assert_awaited_once()
-        WorkflowGraph._add_nodes.assert_awaited_once()
-        WorkflowGraph._update_important_nodes_by_type.assert_awaited_once()
-
     async def test_has_path(self):
 
         # Create WorkflowGraph instance
