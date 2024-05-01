@@ -5,7 +5,6 @@ from api.nodes.schemas.schemas import NodeCreate
 from api.nodes.validation.validator import (
     check_node_type_existence_in_workflow,
 )
-
 from core.models import Node
 
 
