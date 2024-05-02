@@ -1,13 +1,79 @@
-from api.edges.crud import creating_required_edges
+from sqlalchemy import or_, delete
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from api.edges.crud import create_edge
+from api.edges.utils import del_destination_edge, delete_edge_from_source
+from api.workflows.crud import get_workflow_by_id
+from core.models import Edge
 
 
 async def edge_creator_script(node, node_in, session) -> None:
     from_node_avail = node_in.from_node_id
     dest_node_avail = node_in.nodes_dest_dict
     if from_node_avail or dest_node_avail:
-        await creating_required_edges(
+        await creating_required_edges_script(
             node_id=node.id,
             node_from_id=node_in.from_node_id,
             nodes_destination_dict=node_in.nodes_dest_dict,
             session=session,
         )
+
+
+async def creating_required_edges_script(
+    node_id: int,
+    node_from_id: int | None,
+    nodes_destination_dict: dict,
+    session: AsyncSession,
+) -> None:
+    if node_from_id:
+        await create_edge(
+            direction={"from": node_from_id, "to": node_id},
+            session=session,
+            condition=True,
+        )
+
+    if nodes_destination_dict:
+        for key in nodes_destination_dict:
+            await create_edge(
+                direction={"from": node_id, "to": nodes_destination_dict[key]},
+                session=session,
+                condition=key,
+            )
+
+
+async def delete_edges_of_workflow_script(
+    workflow_id: int, session: AsyncSession
+):
+    workflow = await get_workflow_by_id(
+        session=session, workflow_id=workflow_id
+    )
+    nodes_related = workflow.nodes
+    nodes_ids = [node.id for node in nodes_related]
+
+    # Construct a list of conditions for source and destination node IDs
+    conditions = or_(
+        Edge.source_node_id.in_(nodes_ids),
+        Edge.destination_node_id.in_(nodes_ids),
+    )
+
+    # Construct a delete statement with the combined conditions
+    stmt = delete(Edge).where(conditions)
+
+    # Execute the delete statement and commit the changes
+    await session.execute(stmt)
+    await session.commit()
+
+
+async def delete_old_edges_script(
+    node_from_id: int | None,
+    nodes_destination: dict | None,
+    session: AsyncSession,
+    edge_condition_type: bool,
+) -> None:
+    if node_from_id:
+        await delete_edge_from_source(
+            edge_condition_type, node_from_id, session
+        )
+    if nodes_destination:
+        await del_destination_edge(node_from_id, nodes_destination, session)
+    await session.commit()
