@@ -1,4 +1,4 @@
-from sqlalchemy import or_, delete
+from sqlalchemy import delete, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.crud import create_edge

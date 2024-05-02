@@ -4,10 +4,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils_element_class import ElementManagement
-from api.nodes.crud import (
-    get_node_by_id,
-    update_node,
-)
+from api.nodes.crud import get_node_by_id, update_node
 from api.nodes.schemas.schemas import NodeCreate, NodeFromDB, NodeUpdate
 from api.nodes.scripts import create_node_script, delete_node_by_id_script
 from core.database.database import get_async_session

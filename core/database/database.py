@@ -6,8 +6,6 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-from core.models.base import Base
-
 engine = create_async_engine("sqlite+aiosqlite:///db.sqlite3")
 SessionLocal = async_sessionmaker(engine)
 

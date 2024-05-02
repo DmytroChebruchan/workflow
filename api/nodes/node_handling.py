@@ -1,4 +1,4 @@
-from sqlalchemy import Result, select, and_
+from sqlalchemy import Result, and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils_element_class import ElementManagement

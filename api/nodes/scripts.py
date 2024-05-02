@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.scripts import (
-    edge_creator_script,
     delete_edges_of_workflow_script,
     delete_old_edges_script,
+    edge_creator_script,
 )
 from api.general.utils_element_class import ElementManagement
 from api.nodes.crud import delete_nodes_of_workflow, get_node_by_id

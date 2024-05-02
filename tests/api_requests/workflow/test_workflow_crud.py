@@ -1,6 +1,5 @@
 from unittest.mock import patch
 
-from core.models import Workflow
 from tests.mock_file import true_returner_mock
 
 

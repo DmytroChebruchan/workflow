@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock
 
 from api.workflows.crud import (
     create_workflow,
@@ -7,7 +7,6 @@ from api.workflows.crud import (
 )
 from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
 from core.models import Workflow
-from tests.mock_file import true_returner_mock
 
 
 async def test_create_workflow():

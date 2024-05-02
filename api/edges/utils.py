@@ -1,4 +1,4 @@
-from sqlalchemy import delete, and_
+from sqlalchemy import and_, delete
 
 from core.models import Edge
 
