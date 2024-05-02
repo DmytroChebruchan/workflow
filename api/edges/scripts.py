@@ -3,13 +3,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.crud import EdgeManagement
 from api.edges.utils import del_destination_edge, delete_edge_from_source
-from api.workflows.crud import get_workflow_by_id
+from api.workflows.crud_WorkflowManagement import WorkflowManagement
 from core.models import Edge
 
 
 async def edge_creator_script(node, node_in, session) -> None:
     from_node_avail = node_in.from_node_id
     dest_node_avail = node_in.nodes_dest_dict
+
     if from_node_avail or dest_node_avail:
         await creating_required_edges_script(
             node_id=node.id,
@@ -44,20 +45,20 @@ async def creating_required_edges_script(
 async def delete_edges_of_workflow_script(
     workflow_id: int, session: AsyncSession
 ):
-    workflow = await get_workflow_by_id(
+    workflow_object = WorkflowManagement(
         session=session, workflow_id=workflow_id
     )
-    nodes_related = workflow.nodes
-    nodes_ids = [node.id for node in nodes_related]
+    workflow = await workflow_object.get_workflow_by_id()
 
-    # Construct a list of conditions for source and destination node IDs
-    conditions = or_(
-        Edge.source_node_id.in_(nodes_ids),
-        Edge.destination_node_id.in_(nodes_ids),
-    )
+    nodes_ids = [node.id for node in workflow.nodes]
 
     # Construct a delete statement with the combined conditions
-    stmt = delete(Edge).where(conditions)
+    stmt = delete(Edge).where(
+        or_(
+            Edge.source_node_id.in_(nodes_ids),
+            Edge.destination_node_id.in_(nodes_ids),
+        )
+    )
 
     # Execute the delete statement and commit the changes
     await session.execute(stmt)

@@ -13,7 +13,9 @@ async def node_saver(node_in: NodeCreate, session: AsyncSession) -> Node:
         node_in=node_in, session=session
     )
     node = await create_node_from_node_create_dict(node_in)
-    element = ElementManagement(session=session, model=Node, class_object=node)
+    element = ElementManagement(
+        session=session, model=Node, object_of_class=node
+    )
     return await element.save_element_into_db()
 
 

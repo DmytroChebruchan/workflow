@@ -76,5 +76,7 @@ async def delete_node_by_id_script(
     node = await get_node_by_id(session=session, node_id=node_id)
     await delete_edges_of_node(session=session, node=node)
 
-    element = ElementManagement(session=session, model=Node, class_object=node)
+    element = ElementManagement(
+        session=session, model=Node, object_of_class=node
+    )
     await element.delete_element_from_db()

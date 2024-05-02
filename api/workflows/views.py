@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils_element_class import ElementManagement
-from api.workflows.crud import get_workflow_by_id
+from api.workflows.crud_WorkflowManagement import WorkflowManagement
 from api.workflows.schemas import (
     WorkflowCreate,
     WorkflowFromDB,
@@ -45,7 +45,10 @@ async def get_workflow_by_id_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> WorkflowModel:
-    return await get_workflow_by_id(session=session, workflow_id=workflow_id)
+    workflow_object = WorkflowManagement(
+        session=session, workflow_id=workflow_id
+    )
+    return await workflow_object.get_workflow_by_id()
 
 
 @router.get("/run/{workflow_id}/")

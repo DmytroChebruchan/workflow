@@ -16,7 +16,7 @@ async def delete_edges_of_node(node: Node, session: AsyncSession) -> None:
     edges_related = await get_edges_of_node(node=node)
     for edge in edges_related:
         element = ElementManagement(
-            session=session, model=Edge, class_object=edge
+            session=session, model=Edge, object_of_class=edge
         )
         await element.delete_element_from_db()
 

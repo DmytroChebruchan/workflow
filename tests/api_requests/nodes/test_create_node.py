@@ -54,7 +54,6 @@ async def test_create_message_node(client):
     assert response.status_code == 200
 
 
-@patch("api.workflows.crud.get_workflow_by_id", new=true_returner_mock)
 @pytest.mark.asyncio
 async def test_create_message_node_wrong_status(client):
 
@@ -71,7 +70,6 @@ async def test_create_message_node_wrong_status(client):
     assert response.status_code == 422
 
 
-@patch("api.workflows.crud.get_workflow_by_id", new=true_returner_mock)
 @pytest.mark.asyncio
 async def test_create_message_node_without_status(client):
 
