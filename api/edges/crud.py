@@ -19,6 +19,9 @@ class EdgeManagement:
             destination_node_id=self.direction["to"],
             condition_type=self.condition,
         )
+        return await self.save_edge_into_db(validated_edge)
+
+    async def save_edge_into_db(self, validated_edge):
         edge = Edge(**validated_edge.model_dump())
         element = ElementManagement(
             session=self.session, model=Edge, class_object=edge
