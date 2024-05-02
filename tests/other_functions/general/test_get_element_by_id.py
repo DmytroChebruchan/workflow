@@ -4,7 +4,8 @@ from unittest.mock import Mock
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils import get_element_by_id, get_elements
+from api.general.utils import get_element_by_id
+from api.general.utils_element_class import ElementManagement
 from core.models.node import Node
 
 
@@ -19,9 +20,9 @@ class TestFunctions(unittest.IsolatedAsyncioTestCase):
             {"id": 2, "name": "element2"},
         ]
         mock_session.execute.return_value = mock_result
-
+        element = ElementManagement(session=mock_session, model=element)
         # Call the function
-        elements = await get_elements(mock_session, element)
+        elements = await ElementManagement.get_elements()
 
         # Assert the function output
         self.assertEqual(

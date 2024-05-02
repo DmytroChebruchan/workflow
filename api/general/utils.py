@@ -5,13 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.general.validators import element_validator
 
 
-async def get_elements(session: AsyncSession, element) -> list:
-    stmt = select(element).order_by(element.id)
-    result: Result = await session.execute(stmt)
-    nodes = result.scalars().all()
-    return list(nodes)
-
-
 async def get_element_by_id(session: AsyncSession, element_id: int, element):
     item = await session.get(element, element_id)
     await element_validator(element_id=element_id, item=item)

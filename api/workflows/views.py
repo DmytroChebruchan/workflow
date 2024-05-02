@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils import get_elements
+from api.general.utils_element_class import ElementManagement
 from api.workflows.crud import get_workflow_by_id
 from api.workflows.schemas import (
     WorkflowCreate,
@@ -26,7 +26,8 @@ router = APIRouter(tags=["Workflows"])
 async def get_workflows_view(
     session: AsyncSession = Depends(get_async_session),
 ) -> List[WorkflowFromDB]:
-    return await get_elements(session=session, element=WorkflowModel)
+    element = ElementManagement(session=session, model=WorkflowModel)
+    return await element.get_elements()
 
 
 @router.post("/create/", response_model=WorkflowFromDB)

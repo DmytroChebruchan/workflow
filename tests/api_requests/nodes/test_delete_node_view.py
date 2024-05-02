@@ -10,4 +10,4 @@ from tests.mock_file import true_returner_mock
 async def test_delete_node_view(client):
     response = client.delete("/nodes/1")
     assert response.status_code == 200
-    assert response.json() == {"message": "Node deleted!"}
+    assert response.json() == {"message": "Node was deleted!"}

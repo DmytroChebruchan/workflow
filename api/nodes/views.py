@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils import get_elements
+from api.general.utils_element_class import ElementManagement
 from api.nodes.crud import (
     get_node_by_id,
     update_node,
@@ -20,7 +20,8 @@ router = APIRouter(tags=["Nodes"])
 async def get_nodes_view(
     session: AsyncSession = Depends(get_async_session),
 ):
-    return await get_elements(session=session, element=NodeModel)
+    element = ElementManagement(session=session, model=NodeModel)
+    return await element.get_elements()
 
 
 @router.post("/create/", response_model=NodeFromDB)
@@ -48,7 +49,7 @@ async def delete_node_view(
     session: AsyncSession = Depends(get_async_session),
 ) -> dict[str, str]:
     await delete_node_by_id_script(session=session, node_id=node_id)
-    return {"message": "Node deleted!"}
+    return {"message": "Node was deleted!"}
 
 
 @router.put("/{node_id}/")
