@@ -1,11 +1,16 @@
+from typing import List
+
 from fastapi import HTTPException
+from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from api.nodes.node_attr_values import NodeType
 from api.nodes.node_handling import get_nodes_by_type
 from api.nodes.schemas.schemas import NodeCreate
+from api.nodes.validation.utils import get_elements_by_ids
 from api.workflows.crud import get_workflow_by_id
+from core.models import Node
 
 
 async def check_node_type_existence_in_workflow(
