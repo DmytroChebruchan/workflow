@@ -1,7 +1,7 @@
 from sqlalchemy import Result, select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils import delete_element_from_db
+from api.general.utils_element_class import ElementManagement
 from core.models import Edge, Node
 
 
@@ -15,7 +15,10 @@ async def get_edges_of_node(node: Node) -> list[Edge]:
 async def delete_edges_of_node(node: Node, session: AsyncSession) -> None:
     edges_related = await get_edges_of_node(node=node)
     for edge in edges_related:
-        await delete_element_from_db(session=session, element=edge)
+        element = ElementManagement(
+            session=session, model=Edge, class_object=edge
+        )
+        await element.delete_element_from_db()
 
 
 async def get_edges_of_nodes(nodes: list) -> list[Edge]:

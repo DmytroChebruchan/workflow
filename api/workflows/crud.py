@@ -1,10 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils import (
-    commit_and_refresh_element,
-    delete_element_from_db,
-    save_element_into_db,
-)
 from api.general.utils_element_class import ElementManagement
 from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
 from core.models.workflow import Workflow
@@ -12,7 +7,10 @@ from core.models.workflow import Workflow
 
 async def create_workflow(session, workflow_in: WorkflowCreate) -> Workflow:
     workflow = Workflow(**workflow_in.model_dump())
-    await save_element_into_db(session=session, element=workflow)
+    element = ElementManagement(
+        session=session, model=Workflow, class_object=workflow
+    )
+    await element.save_element_into_db()
     return workflow
 
 
@@ -32,7 +30,10 @@ async def update_workflow(
 ) -> Workflow:
     for field, value in workflow_update.model_dump(exclude_unset=True).items():
         setattr(workflow, field, value)
-    await commit_and_refresh_element(session=session, element=workflow)
+    element = ElementManagement(
+        session=session, model=Workflow, class_object=workflow
+    )
+    await element.commit_and_refresh_element()
     return workflow
 
 
@@ -42,4 +43,7 @@ async def delete_workflow_by_id(
     workflow = await get_workflow_by_id(
         session=session, workflow_id=workflow_id
     )
-    await delete_element_from_db(session=session, element=workflow)
+    element = ElementManagement(
+        session=session, model=Workflow, class_object=workflow
+    )
+    await element.delete_element_from_db()

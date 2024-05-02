@@ -31,8 +31,7 @@ class ElementManagement:
         await self.commit_and_refresh_element()
         return self.model
 
-    async def delete_element_from_db(self, class_object):
-        self.class_object = class_object
+    async def delete_element_from_db(self):
         await self.session.delete(self.class_object)
         await self.session.commit()
 
