@@ -20,7 +20,6 @@ async def test_create_workflow():
 
 
 async def test_get_workflow_by_id():
-    mock_session = AsyncMock()
     # Create a mock node object
     mock_workflow = AsyncMock()
 
