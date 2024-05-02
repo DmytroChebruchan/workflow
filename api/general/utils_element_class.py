@@ -29,7 +29,7 @@ class ElementManagement:
     async def save_element_into_db(self):
         self.session.add(self.class_object)
         await self.commit_and_refresh_element()
-        return self.model
+        return self.class_object
 
     async def delete_element_from_db(self):
         await self.session.delete(self.class_object)

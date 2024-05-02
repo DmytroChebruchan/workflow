@@ -10,7 +10,6 @@ from core.models import Workflow
 from tests.mock_file import true_returner_mock
 
 
-@patch("api.workflows.crud.save_element_into_db", true_returner_mock)
 async def test_create_workflow():
     workflow_base_mock = WorkflowCreate(title="title")
     session = AsyncMock()
@@ -37,7 +36,6 @@ async def test_get_workflow_by_id():
     assert result == mock_workflow
 
 
-@patch("api.workflows.crud.commit_and_refresh_element", true_returner_mock)
 async def test_update_workflow(client):
     workflow_update_mock = WorkflowUpdate(title="new title")
     workflow_base_mock = Workflow(id=1, title="title")
