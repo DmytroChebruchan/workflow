@@ -5,12 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.general.validators import element_validator
 
 
-async def get_element_by_id(session: AsyncSession, element_id: int, element):
-    item = await session.get(element, element_id)
-    await element_validator(element_id=element_id, item=item)
-    return item
-
-
 async def save_element_into_db(session: AsyncSession, element):
     session.add(element)
     await commit_and_refresh_element(session=session, element=element)

@@ -3,17 +3,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import (
     commit_and_refresh_element,
-    get_element_by_id,
 )
+from api.general.utils_element_class import ElementManagement
 from api.nodes.schemas.schemas import NodeUpdate
 from api.nodes.validation.script import nodes_val_with_pydentic_script
 from core.models.node import Node
 
 
 async def get_node_by_id(session: AsyncSession, node_id: int) -> Node:
-    return await get_element_by_id(
-        element=Node,
-        session=session,
+    element = ElementManagement(session=session, model=Node)
+    return await element.get_element_by_id(
         element_id=node_id,
     )
 
@@ -26,13 +25,8 @@ async def update_node(
     await nodes_val_with_pydentic_script(
         data=node_update.model_dump(), session=session
     )
-
-    # Validate existence of node
-    node = await get_element_by_id(
-        session=session,
-        element_id=node_id,
-        element=Node,
-    )
+    element = ElementManagement(session=session, model=Node)
+    node = element.get_element_by_id(element_id=node_id)
 
     # Update the node fields
     for field, value in node_update.model_dump(exclude_unset=True).items():

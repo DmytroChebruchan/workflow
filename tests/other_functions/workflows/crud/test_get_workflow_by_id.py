@@ -21,12 +21,20 @@ async def test_create_workflow():
     assert result.title == "title"
 
 
-@patch("api.workflows.crud.get_element_by_id", true_returner_mock)
 async def test_get_workflow_by_id():
     mock_session = AsyncMock()
-    assert (
-        await get_workflow_by_id(session=mock_session, workflow_id=1) is True
-    )
+    # Create a mock node object
+    mock_workflow = AsyncMock()
+
+    # Set the return value of mock_session.get() to be the mock_node
+    mock_session = AsyncMock()
+    mock_session.get.return_value = mock_workflow
+
+    # Call get_node_by_id
+    result = await get_workflow_by_id(session=mock_session, workflow_id=1)
+
+    # Assert that the result is the same as the mock_node
+    assert result == mock_workflow
 
 
 @patch("api.workflows.crud.commit_and_refresh_element", true_returner_mock)

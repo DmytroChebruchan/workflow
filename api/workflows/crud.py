@@ -3,9 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.general.utils import (
     commit_and_refresh_element,
     delete_element_from_db,
-    get_element_by_id,
     save_element_into_db,
 )
+from api.general.utils_element_class import ElementManagement
 from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
 from core.models.workflow import Workflow
 
@@ -19,9 +19,8 @@ async def create_workflow(session, workflow_in: WorkflowCreate) -> Workflow:
 async def get_workflow_by_id(
     session: AsyncSession, workflow_id: int
 ) -> Workflow:
-    return await get_element_by_id(
-        element=Workflow,
-        session=session,
+    element = ElementManagement(session=session, model=Workflow)
+    return await element.get_element_by_id(
         element_id=workflow_id,
     )
 
