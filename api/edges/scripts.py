@@ -1,9 +1,9 @@
 from sqlalchemy import delete, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.edges.crud import EdgeManagement
+from api.edges.crud import EdgeRepo
 from api.edges.utils import del_destination_edge, delete_edge_from_source
-from api.workflows.crud_WorkflowManagement import WorkflowManagement
+from api.workflows.crud_WorkflowRepo import WorkflowRepo
 from core.models import Edge
 
 
@@ -28,15 +28,13 @@ async def creating_required_edges_script(
 ) -> None:
     direction = {"from": node_from_id, "to": node_id}
     if node_from_id:
-        edge = EdgeManagement(
-            session=session, direction=direction, condition=True
-        )
+        edge = EdgeRepo(session=session, direction=direction, condition=True)
         await edge.create_edge()
 
     if nodes_destination_dict:
         for key in nodes_destination_dict:
             direction = {"from": node_id, "to": nodes_destination_dict[key]}
-            edge = EdgeManagement(
+            edge = EdgeRepo(
                 session=session, direction=direction, condition=key
             )
             await edge.create_edge()
@@ -45,9 +43,7 @@ async def creating_required_edges_script(
 async def delete_edges_of_workflow_script(
     workflow_id: int, session: AsyncSession
 ):
-    workflow_object = WorkflowManagement(
-        session=session, workflow_id=workflow_id
-    )
+    workflow_object = WorkflowRepo(session=session, workflow_id=workflow_id)
     workflow = await workflow_object.get_workflow_by_id()
 
     nodes_ids = [node.id for node in workflow.nodes]

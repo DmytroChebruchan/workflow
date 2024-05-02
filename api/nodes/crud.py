@@ -1,14 +1,14 @@
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils_element_class import ElementManagement
+from api.general.utils_element_class import ElementRepo
 from api.nodes.schemas.schemas import NodeUpdate
 from api.nodes.validation.script import nodes_val_with_pydentic_script
 from core.models.node import Node
 
 
 async def get_node_by_id(session: AsyncSession, node_id: int) -> Node:
-    element = ElementManagement(session=session, model=Node)
+    element = ElementRepo(session=session, model=Node)
     return await element.get_element_by_id(
         element_id=node_id,
     )
@@ -22,7 +22,7 @@ async def update_node(
     await nodes_val_with_pydentic_script(
         data=node_update.model_dump(), session=session
     )
-    element = ElementManagement(session=session, model=Node)
+    element = ElementRepo(session=session, model=Node)
     node = await element.get_element_by_id(element_id=node_id)
 
     # Update the node fields

@@ -5,7 +5,7 @@ from starlette import status
 from api.nodes.node_attr_values import NodeType
 from api.nodes.node_handling import get_nodes_by_type
 from api.nodes.schemas.schemas import NodeCreate
-from api.workflows.crud_WorkflowManagement import WorkflowManagement
+from api.workflows.crud_WorkflowRepo import WorkflowRepo
 
 
 async def check_node_type_existence_in_workflow(
@@ -14,9 +14,7 @@ async def check_node_type_existence_in_workflow(
 
     # collecting values fot check
     workflow_id = node_in.workflow_id
-    workflow_object = WorkflowManagement(
-        session=session, workflow_id=workflow_id
-    )
+    workflow_object = WorkflowRepo(session=session, workflow_id=workflow_id)
     await workflow_object.get_workflow_by_id()
     node_type = node_in.type
 

@@ -5,7 +5,7 @@ from api.edges.scripts import (
     delete_old_edges_script,
     edge_creator_script,
 )
-from api.general.utils_element_class import ElementManagement
+from api.general.utils_element_class import ElementRepo
 from api.nodes.crud import delete_nodes_of_workflow, get_node_by_id
 from api.nodes.node_handling import delete_edges_of_node
 from api.nodes.schemas.schemas import NodeCreate
@@ -76,7 +76,5 @@ async def delete_node_by_id_script(
     node = await get_node_by_id(session=session, node_id=node_id)
     await delete_edges_of_node(session=session, node=node)
 
-    element = ElementManagement(
-        session=session, model=Node, object_of_class=node
-    )
+    element = ElementRepo(session=session, model=Node, object_of_class=node)
     await element.delete_element_from_db()

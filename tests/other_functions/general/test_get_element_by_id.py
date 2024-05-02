@@ -4,7 +4,7 @@ from unittest.mock import Mock
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils_element_class import ElementManagement
+from api.general.utils_element_class import ElementRepo
 from core.models.node import Node
 
 
@@ -19,7 +19,7 @@ class TestFunctions(unittest.IsolatedAsyncioTestCase):
             {"id": 2, "name": "element2"},
         ]
         mock_session.execute.return_value = mock_result
-        element = ElementManagement(session=mock_session, model=element)
+        element = ElementRepo(session=mock_session, model=element)
         # Call the function
         elements = await element.get_elements()
 

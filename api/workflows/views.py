@@ -3,8 +3,8 @@ from typing import List
 from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils_element_class import ElementManagement
-from api.workflows.crud_WorkflowManagement import WorkflowManagement
+from api.general.utils_element_class import ElementRepo
+from api.workflows.crud_WorkflowRepo import WorkflowRepo
 from api.workflows.schemas import (
     WorkflowCreate,
     WorkflowFromDB,
@@ -26,7 +26,7 @@ router = APIRouter(tags=["Workflows"])
 async def get_workflows_view(
     session: AsyncSession = Depends(get_async_session),
 ) -> List[WorkflowFromDB]:
-    element = ElementManagement(session=session, model=WorkflowModel)
+    element = ElementRepo(session=session, model=WorkflowModel)
     return await element.get_elements()
 
 
@@ -45,9 +45,7 @@ async def get_workflow_by_id_view(
     workflow_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> WorkflowModel:
-    workflow_object = WorkflowManagement(
-        session=session, workflow_id=workflow_id
-    )
+    workflow_object = WorkflowRepo(session=session, workflow_id=workflow_id)
     return await workflow_object.get_workflow_by_id()
 
 

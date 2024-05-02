@@ -3,7 +3,7 @@ from starlette.responses import Response
 
 from api.nodes.node_handling import get_edges_of_nodes
 from api.nodes.scripts import delete_nodes_of_workflow_script
-from api.workflows.crud_WorkflowManagement import WorkflowManagement
+from api.workflows.crud_WorkflowRepo import WorkflowRepo
 from api.workflows.schemas import WorkflowUpdate
 from core.graph.workflow_graph import WorkflowGraph
 
@@ -12,9 +12,7 @@ async def delete_workflow_script(session, workflow_id):
     await delete_nodes_of_workflow_script(
         session=session, workflow_id=workflow_id
     )
-    workflow_object = WorkflowManagement(
-        session=session, workflow_id=workflow_id
-    )
+    workflow_object = WorkflowRepo(session=session, workflow_id=workflow_id)
     await workflow_object.delete_workflow_by_id()
     return Response(
         content=f"Workflow with id {str(workflow_id)} was deleted.",
@@ -26,9 +24,7 @@ async def delete_workflow_script(session, workflow_id):
 async def update_workflow_script(
     session, workflow_id: int, workflow_update: WorkflowUpdate
 ):
-    workflow_object = WorkflowManagement(
-        session=session, workflow_id=workflow_id
-    )
+    workflow_object = WorkflowRepo(session=session, workflow_id=workflow_id)
     workflow = await workflow_object.get_workflow_by_id()
     await workflow_object.update_workflow(
         workflow_update=workflow_update,
@@ -53,9 +49,7 @@ async def run_workflow_script(session: AsyncSession, workflow_id: int) -> dict:
         dict: Path details of the executed workflow.
     """
     # Get workflow by ID
-    workflow_object = WorkflowManagement(
-        session=session, workflow_id=workflow_id
-    )
+    workflow_object = WorkflowRepo(session=session, workflow_id=workflow_id)
     workflow = await workflow_object.get_workflow_by_id()
 
     # Collect nodes from the workflow

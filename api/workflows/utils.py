@@ -3,14 +3,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.nodes.node_attr_values import NodeType
 from api.nodes.schemas.schemas import NodeCreate
 from api.nodes.scripts import create_node_script
-from api.workflows.crud_WorkflowManagement import WorkflowManagement
+from api.workflows.crud_WorkflowRepo import WorkflowRepo
 from api.workflows.schemas import WorkflowCreate
 
 
 async def create_workflow_with_nodes(
     session: AsyncSession, workflow_in: WorkflowCreate
 ):
-    workflow_object = WorkflowManagement(session=session)
+    workflow_object = WorkflowRepo(session=session)
     workflow = await workflow_object.create_workflow(workflow_in=workflow_in)
 
     # creating start and end nodes

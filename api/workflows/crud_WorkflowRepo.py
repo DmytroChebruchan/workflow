@@ -1,11 +1,11 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils_element_class import ElementManagement
+from api.general.utils_element_class import ElementRepo
 from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
 from core.models.workflow import Workflow
 
 
-class WorkflowManagement(ElementManagement):
+class WorkflowRepo(ElementRepo):
     model = Workflow
     object_of_class: Workflow
 

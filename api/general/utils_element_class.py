@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.general.validators import element_validator
 
 
-class ElementManagement:
+class ElementRepo:
     """
     This class is used to manage models. Get info from db, put in db.
     """

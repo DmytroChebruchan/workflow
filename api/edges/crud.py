@@ -1,11 +1,11 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.schemas import EdgeBase
-from api.general.utils_element_class import ElementManagement
+from api.general.utils_element_class import ElementRepo
 from core.models.edge import Edge
 
 
-class EdgeManagement(ElementManagement):
+class EdgeRepo(ElementRepo):
     model = Edge
 
     def __init__(

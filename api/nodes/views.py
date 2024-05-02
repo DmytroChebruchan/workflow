@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils_element_class import ElementManagement
+from api.general.utils_element_class import ElementRepo
 from api.nodes.crud import get_node_by_id, update_node
 from api.nodes.schemas.schemas import NodeCreate, NodeFromDB, NodeUpdate
 from api.nodes.scripts import create_node_script, delete_node_by_id_script
@@ -17,7 +17,7 @@ router = APIRouter(tags=["Nodes"])
 async def get_nodes_view(
     session: AsyncSession = Depends(get_async_session),
 ):
-    element = ElementManagement(session=session, model=NodeModel)
+    element = ElementRepo(session=session, model=NodeModel)
     return await element.get_elements()
 
 
