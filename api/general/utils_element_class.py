@@ -13,6 +13,7 @@ class ElementManagement:
     def __init__(self, session: AsyncSession, model):
         self.session = session
         self.model = model
+        self.class_object = None
 
     async def get_elements(self) -> list:
         stmt = select(self.model).order_by(self.model.id)
@@ -25,15 +26,17 @@ class ElementManagement:
         await element_validator(element_id=element_id, item=item)
         return item
 
-    async def save_element_into_db(self):
-        self.session.add(self.model)
+    async def save_element_into_db(self, class_object):
+        self.class_object = class_object
+        self.session.add(self.class_object)
         await self.commit_and_refresh_element()
         return self.model
 
-    async def delete_element_from_db(self):
-        await self.session.delete(self.model)
+    async def delete_element_from_db(self, class_object):
+        self.class_object = class_object
+        await self.session.delete(self.class_object)
         await self.session.commit()
 
     async def commit_and_refresh_element(self):
         await self.session.commit()
-        await self.session.refresh(self.model)
+        await self.session.refresh(self.class_object)
