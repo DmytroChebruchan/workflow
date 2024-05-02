@@ -9,7 +9,7 @@ from api.nodes.crud import (
     update_node,
 )
 from api.nodes.schemas.schemas import NodeCreate, NodeFromDB, NodeUpdate
-from api.nodes.script import create_node_script, delete_node_by_id_script
+from api.nodes.scripts import create_node_script, delete_node_by_id_script
 from core.database.database import get_async_session
 from core.models.node import Node as NodeModel
 
