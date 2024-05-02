@@ -22,7 +22,7 @@ class TestFunctions(unittest.IsolatedAsyncioTestCase):
         mock_session.execute.return_value = mock_result
         element = ElementManagement(session=mock_session, model=element)
         # Call the function
-        elements = await ElementManagement.get_elements()
+        elements = await element.get_elements()
 
         # Assert the function output
         self.assertEqual(
