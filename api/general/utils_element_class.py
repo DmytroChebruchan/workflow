@@ -10,10 +10,10 @@ class ElementManagement:
     This class is used to manage models. Get info from db, put in db.
     """
 
-    def __init__(self, session: AsyncSession, model):
+    def __init__(self, session: AsyncSession, model, class_object=None):
         self.session = session
         self.model = model
-        self.class_object = None
+        self.class_object = class_object
 
     async def get_elements(self) -> list:
         stmt = select(self.model).order_by(self.model.id)
@@ -26,8 +26,7 @@ class ElementManagement:
         await element_validator(element_id=element_id, item=item)
         return item
 
-    async def save_element_into_db(self, class_object):
-        self.class_object = class_object
+    async def save_element_into_db(self):
         self.session.add(self.class_object)
         await self.commit_and_refresh_element()
         return self.model

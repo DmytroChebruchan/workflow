@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.schemas import EdgeBase
-from api.general.utils import save_element_into_db
+from api.general.utils_element_class import ElementManagement
 from core.models.edge import Edge
 
 
@@ -16,4 +16,5 @@ async def create_edge(
         condition_type=condition,
     )
     edge = Edge(**validated_edge.model_dump())
-    return await save_element_into_db(session=session, element=edge)
+    element = ElementManagement(session=session, model=Edge, class_object=edge)
+    return await element.save_element_into_db()
