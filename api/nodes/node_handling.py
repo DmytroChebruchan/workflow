@@ -1,4 +1,4 @@
-from sqlalchemy import Result, select
+from sqlalchemy import Result, select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import delete_element_from_db
@@ -30,10 +30,8 @@ async def get_edges_of_nodes(nodes: list) -> list[Edge]:
 async def get_nodes_by_type(
     session: AsyncSession, node_type: str, workflow_id: int
 ) -> list:
-    stmt = (
-        select(Node)
-        .where(Node.type == node_type)
-        .where(Node.workflow_id == workflow_id)
+    stmt = select(Node).where(
+        and_(Node.type == node_type, Node.workflow_id == workflow_id)
     )
     result: Result = await session.execute(stmt)
     return list(result.scalars().all())
