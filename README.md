@@ -15,9 +15,15 @@ Main feature is checking if workflow has a path from Start Node to End Node.
    pip install -r requirements.txt
    ```
 
+### Make migration
+
+2. Make mifration with alembic
+    ```bash
+    alembic upgrade head
+    ```
 ### Running the App
 
-2. Start the app:
+3. Start the app:
    ```bash
    python -m main
    ```
