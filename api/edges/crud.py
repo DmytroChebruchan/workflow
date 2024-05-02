@@ -1,10 +1,9 @@
 from sqlalchemy import delete, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.edges.schemas import EdgeBase
-from api.edges.scripts import create_edge_script
-from api.general.utils import commit_and_refresh_element, get_element_by_id
+from api.general.utils import get_element_by_id, save_element_into_db
 from api.workflows.crud import get_workflow_by_id
+from core.models import Node, Edge
 from core.models.edge import Edge
 
 
@@ -14,13 +13,23 @@ async def create_edge(
     session: AsyncSession,
     condition: bool,
 ) -> Edge:
-
-    return await create_edge_script(
-        condition=condition,
-        from_node_id=from_node_id,
+    await get_element_by_id(
         session=session,
-        to_node_id=to_node_id,
+        element_id=from_node_id,
+        element=Node,
     )
+    await get_element_by_id(
+        session=session,
+        element_id=to_node_id,
+        element=Node,
+    )
+    # Create and persist the edges
+    edge = Edge(
+        source_node_id=from_node_id,
+        destination_node_id=to_node_id,
+        condition_type=condition,
+    )
+    return await save_element_into_db(session=session, element=edge)
 
 
 async def creating_required_edges(

@@ -35,7 +35,7 @@ async def test_create_condition_node_without_condition(client):
     assert response.status_code == 422
 
 
-@patch("api.edges.scripts.get_element_by_id", new=true_returner_mock)
+@patch("api.edges.crud.get_element_by_id", new=true_returner_mock)
 @patch(
     "api.nodes.utils.check_node_type_existence_in_workflow",
     new=true_returner_mock,

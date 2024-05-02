@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from api.nodes.schemas.schemas import NodeCreate
-from api.nodes.script import create_node_script
+from api.nodes.scripts import create_node_script
 from core.models.node import Node
 from tests.mock_file import true_returner_mock
 from tests.other_functions.nodes.fixture_nodes_dicts import dummy_node

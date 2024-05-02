@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import Response
 
 from api.nodes.node_handling import get_edges_of_nodes
-from api.nodes.script import delete_nodes_of_workflow_script
+from api.nodes.scripts import delete_nodes_of_workflow_script
 from api.workflows.crud import (
     delete_workflow_by_id,
     get_workflow_by_id,
