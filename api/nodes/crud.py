@@ -3,10 +3,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils import (
     commit_and_refresh_element,
-    delete_element_from_db,
     get_element_by_id,
 )
-from api.nodes.node_handling import delete_edges_of_node
 from api.nodes.schemas.schemas import NodeUpdate
 from api.nodes.validation.script import nodes_val_with_pydentic_script
 from core.models.node import Node
@@ -18,14 +16,6 @@ async def get_node_by_id(session: AsyncSession, node_id: int) -> Node:
         session=session,
         element_id=node_id,
     )
-
-
-async def delete_node_by_id_script(
-    session: AsyncSession, node_id: int
-) -> None:
-    node = await get_node_by_id(session=session, node_id=node_id)
-    await delete_edges_of_node(session=session, node=node)
-    await delete_element_from_db(session=session, element=node)
 
 
 async def update_node(
