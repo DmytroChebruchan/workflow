@@ -2,6 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
+from tests.api_requests.nodes.fixture import dummy_msg_node, expected_data
 from tests.mock_file import true_returner_mock
 
 
@@ -40,29 +41,17 @@ async def test_create_condition_node_without_condition(client):
     "api.nodes.utils.check_node_type_existence_in_workflow",
     new=true_returner_mock,
 )
+@patch(
+    "api.nodes.validation.script.nodes_validation_by_id", true_returner_mock
+)
 @pytest.mark.asyncio
 async def test_create_message_node(client):
     # Create message node
-    node_data = {
-        "type": "Message Node",
-        "workflow_id": 1,
-        "message_text": "Hello World",
-        "status": "pending",
-        "from_node_id": 22,
-        "edge_condition_type": True,
-        "nodes_dest_dict": {True: 4},
-    }
-    #
-    response = client.post("/nodes/create/", json=node_data)
+    response = client.post("/nodes/create/", json=dummy_msg_node)
+
     response_data = response.json()
-    assert response_data == {
-        "type": "Message Node",
-        "workflow_id": 1,
-        "message_text": "Hello World",
-        "status": "pending",
-        "id": 1,
-        "condition": None,
-    }
+
+    assert response_data == expected_data
     assert response.status_code == 200
 
 
