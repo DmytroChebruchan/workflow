@@ -1,19 +1,19 @@
-"""all tables created
+"""Creating table
 
-Revision ID: a0bb259f190a
+Revision ID: 775db83515ca
 Revises: 
-Create Date: 2024-04-16 17:00:04.949416
+Create Date: 2024-05-02 14:22:24.826893
 
 """
 
 from typing import Sequence, Union
 
+from alembic import op
 import sqlalchemy as sa
 
-from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "a0bb259f190a"
+revision: str = "775db83515ca"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -43,10 +43,10 @@ def upgrade() -> None:
     )
     op.create_table(
         "edges",
-        sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("source_node_id", sa.Integer(), nullable=True),
         sa.Column("destination_node_id", sa.Integer(), nullable=True),
         sa.Column("condition_type", sa.Boolean(), nullable=True),
+        sa.Column("id", sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(
             ["destination_node_id"],
             ["nodes.id"],
