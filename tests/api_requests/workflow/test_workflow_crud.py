@@ -4,10 +4,6 @@ from core.models import Workflow
 from tests.mock_file import true_returner_mock
 
 
-async def success_workflow_mock(*args, **kwargs):
-    return Workflow(id=1, title="updated title")
-
-
 @patch(
     "api.nodes.validation.validator.check_node_type_existence_in_workflow",
     new=true_returner_mock,

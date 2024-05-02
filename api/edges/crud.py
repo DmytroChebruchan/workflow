@@ -47,21 +47,6 @@ async def creating_required_edges(
             )
 
 
-async def update_edge(
-    edge_id: int, edge_update: EdgeBase, session: AsyncSession
-) -> None:
-    edge = await get_element_by_id(
-        session=session, element_id=edge_id, element=Edge
-    )
-
-    # Update the node fields
-    for field, value in edge_update.dict(exclude_unset=True).items():
-        setattr(edge, field, value)
-
-    await commit_and_refresh_element(session=session, element=edge)
-    return edge
-
-
 async def delete_old_edges(
     node_from_id: int | None,
     nodes_destination: dict | None,
