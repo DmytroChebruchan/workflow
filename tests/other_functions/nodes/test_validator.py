@@ -4,9 +4,7 @@ import pytest
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.nodes.validation.validator import (
-    ensure_unique_node_type,
-)
+from api.nodes.validation.validator import ensure_unique_node_type
 from tests.mock_file import true_returner_mock
 
 

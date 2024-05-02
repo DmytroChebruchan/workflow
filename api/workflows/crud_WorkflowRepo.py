@@ -9,9 +9,10 @@ class WorkflowRepo(ElementRepo):
     model = Workflow
     object_of_class: Workflow
 
-    def __init__(self, session: AsyncSession, workflow_id: int = None):
+    def __init__(self, session: AsyncSession, workflow_id: int | None = None):
         super().__init__(session=session, model=self.model)
-        self.workflow_id = workflow_id
+        if workflow_id is not None:
+            self.workflow_id = workflow_id
 
     async def create_workflow(self, workflow_in: WorkflowCreate) -> Workflow:
         workflow = self.model(**workflow_in.model_dump())
