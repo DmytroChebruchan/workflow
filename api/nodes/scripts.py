@@ -27,7 +27,7 @@ async def create_node_script(
     )
 
     # deleting old edges if any
-    await delete_old_edges_script_1(node_in, session)
+    await trim_inactive_edges_script(node_in, session)
 
     # node saver
     node = await node_saver(node_in, session)
@@ -47,7 +47,7 @@ async def nodes_dest_update(node_in, nodes_dest_json_dict):
         node_in.nodes_dest_dict = updated_dict
 
 
-async def delete_old_edges_script_1(node_in, session) -> None:
+async def trim_inactive_edges_script(node_in, session) -> None:
     if (node_in.from_node_id or node_in.nodes_dest_dict) and (
         node_in.edge_condition_type is not None
     ):
