@@ -13,9 +13,6 @@ SessionLocal = async_sessionmaker(engine)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
     db = SessionLocal()
     try:
         yield db
