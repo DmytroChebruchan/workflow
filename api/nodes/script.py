@@ -1,10 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.crud import (
-    creating_required_edges,
     delete_edges_of_workflow,
     delete_old_edges,
 )
+from api.edges.scripts import edge_creator_script
 from api.general.utils import delete_element_from_db
 from api.nodes.crud import delete_nodes_of_workflow, get_node_by_id
 from api.nodes.node_handling import delete_edges_of_node
@@ -45,18 +45,6 @@ async def nodes_dest_update(node_in, nodes_dest_json_dict):
         if "false" in nodes_dest_json_dict:
             updated_dict[False] = nodes_dest_json_dict["true"]
         node_in.nodes_dest_dict = updated_dict
-
-
-async def edge_creator_script(node, node_in, session) -> None:
-    from_node_avail = node_in.from_node_id
-    dest_node_avail = node_in.nodes_dest_dict
-    if from_node_avail or dest_node_avail:
-        await creating_required_edges(
-            node_id=node.id,
-            node_from_id=node_in.from_node_id,
-            nodes_destination_dict=node_in.nodes_dest_dict,
-            session=session,
-        )
 
 
 async def delete_old_edges_script(node_in, session) -> None:
