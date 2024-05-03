@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import Response
 
-from api.nodes.node_handling import get_edges_of_nodes
+from api.general.utils_NodeEdgeManager import get_edges_of_nodes
 from api.nodes.scripts import delete_nodes_of_workflow_script
 from api.workflows.crud_WorkflowRepo import WorkflowRepo
 from api.workflows.schemas import WorkflowUpdate

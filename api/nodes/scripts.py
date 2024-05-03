@@ -5,10 +5,12 @@ from api.edges.scripts import (
     delete_old_edges_script,
     edge_creator_script,
 )
-from api.general.utils_element_class import ElementRepo
-from api.nodes.crud import delete_nodes_of_workflow
+from api.general.utils_ElementRepo import ElementRepo
 from api.nodes.crud_NodeManagement import NodeManagement
-from api.nodes.node_handling import delete_edges_of_node
+from api.nodes.node_handling import (
+    delete_nodes_of_workflow,
+)
+from api.general.utils_NodeEdgeManager import delete_edges_of_node
 from api.nodes.schemas.schemas import NodeCreate
 from api.nodes.utils import node_saver
 from api.nodes.validation.script import nodes_val_with_pydentic_script
@@ -68,6 +70,7 @@ async def delete_nodes_of_workflow_script(
         session=session, workflow_id=workflow_id
     )
     # Delete nodes of the specified workflow
+
     await delete_nodes_of_workflow(session=session, workflow_id=workflow_id)
 
 

@@ -1,33 +1,7 @@
-from sqlalchemy import Result, and_, select
+from sqlalchemy import Result, and_, select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils_element_class import ElementRepo
-from core.models import Edge, Node
-
-
-async def get_edges_of_node(node: Node) -> list[Edge]:
-    outgoing_edges = list(node.outgoing_edges)
-    incoming_edges = list(node.incoming_edges)
-    unique_edges = set(outgoing_edges + incoming_edges)
-    return list(unique_edges)
-
-
-async def delete_edges_of_node(node: Node, session: AsyncSession) -> None:
-    edges_related = await get_edges_of_node(node=node)
-    for edge in edges_related:
-        element = ElementRepo(
-            session=session, model=Edge, object_of_class=edge
-        )
-        await element.delete_element_from_db()
-
-
-async def get_edges_of_nodes(nodes: list) -> list[Edge]:
-    edges = []
-    for node in nodes:
-        edges_found = await get_edges_of_node(node=node)
-        edges.extend(edges_found)
-    unique_edges_list = list(set(edges))
-    return unique_edges_list
+from core.models import Node
 
 
 async def get_nodes_by_type(
@@ -38,3 +12,10 @@ async def get_nodes_by_type(
     )
     result: Result = await session.execute(stmt)
     return list(result.scalars().all())
+
+
+async def delete_nodes_of_workflow(
+    session: AsyncSession, workflow_id: int
+) -> None:
+    await session.execute(delete(Node).where(Node.workflow_id == workflow_id))
+    await session.commit()

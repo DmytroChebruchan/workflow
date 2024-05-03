@@ -3,7 +3,10 @@ from unittest.mock import AsyncMock, Mock, patch
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.nodes.node_handling import delete_edges_of_node, get_edges_of_node
+from api.general.utils_NodeEdgeManager import (
+    get_edges_of_node,
+    delete_edges_of_node,
+)
 from core.models import Edge, Node
 
 
@@ -37,7 +40,7 @@ async def test_delete_edges_of_node():
 
     # Patch the get_edges_of_node function to return mock edges
     with patch(
-        "api.nodes.node_handling.get_edges_of_node",
+        "api.general.utils_NodeEdgeManager.get_edges_of_node",
         side_effect=mock_get_edges_of_node,
     ):
         # Create a mock Node instance

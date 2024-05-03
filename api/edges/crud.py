@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.schemas import EdgeBase
-from api.general.utils_element_class import ElementRepo
+from api.general.utils_ElementRepo import ElementRepo
 from core.models.edge import Edge
 
 

@@ -3,8 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils_element_class import ElementRepo
-from api.nodes.crud import update_node
+from api.general.utils_ElementRepo import ElementRepo
 from api.nodes.crud_NodeManagement import NodeManagement
 from api.nodes.schemas.schemas import NodeCreate, NodeFromDB, NodeUpdate
 from api.nodes.scripts import create_node_script, delete_node_by_id_script
@@ -54,9 +53,8 @@ async def update_node_view(
     node_update: NodeUpdate,
     session: AsyncSession = Depends(get_async_session),
 ) -> dict[str, str]:
-    await update_node(
-        session=session,
-        node_id=node_id,
+    node_obj = NodeManagement(session=session, node_id=node_id)
+    await node_obj.update_node(
         node_update=node_update,
     )
     return {"message": "Node updated!"}
