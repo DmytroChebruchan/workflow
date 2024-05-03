@@ -1,4 +1,4 @@
-from sqlalchemy import Result, and_, select, delete
+from sqlalchemy import Result, and_, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import Node

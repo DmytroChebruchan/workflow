@@ -1,8 +1,9 @@
+from typing import List
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils_ElementRepo import ElementRepo
-from core.models import Node, Edge
-from typing import List
+from core.models import Edge, Node
 
 
 class EdgeDelManager:

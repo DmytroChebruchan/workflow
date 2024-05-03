@@ -2,10 +2,10 @@ from typing import Dict, Type
 
 from api.nodes.schemas.schemas_by_nodes_creating_stage import NodeBase
 from api.nodes.schemas.schemas_node_by_type import (
-    StartNode,
-    MessageNode,
     ConditionNode,
     EndNode,
+    MessageNode,
+    StartNode,
 )
 
 NODE_TYPE_TO_SCHEMA: Dict[str, Type[NodeBase]] = {

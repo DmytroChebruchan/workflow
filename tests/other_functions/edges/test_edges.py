@@ -1,15 +1,11 @@
-from unittest.mock import AsyncMock, Mock, call, patch
+from unittest.mock import AsyncMock
 
 import pytest
 
-from api.edges.crud import EdgeRepo
 from api.edges.scripts import (
     creating_required_edges_script,
-    delete_edges_of_workflow_script,
     delete_old_edges_script,
 )
-from api.edges.utils import del_destination_edge, delete_edge_from_source
-from api.workflows.crud_WorkflowRepo import WorkflowRepo
 
 
 @pytest.mark.asyncio

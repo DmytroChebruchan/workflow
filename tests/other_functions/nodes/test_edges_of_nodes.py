@@ -4,9 +4,7 @@ from unittest.mock import AsyncMock, Mock, patch
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.general.utils_NodeEdgeManager import (
-    EdgeDelManager,
-)
+from api.general.utils_NodeEdgeManager import EdgeDelManager
 from core.models import Edge, Node
 
 
