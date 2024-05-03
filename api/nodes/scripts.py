@@ -10,7 +10,9 @@ from api.nodes.crud_NodeManagement import NodeManagement
 from api.nodes.node_handling import (
     delete_nodes_of_workflow,
 )
-from api.general.utils_NodeEdgeManager import delete_edges_of_node
+from api.general.utils_NodeEdgeManager import (
+    EdgeDelManager,
+)
 from api.nodes.schemas.schemas_by_nodes_creating_stage import NodeCreate
 from api.nodes.utils import node_saver
 from api.nodes.validation.script import nodes_val_with_pydentic_script
@@ -79,7 +81,8 @@ async def delete_node_by_id_script(
 ) -> None:
     node_object = NodeManagement(session=session, node_id=node_id)
     node = await node_object.get_node_by_id()
-    await delete_edges_of_node(session=session, node=node)
+    edges_del_object = EdgeDelManager(session=session, node=node)
+    await edges_del_object.delete_edges_of_node()
 
     element = ElementRepo(session=session, model=Node, object_of_class=node)
     await element.delete_element_from_db()

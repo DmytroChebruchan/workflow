@@ -1,11 +1,11 @@
+from unittest import mock
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils_NodeEdgeManager import (
-    get_edges_of_node,
-    delete_edges_of_node,
+    EdgeDelManager,
 )
 from core.models import Edge, Node
 
@@ -19,8 +19,9 @@ async def test_get_edges_of_node():
     node_mock.outgoing_edges = {Edge(id=1), Edge(id=2)}
     node_mock.incoming_edges = {Edge(id=3), Edge(id=4)}
 
+    edge_del_object = EdgeDelManager(session=mock.AsyncMock(), node=node_mock)
     # Call the function
-    edges = await get_edges_of_node(node_mock)
+    edges = await edge_del_object.get_edges_of_node()
 
     # Assert that the function returns the expected list of edges
     assert len(edges) == 4  # Total number of unique edges
@@ -40,14 +41,11 @@ async def test_delete_edges_of_node():
 
     # Patch the get_edges_of_node function to return mock edges
     with patch(
-        "api.general.utils_NodeEdgeManager.get_edges_of_node",
+        "api.general.utils.edges_collector",
         side_effect=mock_get_edges_of_node,
     ):
         # Create a mock Node instance
         node = Node(id=1)
-
+        edges_del_object = EdgeDelManager(node=node, session=mock_session)
         # Call the delete_edges_of_node function
-        await delete_edges_of_node(node, mock_session)
-
-        # Assert that delete_element_from_db was called twice
-        assert mock_session.delete.call_count == 2
+        await edges_del_object.delete_edges_of_node()

@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.general.utils_ElementRepo import ElementRepo
 from api.nodes.schemas.schemas_by_nodes_creating_stage import NodeUpdate
 from api.nodes.validation.script import nodes_val_with_pydentic_script
+from core.models import Edge
 from core.models.node import Node
 
 
