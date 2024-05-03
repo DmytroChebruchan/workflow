@@ -5,7 +5,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils_ElementRepo import ElementRepo
 from api.nodes.crud_NodeManagement import NodeManagement
-from api.nodes.schemas.schemas import NodeCreate, NodeFromDB, NodeUpdate
+from api.nodes.schemas.schemas_by_nodes_creating_stage import (
+    NodeCreate,
+    NodeFromDB,
+    NodeUpdate,
+)
 from api.nodes.scripts import create_node_script, delete_node_by_id_script
 from core.database.database import get_async_session
 from core.models.node import Node as NodeModel

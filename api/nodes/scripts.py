@@ -11,7 +11,7 @@ from api.nodes.node_handling import (
     delete_nodes_of_workflow,
 )
 from api.general.utils_NodeEdgeManager import delete_edges_of_node
-from api.nodes.schemas.schemas import NodeCreate
+from api.nodes.schemas.schemas_by_nodes_creating_stage import NodeCreate
 from api.nodes.utils import node_saver
 from api.nodes.validation.script import nodes_val_with_pydentic_script
 from core.models import Node

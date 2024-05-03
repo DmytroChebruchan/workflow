@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.node_attr_values import NodeType
-from api.nodes.schemas.schemas import NodeCreate
+from api.nodes.schemas.schemas_by_nodes_creating_stage import NodeCreate
 from api.nodes.scripts import create_node_script
 from api.workflows.crud_WorkflowRepo import WorkflowRepo
 from api.workflows.schemas import WorkflowCreate

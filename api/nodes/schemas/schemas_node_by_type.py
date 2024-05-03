@@ -2,7 +2,7 @@ from pydantic import field_validator
 from pydantic.fields import Field
 
 from api.nodes.node_attr_values import MessageNodeStatus, NodeType
-from api.nodes.schemas.schemas import NodeBase
+from api.nodes.schemas.schemas_by_nodes_creating_stage import NodeBase
 
 
 class StartNode(NodeBase):

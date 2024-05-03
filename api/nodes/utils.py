@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils_ElementRepo import ElementRepo
-from api.nodes.schemas.schemas import NodeCreate
+from api.nodes.schemas.schemas_by_nodes_creating_stage import NodeCreate
 from api.nodes.validation.validator import (
     check_node_type_existence_in_workflow,
 )

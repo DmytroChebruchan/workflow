@@ -1,4 +1,7 @@
-from api.nodes.schemas.schemas import NodeCreate, NodeUpdate
+from api.nodes.schemas.schemas_by_nodes_creating_stage import (
+    NodeCreate,
+    NodeUpdate,
+)
 from tests.other_functions.nodes.fixture_nodes_dicts import (
     dummy_node,
     dummy_start_node,

@@ -4,7 +4,7 @@ from starlette import status
 
 from api.nodes.node_attr_values import NodeType
 from api.nodes.node_handling import get_nodes_by_type
-from api.nodes.schemas.schemas import NodeCreate
+from api.nodes.schemas.schemas_by_nodes_creating_stage import NodeCreate
 from api.workflows.crud_WorkflowRepo import WorkflowRepo
 
 

@@ -4,7 +4,7 @@ from starlette import status
 
 from api.general.utils_ElementRepo import ElementRepo
 from api.nodes.node_attr_values import NodeType
-from api.nodes.schemas_node_by_type import NODE_TYPE_TO_SCHEMA
+from api.nodes.schemas.constants import NODE_TYPE_TO_SCHEMA
 from core.models import Node
 
 
