@@ -7,13 +7,6 @@ from api.nodes.validation.script import nodes_val_with_pydentic_script
 from core.models.node import Node
 
 
-async def get_node_by_id(session: AsyncSession, node_id: int) -> Node:
-    element = ElementRepo(session=session, model=Node)
-    return await element.get_element_by_id(
-        element_id=node_id,
-    )
-
-
 async def update_node(
     session: AsyncSession, node_id: int, node_update: NodeUpdate
 ) -> Node:

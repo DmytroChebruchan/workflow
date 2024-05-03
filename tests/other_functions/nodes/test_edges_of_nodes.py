@@ -1,10 +1,10 @@
-import pytest
-from unittest.mock import AsyncMock, patch, Mock
+from unittest.mock import AsyncMock, Mock, patch
 
+import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.nodes.node_handling import delete_edges_of_node, get_edges_of_node
 from core.models import Edge, Node
-from api.nodes.node_handling import get_edges_of_node, delete_edges_of_node
 
 
 @pytest.mark.asyncio

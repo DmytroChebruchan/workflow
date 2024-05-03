@@ -4,7 +4,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.general.utils_element_class import ElementRepo
-from api.nodes.crud import get_node_by_id, update_node
+from api.nodes.crud import update_node
+from api.nodes.crud_NodeManagement import NodeManagement
 from api.nodes.schemas.schemas import NodeCreate, NodeFromDB, NodeUpdate
 from api.nodes.scripts import create_node_script, delete_node_by_id_script
 from core.database.database import get_async_session
@@ -34,10 +35,8 @@ async def get_node_view(
     node_id: int,
     session: AsyncSession = Depends(get_async_session),
 ) -> NodeModel:
-    return await get_node_by_id(
-        session=session,
-        node_id=node_id,
-    )
+    node = NodeManagement(session=session, node_id=node_id)
+    return await node.get_node_by_id()
 
 
 @router.delete("/{node_id}/")
