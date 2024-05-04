@@ -14,8 +14,8 @@ from api.workflows.scripts import (
     delete_workflow_script,
     run_workflow_script,
     update_workflow_script,
+    create_workflow_with_nodes_script,
 )
-from api.workflows.utils import create_workflow_with_nodes
 from core.database.database import get_async_session
 from core.models.workflow import Workflow as WorkflowModel
 
@@ -35,7 +35,7 @@ async def create_workflow_view(
     workflow_input: WorkflowCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    return await create_workflow_with_nodes(
+    return await create_workflow_with_nodes_script(
         session=session, workflow_in=workflow_input
     )
 
