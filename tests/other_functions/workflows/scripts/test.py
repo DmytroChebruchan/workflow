@@ -7,8 +7,8 @@ from api.workflows.crud_WorkflowRepo import WorkflowRepo
 from api.workflows.schemas import WorkflowUpdate
 from api.workflows.scripts import (
     delete_workflow_script,
-    update_workflow_script,
     run_workflow_script,
+    update_workflow_script,
 )
 from tests.mock_file import true_returner_mock
 

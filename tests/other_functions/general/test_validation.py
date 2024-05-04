@@ -1,5 +1,6 @@
-from fastapi import HTTPException, status
 from unittest.mock import MagicMock
+
+from fastapi import HTTPException, status
 
 from api.general.validators import element_validator
 
@@ -7,7 +8,6 @@ from api.general.validators import element_validator
 async def test_element_validator():
     # Define test data
     element_id = 1
-    item = MagicMock()  # Create a MagicMock object for the 'item'
 
     # Test case 1: item is None
     item_is_none = None
@@ -23,6 +23,6 @@ async def test_element_validator():
     )  # Create another MagicMock object for the 'item'
     try:
         await element_validator(element_id, item_is_not_none)
-    except HTTPException as e:
+    except HTTPException:
         # This test should not raise an exception, so if it does, fail the test
-        assert False, f"No exception should be raised when item is not None"
+        assert False, "No exception should be raised when item is not None"

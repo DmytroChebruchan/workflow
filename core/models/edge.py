@@ -24,4 +24,7 @@ class Edge(Base):
     )
 
     def __str__(self):
-        return f"Edge between nodes {self.source_node_id} -> {self.destination_node_id}"
+        return (
+            f"Edge between nodes "
+            f"{self.source_node_id} -> {self.destination_node_id}"
+        )

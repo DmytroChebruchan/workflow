@@ -7,7 +7,7 @@ dummy_msg_node = {
     "status": "pending",
     "from_node_id": 22,
     "edge_condition_type": True,
-    "nodes_dest_dict": {True: 4},
+    "nodes_dest_dict": {"true": 4},
 }
 
 expected_data = {

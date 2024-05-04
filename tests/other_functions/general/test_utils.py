@@ -1,4 +1,5 @@
 from unittest.mock import AsyncMock, patch
+
 import pytest
 
 from api.general.utils import edges_collector, get_edges_of_nodes

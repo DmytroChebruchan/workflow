@@ -1,9 +1,11 @@
-from unittest.mock import MagicMock, AsyncMock
+from unittest.mock import AsyncMock, MagicMock
+
 import pytest
-from core.models import Node
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.engine import Result
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from api.general.utils_ElementRepo import ElementRepo
+from core.models import Node
 
 
 @pytest.fixture

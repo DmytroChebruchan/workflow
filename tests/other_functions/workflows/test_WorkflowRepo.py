@@ -1,7 +1,9 @@
+from unittest.mock import AsyncMock
+
 import pytest
-from unittest.mock import AsyncMock, MagicMock
-from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
+
 from api.workflows.crud_WorkflowRepo import WorkflowRepo
+from api.workflows.schemas import WorkflowCreate, WorkflowUpdate
 
 
 @pytest.mark.asyncio
