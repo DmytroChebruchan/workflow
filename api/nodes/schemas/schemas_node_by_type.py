@@ -21,12 +21,11 @@ class MessageNode(NodeBase):
     def validate_nodes_dest_dict(cls, v):
         if len(v) != 1:
             raise ValueError(
-                "nodes_dest_dict must contain exactly 1 dictionaries"
+                'nodes_dest_dict must contain exactly 1 key: "true"'
             )
         if next(iter(v)) not in (True, False):
             raise ValueError(
-                "nodes_dest_dict must contain exactly True or False"
-                " conditions."
+                'nodes_dest_dict must contain exactly "true"' " conditions."
             )
 
 
@@ -40,10 +39,13 @@ class ConditionNode(NodeBase):
     @field_validator("nodes_dest_dict")
     def validate_nodes_dest_dict(cls, v):
         if len(v) not in [1, 2]:
-            raise ValueError("nodes_dest_dict must contain exactly 2 keys")
+            raise ValueError(
+                "nodes_dest_dict must contain exactly 1 or 2 keys:"
+                '"true" and "false"'
+            )
         if set(v) in (True, False):
             raise ValueError(
-                "nodes_dest_dict must contain exactly True and False"
+                'nodes_dest_dict must contain exactly "true" or/and "false"'
             )
         if v[True] == v[False]:
             raise ValueError(

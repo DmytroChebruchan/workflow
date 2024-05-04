@@ -1,14 +1,15 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import Response
 
-from api.general.utils import get_edges_of_nodes
 from api.nodes.scripts import delete_nodes_of_workflow_script
 from api.workflows.crud_WorkflowRepo import WorkflowRepo
 from api.workflows.schemas import WorkflowUpdate
-from core.graph.workflow_graph import WorkflowGraph
+from core.graph.script import creating_graph_script
 
 
-async def delete_workflow_script(session, workflow_id):
+async def delete_workflow_script(
+    session: AsyncSession, workflow_id: int
+) -> Response:
     await delete_nodes_of_workflow_script(
         session=session, workflow_id=workflow_id
     )
@@ -53,17 +54,7 @@ async def run_workflow_script(session: AsyncSession, workflow_id: int) -> dict:
     workflow = await workflow_object.get_workflow_by_id()
 
     # Collect nodes from the workflow
-    nodes = list(workflow.nodes)
-
-    # Get edges between nodes
-    edges = await get_edges_of_nodes(nodes)
-
-    # Create a workflow graph
-    graph = WorkflowGraph(
-        nodes=nodes,
-        edges=edges,
-        session=session,
-    )
+    graph = await creating_graph_script(session, workflow)
 
     # Return path details of the executed workflow
     return await graph.find_path()

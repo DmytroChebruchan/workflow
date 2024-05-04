@@ -41,6 +41,12 @@ async def create_node_script(
 
 async def nodes_dest_update(node_in, nodes_dest_json_dict):
     if nodes_dest_json_dict:
+        is_true_in = nodes_dest_json_dict.get("true")
+        # if (
+        #     "true" not in nodes_dest_json_dict
+        #     or "false" not in nodes_dest_json_dict
+        # ):
+        #     raise ValueError("Keys of dest_nodes must be only true or false")
         updated_dict = {}
         if "true" in nodes_dest_json_dict:
             updated_dict[True] = nodes_dest_json_dict["true"]
