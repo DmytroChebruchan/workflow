@@ -1,6 +1,7 @@
 reformatting:
 	isort .
 	black .
+	autoflake .
 	make lint
 
 lint:
