@@ -10,7 +10,7 @@ async def get_nodes_by_type(
     stmt = select(Node).where(
         and_(Node.type == node_type, Node.workflow_id == workflow_id)
     )
-    result: Result = await session.execute(stmt)
+    result = await session.execute(stmt)
     return list(result.scalars().all())
 
 
