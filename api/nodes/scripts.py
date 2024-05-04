@@ -18,6 +18,7 @@ from core.models import Node
 async def create_node_script(
     session: AsyncSession, node_in: NodeCreate
 ) -> Node:
+    """Creates new node, edges in workflow and deletes not used edges."""
     # collecting incoming edge type
     nodes_dest_json_dict = node_in.nodes_dest_dict
     await nodes_dest_update(node_in, nodes_dest_json_dict)
@@ -49,6 +50,7 @@ async def nodes_dest_update(node_in, nodes_dest_json_dict):
 
 
 async def trim_inactive_edges_script(node_in, session) -> None:
+    """Deletes inactive edges if needed."""
     if (node_in.from_node_id or node_in.nodes_dest_dict) and (
         node_in.edge_condition_type is not None
     ):
@@ -63,12 +65,12 @@ async def trim_inactive_edges_script(node_in, session) -> None:
 async def delete_nodes_of_workflow_script(
     session: AsyncSession, workflow_id: int
 ) -> None:
+    """Deletes all nodes of workflow."""
     # Get the list of deleted node IDs
     await delete_edges_of_workflow_script(
         session=session, workflow_id=workflow_id
     )
     # Delete nodes of the specified workflow
-
     await delete_nodes_of_workflow(session=session, workflow_id=workflow_id)
 
 
@@ -77,6 +79,7 @@ async def delete_node_by_id_script(
 ) -> None:
     node_object = NodeManagement(session=session, node_id=node_id)
     node = await node_object.get_node_by_id()
+
     edges_del_object = EdgeDelManager(session=session, node=node)
     await edges_del_object.delete_edges_of_node()
 
