@@ -73,7 +73,7 @@ async def test_create_message_node(client):
 async def test_create_message_node_with_edge_to_start_node(client):
     # Create message node
     with pytest.raises(Exception) as exc_info:
-        response = client.post("/nodes/create/", json=dummy_msg_node)
+        client.post("/nodes/create/", json=dummy_msg_node)
 
     assert (
         str(exc_info.value)

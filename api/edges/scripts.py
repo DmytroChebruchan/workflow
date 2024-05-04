@@ -2,7 +2,7 @@ from sqlalchemy import delete, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.crud import EdgeRepo
-from api.edges.utils import del_destination_edge, delete_edge_from_source
+from api.edges.utils import delete_destination_edge, delete_edge_from_source
 from api.workflows.crud_WorkflowRepo import WorkflowRepo
 from core.models import Edge
 
@@ -72,5 +72,5 @@ async def delete_old_edges_script(
             edge_condition_type, node_from_id, session
         )
     if nodes_destination:
-        await del_destination_edge(node_from_id, nodes_destination, session)
+        await delete_destination_edge(node_from_id, nodes_destination, session)
     await session.commit()

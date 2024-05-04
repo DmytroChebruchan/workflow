@@ -3,7 +3,7 @@ from sqlalchemy import and_, delete
 from core.models import Edge
 
 
-async def del_destination_edge(node_from_id, nodes_destination, session):
+async def delete_destination_edge(node_from_id, nodes_destination, session):
     destination_node_ids = [node_to for node_to in nodes_destination.values()]
     # Delete edges that match the conditions
     await session.execute(

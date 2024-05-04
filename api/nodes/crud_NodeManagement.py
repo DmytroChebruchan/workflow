@@ -14,10 +14,19 @@ class NodeManagement(ElementRepo):
         if node_id is not None:
             self.node_id = node_id
 
-    async def get_node_by_id(self) -> Node:
-        return await self.get_element_by_id(
+    async def get_node_by_id(self, node_id: int | None = None) -> Node:
+        if node_id is not None:
+            self.node_id = node_id
+        self.object_of_class = await self.get_element_by_id(
             element_id=self.node_id,
         )
+        return self.object_of_class
+
+    async def type(self, node_id: int | None = None) -> str:
+        if node_id is not None:
+            self.node_id = node_id
+        node = await self.get_node_by_id()
+        return str(node.type)
 
     async def update_node(self, node_update: NodeUpdate) -> Node:
         # Validate the updated node fields
