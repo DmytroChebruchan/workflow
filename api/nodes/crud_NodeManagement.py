@@ -7,6 +7,8 @@ from core.models.node import Node
 
 
 class NodeManagement(ElementRepo):
+    """Managing node based on ElementRepo."""
+
     model = Node
 
     def __init__(self, session: AsyncSession, node_id: int | None = None):
