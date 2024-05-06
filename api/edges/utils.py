@@ -8,8 +8,10 @@ async def delete_destination_edge(node_from_id, nodes_destination, session):
     # Delete edges that match the conditions
     await session.execute(
         delete(Edge).where(
-            (Edge.source_node_id == node_from_id)
-            and (Edge.destination_node_id.in_(destination_node_ids))
+            and_(
+                Edge.source_node_id == node_from_id,
+                Edge.destination_node_id.in_(destination_node_ids),
+            )
         )
     )
 
