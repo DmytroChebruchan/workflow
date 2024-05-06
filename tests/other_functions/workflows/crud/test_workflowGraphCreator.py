@@ -53,8 +53,6 @@ class TestWorkflowGraphCreator(unittest.TestCase):
         )
         initial_edge_count = len(graph_creator.graph.edges)
         # Remove void edges
-        graph_creator._remove_void_edges()
-        edges = len(graph_creator.graph.edges)
-        ini = initial_edge_count - 1
+        graph_creator.clean_graph_from_void_edges()
         self.assertEqual(len(graph_creator.graph.edges), initial_edge_count)
         # Add more assertions based on your requirements

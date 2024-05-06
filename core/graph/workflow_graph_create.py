@@ -3,12 +3,12 @@ from typing import List
 import networkx as nx
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.graph.remove_void_edges import clean_graph_from_void_edges
+from core.graph.class_based_cleaner import GraphVoidEdgesCleaner
 from core.graph.schemas.workflow_graph_base import WorkflowGraphBase
 from core.models import Edge, Node
 
 
-class WorkflowGraphCreator(WorkflowGraphBase):
+class WorkflowGraphCreator(WorkflowGraphBase, GraphVoidEdgesCleaner):
     """
     Class to represent a workflow graph.
     """
@@ -26,7 +26,7 @@ class WorkflowGraphCreator(WorkflowGraphBase):
         self.graph.add_nodes_from(self.nodes)
         self._add_edges()
         self._update_important_nodes_by_type_sync()
-        self._remove_void_edges()
+        self.clean_graph_from_void_edges()
 
     def _add_edges(self):
         """
@@ -55,7 +55,3 @@ class WorkflowGraphCreator(WorkflowGraphBase):
         self.end_node = [
             node for node in self.nodes if node.type == "End Node"
         ][0]
-
-    def _remove_void_edges(self):
-        """removes edges of Condition nodes that are void"""
-        self.graph = clean_graph_from_void_edges(self.graph)

@@ -1,16 +1,22 @@
 import networkx as nx
+import rule_engine
 
 from api.nodes.schemas.schemas_node_by_type import ConditionNode
 
 
-class GraphCleaner:
+class GraphVoidEdgesCleaner:
+    """This class provides methods to clean the graph from void edges."""
+
     graph: nx.DiGraph
 
     def clean_graph_from_void_edges(self):
+        """Edges are considered as void edges if
+        edges are linking condition node with successor that has
+        void condition of Edge."""
         edges_to_remove = self.void_edges_finder()
         self.graph.remove_edges_from(edges_to_remove)
 
-    def void_edges_finder(self) -> list:
+    def void_edges_finder(self) -> list[tuple]:
         condition_nodes = [
             node for node in self.graph.nodes if node.type == "Condition Node"
         ]
@@ -25,15 +31,15 @@ class GraphCleaner:
                 edges_to_remove.append(edge)
         return edges_to_remove
 
-    def void_edge_finder(
-        self, node: ConditionNode
-    ) -> list[tuple[int, int, bool]]:
+    def void_edge_finder(self, node: ConditionNode) -> tuple[int, int, bool]:
         condition_of_void_edge = self.condition_of_edge_to_be_removed(node)
-        return [
-            (u, v, c)
+        rule = rule_engine.Rule(f"condition == {condition_of_void_edge}")
+        edges = [
+            {"from": u, "to": v, "condition": bool(c)}
             for u, v, c in self.graph.edges(data="condition")
-            if (u == node or v == node) and (c == condition_of_void_edge)
         ]
+        void_edge = rule.filter(edges)[0]
+        return void_edge["from"], void_edge["to"], void_edge["condition"]
 
     def condition_of_edge_to_be_removed(self, node) -> bool:
         condition_of_msg_node = self.predecessor_msg_status_finder(node)
