@@ -1,5 +1,6 @@
 import unittest
-from unittest.mock import MagicMock, AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
+
 from api.general.utils import get_edges_of_nodes
 from core.graph.script import creating_graph_script
 from core.graph.workflow_graph import WorkflowGraph

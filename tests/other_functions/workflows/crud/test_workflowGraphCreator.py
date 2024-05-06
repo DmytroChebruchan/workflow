@@ -1,10 +1,10 @@
 import unittest
 from unittest.mock import MagicMock
 
-from core.graph.workflow_graph_create import WorkflowGraphCreator
-
-from core.models import Node, Edge
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from core.graph.workflow_graph_create import WorkflowGraphCreator
+from core.models import Edge, Node
 
 
 class TestWorkflowGraphCreator(unittest.TestCase):

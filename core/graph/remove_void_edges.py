@@ -1,5 +1,6 @@
 import networkx as nx
 import rule_engine
+
 from api.nodes.schemas.schemas_node_by_type import ConditionNode
 
 

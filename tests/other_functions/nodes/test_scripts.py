@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, MagicMock, AsyncMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
 from api.nodes.scripts import delete_node_by_id_script
 
