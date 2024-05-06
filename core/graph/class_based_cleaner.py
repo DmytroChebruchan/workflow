@@ -31,7 +31,7 @@ class GraphVoidEdgesCleaner:
                 edges_to_remove.append(edge)
         return edges_to_remove
 
-    def void_edge_finder(self, node: ConditionNode) -> tuple[int, int, bool]:
+    def void_edge_finder(self, node: ConditionNode) -> tuple[int, int] | None:
         condition_of_void_edge = self.condition_of_edge_to_be_removed(node)
         rule = rule_engine.Rule(f"condition == {condition_of_void_edge}")
         edges = [
@@ -39,7 +39,9 @@ class GraphVoidEdgesCleaner:
             for u, v, c in self.graph.edges(data="condition")
         ]
         void_edge = rule.filter(edges)[0]
-        return void_edge["from"], void_edge["to"], void_edge["condition"]
+        if not void_edge:
+            return None
+        return void_edge["from"], void_edge["to"]
 
     def condition_of_edge_to_be_removed(self, node) -> bool:
         condition_of_msg_node = self.predecessor_msg_status_finder(node)
