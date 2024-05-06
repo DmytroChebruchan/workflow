@@ -50,7 +50,7 @@ async def nodes_dest_update(node_in, nodes_dest_json_dict):
         if "true" in nodes_dest_json_dict:
             updated_dict[True] = nodes_dest_json_dict["true"]
         if "false" in nodes_dest_json_dict:
-            updated_dict[False] = nodes_dest_json_dict["true"]
+            updated_dict[False] = nodes_dest_json_dict["false"]
         node_in.nodes_dest_dict = updated_dict
 
 
