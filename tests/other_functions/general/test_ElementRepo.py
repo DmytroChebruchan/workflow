@@ -75,7 +75,7 @@ async def test_save_element_into_db(element_repo, mock_session, mock_model):
     # Assertions
     assert isinstance(saved_element, Node)
     assert mock_session.add.called_once_with(mock_model())
-    assert element_repo.commit_and_refresh_element.called_once()
+    assert await element_repo.commit_and_refresh_element.called_once()
     assert saved_element == element_repo.object_of_class
 
 
@@ -85,5 +85,7 @@ async def test_delete_element_from_db(element_repo, mock_session, mock_model):
     await element_repo.delete_element_from_db()
 
     # Assertions
-    assert mock_session.delete.called_once_with(element_repo.object_of_class)
+    assert await mock_session.delete.called_once_with(
+        element_repo.object_of_class
+    )
     assert await mock_session.commit.called_once()

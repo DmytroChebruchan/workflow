@@ -1,5 +1,5 @@
 import networkx as nx
-
+import rule_engine
 from api.nodes.schemas.schemas_node_by_type import ConditionNode
 
 
@@ -29,11 +29,13 @@ def void_edges_finder(graph: nx.DiGraph) -> list[tuple]:
 
 def void_edge_finder(graph: nx.DiGraph, node: ConditionNode) -> tuple:
     condition_of_void_edge = condition_of_edge_to_be_removed(graph, node)
-    return [
-        (u, v, c)
+    rule = rule_engine.Rule(f"condition == {condition_of_void_edge}")
+    edges = [
+        {"from": u, "to": v, "condition": bool(c)}
         for u, v, c in graph.edges(data="condition")
-        if (u == node or v == node) and (bool(c) == condition_of_void_edge)
-    ][0]
+    ]
+    void_edge = rule.filter(edges)[0]
+    return void_edge["from"], void_edge["to"], void_edge["condition"]
 
 
 def condition_of_edge_to_be_removed(graph: nx.DiGraph, node) -> bool:
