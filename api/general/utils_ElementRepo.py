@@ -18,8 +18,8 @@ class ElementRepo:
     async def get_elements(self) -> list:
         stmt = select(self.model).order_by(self.model.id)
         result: Result = await self.session.execute(stmt)
-        nodes = result.scalars().all()
-        return list(nodes)
+        elements = result.scalars().all()
+        return list(elements)
 
     async def get_element_by_id(self, element_id: int):
         item = await self.session.get(self.model, element_id)

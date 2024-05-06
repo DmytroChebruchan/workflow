@@ -39,4 +39,6 @@ class WorkflowRepo(ElementRepo):
         return self.object_of_class
 
     async def delete_workflow_by_id(self) -> None:
+        if self.object_of_class is None:
+            await self.get_workflow_by_id()
         await self.delete_element_from_db()

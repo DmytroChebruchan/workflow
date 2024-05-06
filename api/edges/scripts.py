@@ -47,7 +47,8 @@ async def delete_edges_of_workflow_script(
     workflow = await workflow_object.get_workflow_by_id()
 
     nodes_ids = [node.id for node in workflow.nodes]
-
+    if not nodes_ids:
+        return
     # Construct a delete statement with the combined conditions
     stmt = delete(Edge).where(
         or_(
