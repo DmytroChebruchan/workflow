@@ -28,9 +28,7 @@ class GraphCleaner:
     def void_edge_finder(
         self, node: ConditionNode
     ) -> list[tuple[int, int, bool]]:
-        condition_of_void_edge = self.condition_of_edge_to_be_removed(
-            node
-        )
+        condition_of_void_edge = self.condition_of_edge_to_be_removed(node)
         return [
             (u, v, c)
             for u, v, c in self.graph.edges(data="condition")
