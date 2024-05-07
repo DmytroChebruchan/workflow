@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.graph.workflow_graph_create import WorkflowGraphCreator
+from core.graph.graph_classes.workflow_graph_create import WorkflowGraphCreator
 from core.models import Edge, Node
 
 

@@ -10,7 +10,6 @@ from sqlalchemy.ext.asyncio import (
 
 from core.database.database import get_async_session
 from core.models.base import Base
-from core.models.node import Node
 from main import app
 from tests.constants import DATABASE_URL
 
@@ -43,8 +42,3 @@ def client():
     app.dependency_overrides[get_async_session] = override_get_async_session
     client = TestClient(app)
     yield client
-
-
-@pytest.fixture
-def get_node_by_id_mock():
-    return Node()

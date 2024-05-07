@@ -1,5 +1,4 @@
 import networkx as nx
-import rule_engine
 
 from api.nodes.schemas.schemas_node_by_type import ConditionNode
 
@@ -35,12 +34,11 @@ class GraphVoidEdgesCleaner:
         condition_of_void_edge = str(
             self.condition_of_edge_to_be_removed(node)
         )
-        rule = rule_engine.Rule(f'condition == "{condition_of_void_edge}"')
-        edges = [
+        void_edge = [
             {"from": u, "to": v, "condition": str(c)}
             for u, v, c in self.graph.edges(data="condition")
-        ]
-        void_edge = list(rule.filter(edges))[0]
+            if u.id == node.id and str(c) == condition_of_void_edge
+        ][0]
         if not void_edge:
             return None
         return void_edge["from"], void_edge["to"]

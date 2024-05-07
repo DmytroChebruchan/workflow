@@ -1,9 +1,20 @@
 import networkx as nx
 
-from core.graph.schemas.workflow_graph_base import WorkflowGraphBase
+from core.graph.utils import (
+    edge_step_generator,
+    node_step_generator,
+    node_dict_generator,
+)
+from core.models import Node
 
 
-class WorkFindMixinGraph(WorkflowGraphBase):
+class GraphBase:
+    graph: nx.DiGraph
+    start_node: Node
+    end_node: Node
+
+
+class WorkFindMixinGraph(GraphBase):
     """
     Mixin for finding path a workflow graph.
     """
@@ -18,19 +29,21 @@ class WorkFindMixinGraph(WorkflowGraphBase):
         """
         Asynchronously generate the steps of the path.
         """
-        path = nx.shortest_path(self.graph, self.start_node, self.end_node)
-        steps = [{"type": "node", "value": path[0]}]
+        path = await self.shortest_path_finder()
+
+        first_node = await node_dict_generator(path[0])
+        steps = [{"type": "node", "value": first_node}]
         for i in range(1, len(path)):
             edge = self.graph.get_edge_data(path[i - 1], path[i])
             if edge:
-                steps.append(
-                    {
-                        "type": "edge",
-                        "value": {"condition_of_edge": edge["condition"]},
-                    }
-                )
-            steps.append({"type": "node", "value": path[i]})
+                await edge_step_generator(edge, steps)
+            await node_step_generator(node=path[i], steps=steps)
         return steps
+
+    async def shortest_path_finder(self):
+        return nx.shortest_path(
+            G=self.graph, source=self.start_node, target=self.end_node
+        )
 
     async def find_path(self) -> dict:
         """
