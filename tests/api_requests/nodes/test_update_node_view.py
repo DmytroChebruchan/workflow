@@ -36,6 +36,6 @@ async def node_mock_returner(*args, **kwargs):
 @pytest.mark.asyncio
 async def test_update_node_view(client):
     node_update_dict = {"workflow_id": 1, "type": NodeType.START, "id": 1}
-    response = client.put("/nodes/1", json=node_update_dict)
+    response = client.put("/nodes/update/1", json=node_update_dict)
     assert response.status_code == 200
     assert response.json() == {"message": "Node updated!"}
