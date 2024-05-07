@@ -15,7 +15,7 @@ async def condition_node_validation(data: dict, session: AsyncSession):
     element = ElementRepo(session=session, model=Node)
     node = await element.get_element_by_id(element_id=data["from_node_id"])
 
-    if node.get_type in (NodeType.START, NodeType.END):
+    if node.type in (NodeType.START, NodeType.END):
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Condition node can be created only after "

@@ -54,7 +54,7 @@ async def check_edge_to_start_node(
     for node_id in nodes_ids:
         node_object = ElementRepo(session=session, model=Node)
         node = await node_object.get_element_by_id(element_id=node_id)
-        if node.get_type == NodeType.START:
+        if node.type == NodeType.START:
             raise Exception(
                 f"Node {node_id} is Start Node and no edge can point to Start"
                 f"Node."
