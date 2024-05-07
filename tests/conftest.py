@@ -10,7 +10,6 @@ from sqlalchemy.ext.asyncio import (
 
 from core.database.database import get_async_session
 from core.models.base import Base
-from core.models.node import Node
 from main import app
 from tests.constants import DATABASE_URL
 
