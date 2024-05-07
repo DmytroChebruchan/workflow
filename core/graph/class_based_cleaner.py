@@ -17,7 +17,9 @@ class GraphVoidEdgesCleaner:
 
     def void_edges_finder(self) -> list[tuple]:
         condition_nodes = [
-            node for node in self.graph.nodes if node.type == "Condition Node"
+            node
+            for node in self.graph.nodes
+            if node.get_type == "Condition Node"
         ]
 
         if len(self.graph.nodes) < 4 or not condition_nodes:
@@ -51,6 +53,6 @@ class GraphVoidEdgesCleaner:
         msg_node_predecessor = list(self.graph.predecessors(node))[0]
         return (
             msg_node_predecessor.status
-            if msg_node_predecessor.type == "Message Node"
+            if msg_node_predecessor.get_type == "Message Node"
             else self.predecessor_msg_status_finder(msg_node_predecessor)
         )

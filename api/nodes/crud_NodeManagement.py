@@ -24,7 +24,7 @@ class NodeManagement(ElementRepo):
         )
         return self.object_of_class
 
-    async def type(self, node_id: int | None = None) -> str:
+    async def get_type(self, node_id: int | None = None) -> str:
         if node_id is not None:
             self.node_id = node_id
         node = await self.get_node_by_id()

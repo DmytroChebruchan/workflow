@@ -42,8 +42,8 @@ async def test_get_elements(element_repo, mock_session, mock_model):
     assert all(isinstance(node, Node) for node in elements)
     assert elements[0].id == 1
     assert elements[1].id == 2
-    assert elements[0].type == "Node 1"
-    assert elements[1].type == "Node 2"
+    assert elements[0].get_type == "Node 1"
+    assert elements[1].get_type == "Node 2"
 
 
 @pytest.mark.asyncio
