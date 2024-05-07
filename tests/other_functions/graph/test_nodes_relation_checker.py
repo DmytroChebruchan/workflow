@@ -3,7 +3,7 @@ import unittest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.nodes.node_attr_values import NodeType
-from core.graph.workflow_graph import WorkflowGraph
+from core.graph.graph_classes.workflow_graph import WorkflowGraph
 from core.models import Edge, Node
 
 

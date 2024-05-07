@@ -1,5 +1,5 @@
 from api.general.utils import get_edges_of_nodes
-from core.graph.workflow_graph import WorkflowGraph
+from core.graph.graph_classes.workflow_graph import WorkflowGraph
 
 
 async def creating_graph_script(session, workflow):

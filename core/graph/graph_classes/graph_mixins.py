@@ -1,14 +1,20 @@
 import networkx as nx
 
-from core.graph.schemas.workflow_graph_base import WorkflowGraphBase
 from core.graph.utils import (
     edge_step_generator,
     node_step_generator,
     node_dict_generator,
 )
+from core.models import Node
 
 
-class WorkFindMixinGraph(WorkflowGraphBase):
+class GraphBase:
+    graph: nx.DiGraph
+    start_node: Node
+    end_node: Node
+
+
+class WorkFindMixinGraph(GraphBase):
     """
     Mixin for finding path a workflow graph.
     """
