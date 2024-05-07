@@ -29,7 +29,7 @@ async def test_delete_old_edges_script():
     # Mock the required objects
     session_mock = AsyncMock()
     node_from_id = 1
-    nodes_destination = {"key1": 2, "key2": 3}
+    nodes_destination = {True: 2, False: 3}
     edge_condition_type = True
 
     # Call the function
@@ -38,4 +38,4 @@ async def test_delete_old_edges_script():
     )
 
     # Assert that the necessary methods were called with the correct arguments
-    assert len(session_mock.method_calls) == 3
+    assert len(session_mock.method_calls) == 5
