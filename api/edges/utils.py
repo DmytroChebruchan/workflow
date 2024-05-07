@@ -1,5 +1,4 @@
 from _operator import and_
-
 from sqlalchemy import and_, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
