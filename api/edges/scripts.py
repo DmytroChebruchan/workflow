@@ -21,6 +21,7 @@ async def edge_creator_script(node, node_in, session) -> None:
             node_from_id=node_in.from_node_id,
             nodes_destination_dict=node_in.nodes_dest_dict,
             session=session,
+            edge_condition=node_in.edge_condition_type,
         )
 
 
@@ -29,10 +30,13 @@ async def creating_required_edges_script(
     node_from_id: int | None,
     nodes_destination_dict: dict,
     session: AsyncSession,
+    edge_condition: bool,
 ) -> None:
     direction = {"from": node_from_id, "to": node_id}
     if node_from_id:
-        edge = EdgeRepo(session=session, direction=direction, condition=True)
+        edge = EdgeRepo(
+            session=session, direction=direction, condition=edge_condition
+        )
         await edge.create_edge()
 
     if nodes_destination_dict:
@@ -74,14 +78,18 @@ async def delete_old_edges_script(
 ) -> None:
     """This function adds edges to session for delete and then
     deletes them."""
-    # deleting edges from predispose
+    # deleting edge from predispose
     if node_from_id:
         await delete_edge_from_source(
             edge_condition_type, node_from_id, session
         )
     # deleting edges from source to successor
     if successors_nodes:
-        await delete_destination_edge(node_from_id, successors_nodes, session)
+        await delete_destination_edge(
+            node_from_id=node_from_id,
+            successors_nodes=successors_nodes,
+            session=session,
+        )
 
         # delete edges between successors
         if len(successors_nodes) == 2:

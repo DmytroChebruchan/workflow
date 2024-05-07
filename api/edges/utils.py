@@ -6,20 +6,24 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.models import Edge
 
 
-async def delete_destination_edge(node_from_id, nodes_destination, session):
-    destination_node_ids = [node_to for node_to in nodes_destination.values()]
+async def delete_destination_edge(
+    node_from_id: int, successors_nodes: dict, session: AsyncSession
+):
+    successors_nodes_ids = [node_to for node_to in successors_nodes.values()]
     # Delete edges that match the conditions
     await session.execute(
         delete(Edge).where(
             and_(
                 Edge.source_node_id == node_from_id,
-                Edge.destination_node_id.in_(destination_node_ids),
+                Edge.destination_node_id.in_(successors_nodes_ids),
             )
         )
     )
 
 
-async def delete_edge_from_source(edge_condition_type, node_from_id, session):
+async def delete_edge_from_source(
+    edge_condition_type: bool, node_from_id: int, session: AsyncSession
+):
     await session.execute(
         delete(Edge).where(
             and_(
@@ -41,7 +45,7 @@ async def delete_successors_connecting_edge(
         delete(Edge).where(
             and_(
                 Edge.source_node_id == true_node_id,
-                Edge.condition_type == false_node_id,
+                Edge.destination_node_id == false_node_id,
             )
         )
     )
@@ -51,7 +55,7 @@ async def delete_successors_connecting_edge(
         delete(Edge).where(
             and_(
                 Edge.source_node_id == false_node_id,
-                Edge.condition_type == true_node_id,
+                Edge.destination_node_id == true_node_id,
             )
         )
     )
