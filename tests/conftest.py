@@ -43,8 +43,3 @@ def client():
     app.dependency_overrides[get_async_session] = override_get_async_session
     client = TestClient(app)
     yield client
-
-
-@pytest.fixture
-def get_node_by_id_mock():
-    return Node()
