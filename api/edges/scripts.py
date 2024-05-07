@@ -2,7 +2,11 @@ from sqlalchemy import delete, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.crud import EdgeRepo
-from api.edges.utils import delete_destination_edge, delete_edge_from_source
+from api.edges.utils import (
+    delete_destination_edge,
+    delete_edge_from_source,
+    delete_successors_connecting_edge,
+)
 from api.workflows.crud_WorkflowRepo import WorkflowRepo
 from core.models import Edge
 
@@ -64,14 +68,24 @@ async def delete_edges_of_workflow_script(
 
 async def delete_old_edges_script(
     node_from_id: int | None,
-    nodes_destination: dict | None,
+    successors_nodes: dict | None,
     session: AsyncSession,
     edge_condition_type: bool,
 ) -> None:
+    """This function adds edges to session for delete and then
+    deletes them."""
+    # deleting edges from predispose
     if node_from_id:
         await delete_edge_from_source(
             edge_condition_type, node_from_id, session
         )
-    if nodes_destination:
-        await delete_destination_edge(node_from_id, nodes_destination, session)
+    # deleting edges from source to successor
+    if successors_nodes:
+        await delete_destination_edge(node_from_id, successors_nodes, session)
+
+        # delete edges between successors
+        if len(successors_nodes) == 2:
+            await delete_successors_connecting_edge(
+                session=session, nodes=successors_nodes
+            )
     await session.commit()

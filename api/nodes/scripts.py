@@ -61,7 +61,7 @@ async def trim_inactive_edges_script(node_in, session) -> None:
     ):
         await delete_old_edges_script(
             node_from_id=node_in.from_node_id,
-            nodes_destination=node_in.nodes_dest_dict,
+            successors_nodes=node_in.nodes_dest_dict,
             session=session,
             edge_condition_type=node_in.edge_condition_type,
         )
