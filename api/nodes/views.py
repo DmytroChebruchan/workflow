@@ -42,16 +42,7 @@ async def get_node_view(
     return await node.get_node_by_id()
 
 
-@router.delete("/{node_id}/")
-async def delete_node_view(
-    node_id: int,
-    session: AsyncSession = Depends(get_async_session),
-) -> dict[str, str]:
-    await delete_node_by_id_script(session=session, node_id=node_id)
-    return {"message": "Node was deleted!"}
-
-
-@router.put("/{node_id}/")
+@router.put("/update/{node_id}/")
 async def update_node_view(
     node_id: int,
     node_update: NodeUpdate,
@@ -62,3 +53,12 @@ async def update_node_view(
         node_update=node_update,
     )
     return {"message": "Node updated!"}
+
+
+@router.delete("/{node_id}/")
+async def delete_node_view(
+    node_id: int,
+    session: AsyncSession = Depends(get_async_session),
+) -> dict[str, str]:
+    await delete_node_by_id_script(session=session, node_id=node_id)
+    return {"message": "Node was deleted!"}
