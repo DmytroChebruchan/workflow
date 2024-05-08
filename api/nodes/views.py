@@ -10,7 +10,11 @@ from api.nodes.schemas.schemas_by_nodes_creating_stage import (
     NodeFromDB,
     NodeUpdate,
 )
-from api.nodes.scripts import create_node_script, delete_node_by_id_script
+from api.nodes.scripts import (
+    create_node_script,
+    delete_node_by_id_script,
+    update_node_script,
+)
 from core.database.database import get_async_session
 from core.models.node import Node as NodeModel
 
@@ -47,12 +51,10 @@ async def update_node_view(
     node_id: int,
     node_update: NodeUpdate,
     session: AsyncSession = Depends(get_async_session),
-) -> dict[str, str]:
-    node_obj = NodeManagement(session=session, node_id=node_id)
-    await node_obj.update_node(
-        node_update=node_update,
+) -> dict:
+    return await update_node_script(
+        session=session, node_update=node_update, node_id=node_id
     )
-    return {"message": "Node updated!"}
 
 
 @router.delete("/{node_id}/")
