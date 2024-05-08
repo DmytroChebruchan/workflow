@@ -24,6 +24,13 @@ Main feature is checking if workflow has a path from Start Node to End Node.
    python -m main
    ```
 
+For short demo run following command to built graph as per test
+task
+
+   ```bash
+   python demo_script.py
+   ```
+
 ## General description of project.
 
 The project manages workflows, nodes, and edges. It utilizes the graph library networkX to determine if there is a path from the start node to the end node of the project.
