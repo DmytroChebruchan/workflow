@@ -1,15 +1,17 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.scripts import (
+    delete_edges_of_node_script,
     delete_edges_of_workflow_script,
     delete_old_edges_script,
     edge_creator_script,
 )
-from api.general.utils_ElementRepo import ElementRepo
-from api.general.utils_NodeEdgeManager import EdgeDelManager
 from api.nodes.crud_NodeManagement import NodeManagement
 from api.nodes.node_handling import delete_nodes_of_workflow
-from api.nodes.schemas.schemas_by_nodes_creating_stage import NodeCreate
+from api.nodes.schemas.schemas_by_nodes_creating_stage import (
+    NodeCreate,
+    NodeUpdate,
+)
 from api.nodes.utils import node_saver
 from api.nodes.validation.script import nodes_val_with_pydentic_script
 from core.models import Node
@@ -35,8 +37,25 @@ async def create_node_script(
     node = await node_saver(node_in, session)
 
     # create edges
-    await edge_creator_script(node, node_in, session)
+    await edge_creator_script(node.id, node_in, session)
     return node
+
+
+async def update_node_script(
+    session: AsyncSession, node_update: NodeUpdate, node_id: int
+):
+    """Creates new node, edges in workflow and deletes not used edges."""
+
+    if node_update.id != node_id:
+        return {"error": "Node ID does not match"}
+    # collecting incoming edge type
+    nodes_dest_json_dict = node_update.nodes_dest_dict
+    await nodes_dest_update(node_update, nodes_dest_json_dict)
+
+    # updating node
+    node_obj = NodeManagement(session=session, node_id=node_update.id)
+    await node_obj.update_node(node_update=node_update)
+    return {"message": "Node updated!"}
 
 
 async def nodes_dest_update(node_in, nodes_dest_json_dict):
@@ -83,10 +102,9 @@ async def delete_node_by_id_script(
     session: AsyncSession, node_id: int
 ) -> None:
     node_object = NodeManagement(session=session, node_id=node_id)
-    node = await node_object.get_node_by_id()
 
-    edges_del_object = EdgeDelManager(session=session, node=node)
-    await edges_del_object.delete_edges_of_node()
+    # del edges related
+    await delete_edges_of_node_script(node_object.object_of_class, session)
 
-    element = ElementRepo(session=session, model=Node, object_of_class=node)
-    await element.delete_element_from_db()
+    # del element
+    await node_object.delete_node()

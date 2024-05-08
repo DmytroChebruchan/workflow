@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
@@ -22,9 +22,10 @@ class NodeCreate(NodeBase):
 
 class NodeUpdate(NodeBase):
     id: int
+    edge_condition_type: Optional[bool] = True
     message_text: Optional[str] = None
     from_node_id: Optional[int] | None = None
-    nodes_dest_dict: List[dict] | list = []
+    nodes_dest_dict: dict = {}
     condition: Optional[str] = None
     status: Optional[str] = None
 

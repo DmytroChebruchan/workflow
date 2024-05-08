@@ -7,17 +7,24 @@ from api.edges.utils import (
     delete_edge_from_source,
     delete_successors_connecting_edge,
 )
+from api.general.utils_NodeEdgeManager import EdgeDelManager
+from api.nodes.schemas.schemas_by_nodes_creating_stage import (
+    NodeCreate,
+    NodeUpdate,
+)
 from api.workflows.crud_WorkflowRepo import WorkflowRepo
-from core.models import Edge
+from core.models import Edge, Node
 
 
-async def edge_creator_script(node, node_in, session) -> None:
+async def edge_creator_script(
+    node_id: int, node_in: NodeCreate | NodeUpdate, session: AsyncSession
+) -> None:
     from_node_avail = node_in.from_node_id
     dest_node_avail = node_in.nodes_dest_dict
 
     if from_node_avail or dest_node_avail:
         await creating_required_edges_script(
-            node_id=node.id,
+            node_id=node_id,
             node_from_id=node_in.from_node_id,
             nodes_destination_dict=node_in.nodes_dest_dict,
             session=session,
@@ -97,3 +104,10 @@ async def delete_old_edges_script(
                 session=session, nodes=successors_nodes
             )
     await session.commit()
+
+
+async def delete_edges_of_node_script(
+    node: Node, session: AsyncSession
+) -> None:
+    edges_del_object = EdgeDelManager(session=session, node=node)
+    await edges_del_object.delete_edges_of_node()
