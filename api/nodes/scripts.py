@@ -1,10 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.edges.scripts import (
+    delete_edges_of_node_script,
     delete_edges_of_workflow_script,
     delete_old_edges_script,
     edge_creator_script,
-    delete_edges_of_node_script,
 )
 from api.nodes.crud_NodeManagement import NodeManagement
 from api.nodes.node_handling import delete_nodes_of_workflow

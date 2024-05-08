@@ -2,8 +2,8 @@ import networkx as nx
 
 from core.graph.utils import (
     edge_step_generator,
-    node_step_generator,
     node_dict_generator,
+    node_step_generator,
 )
 from core.models import Node
 
